@@ -182,6 +182,13 @@ button,input,select,textarea{font:inherit;color:inherit}
 .grab:hover{transform:scale(1.25)}
 .resizing,.resizing *{cursor:nwse-resize!important;user-select:none!important}
 .cell.resized{overflow-wrap:anywhere}
+/* resizing: the cell follows the pointer, lifts while you drag, then
+   glides to the nearest whole cell when you let go */
+.cell.dragging{z-index:9;box-shadow:var(--float),inset 0 0 0 2px var(--accent)}
+.cell.settling{z-index:9;transition:width .24s cubic-bezier(.2,.8,.2,1),min-height .24s cubic-bezier(.2,.8,.2,1)}
+.cell.settling .fit{transition:font-size .24s cubic-bezier(.2,.8,.2,1)}
+/* headings that size themselves to their cell never break mid-word */
+.fit{overflow-wrap:normal}
 .pad{padding:18px 20px}
 .cell h1{font-size:clamp(30px,10cqi,92px);line-height:.98;font-weight:800;letter-spacing:-.025em}
 .cell h2{font-size:clamp(26px,6cqi,40px);line-height:1.05;font-weight:800;letter-spacing:-.02em}
@@ -265,19 +272,18 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* popover mode (no room beside the cell): opens below the pin */
 .comment.pop .c-pin{left:auto;bottom:auto;right:-10px;top:-12px;width:30px;height:30px;border-radius:50% 4px 50% 50%}
 .comment.pop .c-card{top:34px;left:auto;right:-4px;transform-origin:calc(100% - 16px) -16px}
-@media (prefers-reduced-motion:reduce){.c-card,.c-pin{transition:none!important}}
+@media (prefers-reduced-motion:reduce){.c-card,.c-pin,.cell.settling,.cell.settling .fit{transition:none!important}}
 
 /* =====================================================================
    HOME
    ===================================================================== */
 .hero-cell{display:flex;align-items:center;min-height:calc(var(--row) * 5)}
-.hero-cell h1{max-width:13ch}
 .cell h1.h1-sub{font-size:clamp(28px,6.4cqi,60px)}
 
 /* =====================================================================
    WORK
    ===================================================================== */
-.proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1.3fr)}
+.proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1.3fr) 44px}
 .proj-rows .rowbtn{font-size:16px}
 .proj-rows .rowbtn .name{font-weight:700}
 .detail{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px;padding:20px}
@@ -293,15 +299,24 @@ button,input,select,textarea{font:inherit;color:inherit}
 .side-rows .row > span{display:flex;align-items:center;padding:8px 12px;border-right:1px solid var(--grid);min-width:0}
 .side-rows .row > span:last-child{border-right:0}
 @media (max-width:759px){
-  .proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.8fr)}
+  .proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.8fr) 36px}
   .proj-rows .c-role,.proj-rows .c-area{display:none!important}
   .detail{grid-template-columns:1fr;padding:14px}
   .side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,1fr) minmax(0,.6fr)}
   .side-rows .c-what{display:none!important}
   .side-rows .row .what-m{display:block}
 }
-.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr)}
-@media (max-width:759px){.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.7fr)}.home-rows .c-role{display:none!important}}
+.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr) 44px}
+@media (max-width:759px){.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.7fr) 36px}.home-rows .c-role{display:none!important}}
+/* the little dropdown-style arrow at the end of each work row: a hint
+   that the row opens. It points down on the project that's open. */
+.rowbtn > span.c-go{justify-content:center;padding:0}
+.c-go i{display:grid;place-items:center;width:24px;height:24px;border:1px solid var(--line);border-radius:3px;background:var(--sheet);color:var(--muted);transition:transform .18s,color .15s,border-color .15s,background .15s}
+.c-go svg{width:12px;height:12px}
+.rowbtn:hover .c-go i,.rowbtn:focus-visible .c-go i{color:var(--accent);border-color:var(--accent)}
+.home-rows .rowbtn:hover .c-go i{transform:translateX(2px)}
+.proj-rows .rowbtn[aria-pressed="true"] .c-go i{transform:rotate(90deg);background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+@media (prefers-reduced-motion:reduce){.c-go i{transition:none}}
 .side-rows .row > span:first-child{flex-direction:column;align-items:flex-start;justify-content:center}
 @media (max-width:759px){.home-rows .truncate,.proj-rows .truncate{white-space:normal}}
 .what-m{display:none;font-size:14px;color:var(--muted);margin-top:2px}
@@ -441,7 +456,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   <!-- =============================== HOME =============================== -->
   <section class="sheet" id="home" role="tabpanel" aria-labelledby="tab-home" data-title="Sejul Phanord | Product owner and photographer">
     <div class="cell hero pad hero-cell" data-fx='=TURN(messy_ideas, "useful products")'>
-      <h1>I turn messy ideas into useful products.</h1>
+      <h1 class="fit">I turn messy ideas into useful products.</h1>
     </div>
     <div class="cell pic inserted" id="homePic" data-fx='=IMAGE("headshot.jpg")'>
       <figure><img src="images/headshot.jpg" alt="Sage smiling, with the ocean behind him" width="900" height="900"><i></i><i></i><i></i><i></i></figure>
@@ -468,7 +483,7 @@ button,input,select,textarea{font:inherit;color:inherit}
     </div>
 
     <div class="cell all">
-      <div class="home-rows"><div class="rowhead"><span>Recent work</span><span class="c-role">Role</span><span>Year</span></div>
+      <div class="home-rows"><div class="rowhead"><span>Recent work</span><span class="c-role">Role</span><span>Year</span><span class="c-go" aria-hidden="true"></span></div>
       <ul class="rows" id="homeWork"></ul></div>
     </div>
   </section>
@@ -476,13 +491,13 @@ button,input,select,textarea{font:inherit;color:inherit}
   <!-- =============================== WORK =============================== -->
   <section class="sheet" id="work" role="tabpanel" aria-labelledby="tab-work" data-title="Work | Sejul Phanord">
     <div class="cell main pad" data-fx="Work">
-      <div class="sheet-head"><h2>Work</h2><span class="muted small">Pick a row for the details</span></div>
+      <div class="sheet-head"><h2 class="fit" data-max="120">Work</h2><span class="muted small">Pick a row for the details</span></div>
       <p class="lede" style="margin-top:8px">Most of my time goes to Food &amp; Beverage technology at Royal Caribbean: building products with crew, getting them onboard, and keeping them running.</p>
       <aside class="comment" data-c="work"><p>I like work where the spreadsheet eventually has to survive reality. Fitting, given where you're reading this.</p></aside>
     </div>
 
     <div class="cell all proj-rows">
-      <div class="rowhead"><span>Project</span><span class="c-role">Role</span><span>Year</span><span class="c-area">Area</span></div>
+      <div class="rowhead"><span>Project</span><span class="c-role">Role</span><span>Year</span><span class="c-area">Area</span><span class="c-go" aria-hidden="true"></span></div>
       <ul class="rows" id="workRows"></ul>
     </div>
 
@@ -506,7 +521,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   <!-- =============================== PHOTOS =============================== -->
   <section class="sheet" id="photos" role="tabpanel" aria-labelledby="tab-photos" data-title="Photos | Sejul Phanord">
     <div class="cell main pad" data-fx="Photos">
-      <div class="sheet-head"><h2>Photos</h2><span class="muted small">Portraits, events, and wherever I end up</span></div>
+      <div class="sheet-head"><h2 class="fit" data-max="120">Photos</h2><span class="muted small">Portraits, events, and wherever I end up</span></div>
       <p class="lede" style="margin-top:8px">A small sample of my personal work. Want to see more or plan a shoot? <a href="#contact" data-go="contact" style="color:var(--accent);font-weight:700">Send me a note.</a></p>
       <aside class="comment" data-c="photos"><p>Everything here came from one camera and one lens: a Sony a6300 with a Sigma 18-50mm. The two ship shots were my phone.</p></aside>
     </div>
@@ -532,7 +547,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   <!-- =============================== ABOUT =============================== -->
   <section class="sheet" id="about" role="tabpanel" aria-labelledby="tab-about" data-title="About | Sejul Phanord">
     <div class="cell all pad">
-      <h1 class="h1-sub" style="max-width:20ch">I like seeing a problem through to a fix that actually works.</h1>
+      <h1 class="h1-sub fit">I like seeing a problem through to a fix that actually works.</h1>
     </div>
 
     <div class="cell pic inserted" id="aboutPic" data-fx='=IMAGE("about-portrait.jpg")'>
@@ -583,7 +598,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   <!-- =============================== CONTACT =============================== -->
   <section class="sheet" id="contact" role="tabpanel" aria-labelledby="tab-contact" data-title="Contact | Sejul Phanord">
     <div class="cell all pad">
-      <h1 class="h1-sub">Have something interesting in mind?</h1>
+      <h1 class="h1-sub fit">Have something interesting in mind?</h1>
       <p class="lede" style="margin-top:12px">I'm always happy to meet people working on thoughtful products, difficult operational problems, or a good creative idea. If that sounds like you, send me a note.</p>
       <p class="muted small" style="margin-top:6px">Open to product roles, consulting, and creative collaborations.</p>
     </div>
@@ -750,7 +765,7 @@ function select(el,text){
   if(!el) return;
   el.classList.add('sel');
   const g=document.createElement('span');
-  g.className='grab'; g.title='Drag to resize this cell (double-click to reset)'; g.setAttribute('aria-hidden','true');
+  g.className='grab'; g.title='Drag to resize, up to 2 cells either way (double-click to reset)'; g.setAttribute('aria-hidden','true');
   el.appendChild(g);
   const t=text||el.dataset.fx||((el.querySelector('h1,h2,h3,p,th,td,b')||{}).textContent||'').trim().replace(/\s+/g,' ');
   setFx(cellRef(el), t.length>90?t.slice(0,88)+'\u2026':t);
@@ -774,6 +789,9 @@ function snap(sheet){
     if(h>ROW+1) r.style.height=Math.ceil((h-0.5)/ROW)*ROW+'px';
   });
   $$(':scope > .cell',sheet).forEach(c=>{
+    if(c.classList.contains('dragging')||c.classList.contains('settling')) return;
+    const f=$('.fit',c);
+    if(f){ c.style.minHeight=fitCell(c,f)*ROW+'px'; return; }
     c.style.minHeight='';
     const h=c.getBoundingClientRect().height;
     const rows=Math.max(1,Math.ceil((h-0.5)/ROW), +(c.dataset.userRows||0));
@@ -787,6 +805,44 @@ function snap(sheet){
   placeComments(sheet);
 }
 const activeSheet=()=>$('.sheet:not([hidden])');
+
+/* =====================================================================
+   FIT: header text fills its cell. A heading marked class="fit" gets
+   the biggest font size that still fits the cell's width and rows, so
+   when a header cell is resized its text grows or shrinks with it.
+   data-max caps the size (default 180px).
+   ===================================================================== */
+const FIT_MIN=18, FIT_MAX=180;
+// height of everything in the cell, not counting floating bits (comments, the resize handle)
+function contentH(cell,kids){
+  let top=Infinity, bot=-Infinity;
+  kids.forEach(k=>{ const r=k.getBoundingClientRect(); if(r.height){ top=Math.min(top,r.top); bot=Math.max(bot,r.bottom); } });
+  const cs=getComputedStyle(cell);
+  return (bot>top?bot-top:0)+parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom)+parseFloat(cs.borderTopWidth)+parseFloat(cs.borderBottomWidth);
+}
+const flowKids=cell=>[...cell.children].filter(k=>getComputedStyle(k).position!=='absolute');
+function fitText(cell,el,H){
+  const kids=flowKids(cell), box=el.parentElement===cell?null:el.parentElement;
+  const ok=()=>contentH(cell,kids)<=H+0.5 && el.scrollWidth<=el.clientWidth+1 && (!box||box.scrollWidth<=box.clientWidth+1);
+  const set=v=>{ el.style.fontSize=v+'px'; };
+  let lo=FIT_MIN, hi=+el.dataset.max||FIT_MAX;
+  set(hi); if(ok()) return hi;
+  set(lo); if(!ok()) return lo;
+  while(hi-lo>0.5){ const m=(lo+hi)/2; set(m); if(ok()) lo=m; else hi=m; }
+  lo=Math.floor(lo*2)/2; set(lo);
+  return lo;
+}
+/* A header cell keeps its natural number of rows (or the rows someone
+   dragged it to), and the text grows to fill them. Returns the rows used. */
+function fitCell(c,f){
+  f.style.fontSize=''; c.style.minHeight='';
+  const natural=Math.max(1,Math.ceil((c.getBoundingClientRect().height-0.5)/ROW));
+  const rows=+c.dataset.userRows||natural;
+  c.style.minHeight=rows*ROW+'px';
+  fitText(c,f,rows*ROW);
+  return Math.max(rows,Math.ceil((contentH(c,flowKids(c))-0.5)/ROW));
+}
+
 let snapT; const reSnap=()=>{clearTimeout(snapT);snapT=setTimeout(()=>snap(activeSheet()),60)};
 
 /* Column count follows the screen: 4 on phones, 6 on tablets, 8 on
@@ -824,39 +880,82 @@ window.addEventListener('load',reSnap);
 
 /* =====================================================================
    RESIZE: drag a selected cell's corner to change its size.
+   The cell follows the pointer smoothly (header text rescales as you go),
+   then glides to the nearest whole cell when you let go. Each cell can
+   grow or shrink by up to 2 columns and 2 rows from its original size.
    Just for fun; nothing is saved, and a reload puts everything back.
    ===================================================================== */
+const LIMIT=2;
 function resetCell(c){
-  c.style.gridColumn=''; delete c.dataset.userRows; c.classList.remove('resized');
+  clearTimeout(c._settle);
+  c.style.gridColumn=''; c.style.width='';
+  delete c.dataset.userRows; delete c.dataset.span0; delete c.dataset.rows0;
+  c.classList.remove('resized','dragging','settling');
 }
 document.addEventListener('pointerdown',e=>{
   const g=e.target.closest('.grab'); if(!g) return;
   e.preventDefault(); e.stopPropagation();
-  const cell=g.parentElement, sheet=cell.parentElement;
-  const n=getComputedStyle(sheet).gridTemplateColumns.split(' ').length||8;
-  const gap=parseFloat(getComputedStyle(sheet).columnGap)||0;
-  const colw=(sheet.clientWidth-gap)/n;
-  const startCol=Math.round((cell.offsetLeft-sheet.offsetLeft-gap)/colw)+1;
-  const minSpan=Math.min(2,n-startCol+1);
+  const cell=g.parentElement, sheet=cell.parentElement, fit=$('.fit',cell);
+  const cs=getComputedStyle(sheet);
+  const n=cs.gridTemplateColumns.split(' ').length||8;
+  const gap=parseFloat(cs.columnGap)||0;
+  const P=(sheet.clientWidth-gap)/n;               // one column plus its spacer
+  clearTimeout(cell._settle); cell.classList.remove('settling');
+  const r=cell.getBoundingClientRect();
+  const startCol=Math.round((r.left-sheet.getBoundingClientRect().left-gap)/P)+1;
+  // limits are measured from the size the cell had before anyone touched it
+  if(!cell.dataset.span0){ cell.dataset.span0=Math.round((r.width+gap)/P); cell.dataset.rows0=Math.round(r.height/ROW); }
+  const s0=+cell.dataset.span0, r0=+cell.dataset.rows0;
+  const spanMin=Math.max(1,s0-LIMIT), spanMax=Math.max(spanMin,Math.min(n-startCol+1,s0+LIMIT));
+  const rowMin=Math.max(1,r0-LIMIT), rowMax=r0+LIMIT;
+  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+  const dx=r.right-e.clientX, dy=r.bottom-e.clientY;  // keep the corner under the pointer
+  const wasResized=cell.classList.contains('resized');
+  let W=r.width, H=r.height, raf=0, moved=false;
   const fx=formula.textContent;
   g.setPointerCapture(e.pointerId);
   document.body.classList.add('resizing');
-  const move=ev=>{
-    const r=cell.getBoundingClientRect();
-    const span=Math.max(minSpan,Math.min(n-startCol+1,Math.round((ev.clientX-r.left+gap)/colw)));
-    cell.style.gridColumn=startCol+' / span '+span;
-    cell.classList.add('resized');
-    cell.style.minHeight='';
-    const natural=Math.max(1,Math.ceil((cell.getBoundingClientRect().height-0.5)/ROW));
-    const want=Math.max(natural,Math.round((ev.clientY-r.top)/ROW));
-    cell.dataset.userRows=want;
-    cell.style.minHeight=want*ROW+'px';
+  const cover=w=>Math.max(1,Math.ceil((w+gap)/P-0.01));  // columns needed to hold width w
+  const paint=()=>{
+    raf=0;
+    cell.style.gridColumn=startCol+' / span '+cover(W);
+    cell.style.width=W+'px'; cell.style.minHeight=H+'px';
+    if(fit) fitText(cell,fit,H);
     setFx(cellRef(cell),fx);
+  };
+  const move=ev=>{
+    if(!moved){ moved=true; cell.classList.add('resized','dragging'); }
+    const b=cell.getBoundingClientRect();
+    W=clamp(ev.clientX+dx-b.left,spanMin*P-gap,spanMax*P-gap);
+    H=clamp(ev.clientY+dy-b.top,rowMin*ROW,rowMax*ROW);
+    if(!raf) raf=requestAnimationFrame(paint);
   };
   const up=()=>{
     g.removeEventListener('pointermove',move); g.removeEventListener('pointerup',up); g.removeEventListener('pointercancel',up);
     document.body.classList.remove('resizing');
-    snap(activeSheet()); setFx(cellRef(cell),fx);
+    if(raf){ cancelAnimationFrame(raf); paint(); }
+    if(!moved){ if(!wasResized) resetCell(cell); return; }
+    const span=clamp(Math.round((W+gap)/P),spanMin,spanMax), rows=clamp(Math.round(H/ROW),rowMin,rowMax);
+    const tw=span*P-gap, th=rows*ROW;
+    let fs;
+    if(fit){
+      // work out where the text lands at the final size, then start from where the pointer left it
+      const from=fit.style.fontSize;
+      cell.style.gridColumn=startCol+' / span '+span; cell.style.width=tw+'px'; cell.style.minHeight=th+'px';
+      fs=fitText(cell,fit,th);
+      cell.style.width=W+'px'; cell.style.minHeight=H+'px'; fit.style.fontSize=from;
+    }
+    cell.style.gridColumn=startCol+' / span '+Math.max(span,cover(W));
+    void cell.offsetWidth;
+    cell.classList.replace('dragging','settling');
+    cell.style.width=tw+'px'; cell.style.minHeight=th+'px';
+    if(fit) fit.style.fontSize=fs+'px';
+    cell.dataset.userRows=rows;
+    cell._settle=setTimeout(()=>{
+      cell.classList.remove('settling');
+      cell.style.gridColumn=startCol+' / span '+span; cell.style.width='';
+      snap(activeSheet()); setFx(cellRef(cell),fx);
+    },260);
   };
   g.addEventListener('pointermove',move); g.addEventListener('pointerup',up); g.addEventListener('pointercancel',up);
 });
@@ -986,14 +1085,15 @@ window.addEventListener('popstate',()=>show(location.hash.slice(1),{push:false})
    ===================================================================== */
 let workSel=0;
 const workRows=$('#workRows'), homeWork=$('#homeWork'), detail=$('#workDetail'), workBody=$('#workBody'), workNote=$('#workNote');
+const GO='<span class="c-go" aria-hidden="true"><i><svg viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span>';
 PROJECTS.forEach((p,i)=>{
   workRows.insertAdjacentHTML('beforeend',
     `<li><button type="button" class="rowbtn" data-i="${i}" aria-pressed="false" aria-controls="workDetail">
-      <span class="name truncate">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span><span class="c-area truncate">${esc(p.area)}</span>
+      <span class="name truncate">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span><span class="c-area truncate">${esc(p.area)}</span>${GO}
     </button></li>`);
   homeWork.insertAdjacentHTML('beforeend',
     `<li><button type="button" class="rowbtn" data-i="${i}">
-      <span class="truncate" style="font-weight:700">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span>
+      <span class="truncate" style="font-weight:700">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span>${GO}
     </button></li>`);
 });
 function renderWork(){
