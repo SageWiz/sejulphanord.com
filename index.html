@@ -283,7 +283,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* =====================================================================
    WORK
    ===================================================================== */
-.proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1.3fr)}
+.proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1.3fr) 44px}
 .proj-rows .rowbtn{font-size:16px}
 .proj-rows .rowbtn .name{font-weight:700}
 .detail{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px;padding:20px}
@@ -299,15 +299,24 @@ button,input,select,textarea{font:inherit;color:inherit}
 .side-rows .row > span{display:flex;align-items:center;padding:8px 12px;border-right:1px solid var(--grid);min-width:0}
 .side-rows .row > span:last-child{border-right:0}
 @media (max-width:759px){
-  .proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.8fr)}
+  .proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.8fr) 36px}
   .proj-rows .c-role,.proj-rows .c-area{display:none!important}
   .detail{grid-template-columns:1fr;padding:14px}
   .side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,1fr) minmax(0,.6fr)}
   .side-rows .c-what{display:none!important}
   .side-rows .row .what-m{display:block}
 }
-.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr)}
-@media (max-width:759px){.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.7fr)}.home-rows .c-role{display:none!important}}
+.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr) 44px}
+@media (max-width:759px){.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.7fr) 36px}.home-rows .c-role{display:none!important}}
+/* the little dropdown-style arrow at the end of each work row: a hint
+   that the row opens. It points down on the project that's open. */
+.rowbtn > span.c-go{justify-content:center;padding:0}
+.c-go i{display:grid;place-items:center;width:24px;height:24px;border:1px solid var(--line);border-radius:3px;background:var(--sheet);color:var(--muted);transition:transform .18s,color .15s,border-color .15s,background .15s}
+.c-go svg{width:12px;height:12px}
+.rowbtn:hover .c-go i,.rowbtn:focus-visible .c-go i{color:var(--accent);border-color:var(--accent)}
+.home-rows .rowbtn:hover .c-go i{transform:translateX(2px)}
+.proj-rows .rowbtn[aria-pressed="true"] .c-go i{transform:rotate(90deg);background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+@media (prefers-reduced-motion:reduce){.c-go i{transition:none}}
 .side-rows .row > span:first-child{flex-direction:column;align-items:flex-start;justify-content:center}
 @media (max-width:759px){.home-rows .truncate,.proj-rows .truncate{white-space:normal}}
 .what-m{display:none;font-size:14px;color:var(--muted);margin-top:2px}
@@ -474,7 +483,7 @@ button,input,select,textarea{font:inherit;color:inherit}
     </div>
 
     <div class="cell all">
-      <div class="home-rows"><div class="rowhead"><span>Recent work</span><span class="c-role">Role</span><span>Year</span></div>
+      <div class="home-rows"><div class="rowhead"><span>Recent work</span><span class="c-role">Role</span><span>Year</span><span class="c-go" aria-hidden="true"></span></div>
       <ul class="rows" id="homeWork"></ul></div>
     </div>
   </section>
@@ -488,7 +497,7 @@ button,input,select,textarea{font:inherit;color:inherit}
     </div>
 
     <div class="cell all proj-rows">
-      <div class="rowhead"><span>Project</span><span class="c-role">Role</span><span>Year</span><span class="c-area">Area</span></div>
+      <div class="rowhead"><span>Project</span><span class="c-role">Role</span><span>Year</span><span class="c-area">Area</span><span class="c-go" aria-hidden="true"></span></div>
       <ul class="rows" id="workRows"></ul>
     </div>
 
@@ -1076,14 +1085,15 @@ window.addEventListener('popstate',()=>show(location.hash.slice(1),{push:false})
    ===================================================================== */
 let workSel=0;
 const workRows=$('#workRows'), homeWork=$('#homeWork'), detail=$('#workDetail'), workBody=$('#workBody'), workNote=$('#workNote');
+const GO='<span class="c-go" aria-hidden="true"><i><svg viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span>';
 PROJECTS.forEach((p,i)=>{
   workRows.insertAdjacentHTML('beforeend',
     `<li><button type="button" class="rowbtn" data-i="${i}" aria-pressed="false" aria-controls="workDetail">
-      <span class="name truncate">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span><span class="c-area truncate">${esc(p.area)}</span>
+      <span class="name truncate">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span><span class="c-area truncate">${esc(p.area)}</span>${GO}
     </button></li>`);
   homeWork.insertAdjacentHTML('beforeend',
     `<li><button type="button" class="rowbtn" data-i="${i}">
-      <span class="truncate" style="font-weight:700">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span>
+      <span class="truncate" style="font-weight:700">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span>${GO}
     </button></li>`);
 });
 function renderWork(){
