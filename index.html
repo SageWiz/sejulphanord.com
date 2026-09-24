@@ -25,11 +25,16 @@
    The whole site is one workbook. Every sheet sits on a real grid:
    --n columns across, 44px rows. Blocks ("cells") span columns and
    snap their height to whole rows, so the gridlines always line up.
+   Between the columns (and above row 1) sit narrow shaded spacer
+   columns, --gap wide, the way you'd shrink a column in Excel to get a
+   margin. On big screens the sheet becomes a centered page on a gray
+   canvas, like Excel's Page Layout view.
    ===================================================================== */
 :root{
   --row:44px;
   --gutter:48px;
   --n:8;
+  --gap:16px;
   --font:'Bricolage Grotesque',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
 
   --sheet:#ffffff;
@@ -43,9 +48,10 @@
   --accent:#2f5bea;
   --on-accent:#ffffff;
   --accent-soft:#eef2fe;
-  --note:#fff8d6;
-  --note-line:#e2d48f;
+  --canvas:#e3e6eb;
+  --gapfill:#f3f4f7;
   --shadow:0 8px 22px rgba(26,28,32,.12);
+  --float:0 1px 2px rgba(26,28,32,.08),0 10px 28px rgba(26,28,32,.16);
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
@@ -53,7 +59,8 @@
     --sheet:#16181d; --chrome:#1d2027; --line:#30343d; --grid:#22262e;
     --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --head:#1f2533;
     --accent:#86a2ff; --on-accent:#0f1220; --accent-soft:#1f2a4a;
-    --note:#39341c; --note-line:#5d5427; --shadow:0 8px 22px rgba(0,0,0,.45);
+    --canvas:#0c0d10; --gapfill:#1a1d23; --shadow:0 8px 22px rgba(0,0,0,.45);
+    --float:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.55);
     color-scheme:dark;
   }
 }
@@ -61,16 +68,17 @@
   --sheet:#16181d; --chrome:#1d2027; --line:#30343d; --grid:#22262e;
   --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --head:#1f2533;
   --accent:#86a2ff; --on-accent:#0f1220; --accent-soft:#1f2a4a;
-  --note:#39341c; --note-line:#5d5427; --shadow:0 8px 22px rgba(0,0,0,.45);
+  --canvas:#0c0d10; --gapfill:#1a1d23; --shadow:0 8px 22px rgba(0,0,0,.45);
+  --float:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.55);
   color-scheme:dark;
 }
 @media (max-width:1099px){:root{--n:6}}
-@media (max-width:759px){:root{--n:4;--gutter:32px}}
+@media (max-width:759px){:root{--n:4;--gutter:32px;--gap:10px}}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{
-  background:var(--sheet);color:var(--ink);font-family:var(--font);
+  background:var(--canvas);color:var(--ink);font-family:var(--font);
   font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
   padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));
 }
@@ -93,10 +101,14 @@ button,input,select,textarea{font:inherit;color:inherit}
 .theme-btn{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--sheet);display:grid;place-items:center;cursor:pointer}
 .theme-btn:hover{border-color:var(--ink)}
 .theme-btn svg{width:18px;height:18px}
-.cols{display:grid;grid-template-columns:var(--gutter) 1fr;height:28px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.cols{background:var(--canvas);border-bottom:1px solid var(--line)}
+.cols-in{display:grid;grid-template-columns:var(--gutter) 1fr;height:28px;width:var(--pagew,100%);margin-inline:auto;background:var(--chrome);font-size:12px;color:var(--muted)}
 .cols .corner{border-right:1px solid var(--line)}
-.cols .letters{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr))}
+.cols .letters{display:grid;grid-template-columns:repeat(var(--n),var(--gap) minmax(0,1fr)) var(--gap)}
 .cols .letters span{display:grid;place-items:center;border-right:1px solid var(--line)}
+.cols .letters .sp{background:var(--gapfill)}
+.cols .letters span:last-child{border-right:0}
+[data-page] .cols-in{border-inline:1px solid var(--line)}
 @media (max-width:759px){
   .fbar{gap:8px;padding:0 8px 0 12px}
   .namebox{display:none}
@@ -106,23 +118,30 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* =====================================================================
    SHEET: gutter of row numbers + grid of cells
    ===================================================================== */
-.book{display:grid;grid-template-columns:var(--gutter) minmax(0,1fr);overflow-x:clip}
+.book{display:grid;grid-template-columns:var(--gutter) minmax(0,1fr);overflow-x:clip;width:var(--pagew,100%);margin-inline:auto;background:var(--sheet)}
+[data-page] .book{box-shadow:0 0 0 1px var(--line),0 18px 50px rgba(0,0,0,.12)}
 .gutter{background:var(--chrome);border-right:1px solid var(--line);font-size:12px;color:var(--muted);overflow:hidden}
 .gutter span{display:grid;place-items:center;height:var(--row);border-bottom:1px solid var(--line)}
-/* The gridlines run the full width; the content grid only uses the first
-   8 columns (--cn), so wide monitors just show more empty columns. */
+.gutter span.sp{height:var(--gap);background:var(--gapfill)}
+/* Gridlines: shaded spacer columns (--gap wide) repeat every --colp,
+   a shaded spacer row sits on top, and 44px rows start below it. */
 #sheets{
+  --colp:calc((100% - var(--gap)) / var(--n));
+  background-color:var(--sheet);
   background-image:
-    linear-gradient(to right,var(--grid) 1px,transparent 1px),
-    linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
-  background-size:var(--colw,calc(100% / var(--n))) var(--row);
+    linear-gradient(to bottom,var(--grid) 1px,transparent 1px),
+    linear-gradient(to right,var(--grid) 0 1px,var(--gapfill) 1px var(--gap),var(--grid) var(--gap) calc(var(--gap) + 1px),transparent 0),
+    linear-gradient(var(--gapfill),var(--gapfill));
+  background-size:100% var(--row),var(--colp) 100%,100% var(--gap);
+  background-repeat:repeat-y,repeat-x,no-repeat;
+  background-position:0 var(--gap),0 0,0 0;
   min-height:calc(100vh - 132px);
 }
 .sheet{
-  display:grid;grid-template-columns:repeat(var(--cn,var(--n)),minmax(0,1fr));
-  width:var(--sheetw,100%);
-  row-gap:var(--row);align-items:start;grid-auto-flow:row dense;
-  padding-bottom:calc(var(--row) * 2);
+  display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));
+  column-gap:var(--gap);padding:var(--gap) var(--gap) calc(var(--row) * 2);
+  row-gap:var(--row);align-items:start;
+  scroll-margin-top:100vh; /* #work etc. never scroll the page on load */
 }
 .sheet[hidden]{display:none}
 
@@ -133,32 +152,25 @@ button,input,select,textarea{font:inherit;color:inherit}
 .all{grid-column:1 / span 8}
 .hero{grid-column:span 6}.pic{grid-column:span 2}
 .main{grid-column:span 5}.side{grid-column:span 3}
-.wide{grid-column:span 6}.note-col{grid-column:span 2}.facts-col{grid-column:span 4}
+.wide{grid-column:span 6}.facts-col{grid-column:span 4}
 @media (max-width:1099px){
   .all,.wide{grid-column:1 / -1}
   .hero,.main,.facts-col{grid-column:span 4}
-  .pic,.side,.note-col{grid-column:span 2}
+  .pic,.side{grid-column:span 2}
 }
 @media (max-width:759px){
-  .all,.hero,.main,.wide,.facts-col{grid-column:1 / -1}
+  .all,.hero,.main,.wide,.facts-col,.side{grid-column:1 / -1}
   .pic{grid-column:1 / span 2}
-  .note-wrap{grid-column:2 / span 3}
-  .note-wrap.beside-pic{grid-column:3 / span 2}
-  .side:not(.note-wrap){grid-column:1 / -1}
 }
 [data-tier="lg"] .all{grid-column:1 / span 8}
 [data-tier="lg"] .hero{grid-column:span 6}[data-tier="lg"] .pic{grid-column:span 2}
 [data-tier="lg"] .main{grid-column:span 5}[data-tier="lg"] .side{grid-column:span 3}
-[data-tier="lg"] .wide{grid-column:span 6}[data-tier="lg"] .note-col{grid-column:span 2}
-[data-tier="lg"] .facts-col{grid-column:span 4}
+[data-tier="lg"] .wide{grid-column:span 6}[data-tier="lg"] .facts-col{grid-column:span 4}
 [data-tier="md"] .all,[data-tier="md"] .wide{grid-column:1 / -1}
 [data-tier="md"] .hero,[data-tier="md"] .main,[data-tier="md"] .facts-col{grid-column:span 4}
-[data-tier="md"] .pic,[data-tier="md"] .side,[data-tier="md"] .note-col{grid-column:span 2}
-[data-tier="sm"] .all,[data-tier="sm"] .hero,[data-tier="sm"] .main,[data-tier="sm"] .wide,[data-tier="sm"] .facts-col{grid-column:1 / -1}
+[data-tier="md"] .pic,[data-tier="md"] .side{grid-column:span 2}
+[data-tier="sm"] .all,[data-tier="sm"] .hero,[data-tier="sm"] .main,[data-tier="sm"] .wide,[data-tier="sm"] .facts-col,[data-tier="sm"] .side{grid-column:1 / -1}
 [data-tier="sm"] .pic{grid-column:1 / span 2}
-[data-tier="sm"] .note-wrap{grid-column:2 / span 3}
-[data-tier="sm"] .note-wrap.beside-pic{grid-column:3 / span 2}
-[data-tier="sm"] .side:not(.note-wrap){grid-column:1 / -1}
 [data-tier="sm"] .preview-cell{display:none}
 
 /* a cell block */
@@ -225,15 +237,35 @@ button,input,select,textarea{font:inherit;color:inherit}
 .inserted figcaption{padding:8px 12px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
 
 /* =====================================================================
-   COMMENTS: the little notes I leave on the sheet
+   COMMENTS: floating comment threads, pinned to the top-right corner of
+   the cell they're about (Figma style). Resolve one and it shrinks back
+   to its pin; click the pin to open it again. JS decides per screen size
+   whether a card floats beside its cell or opens as a popover.
    ===================================================================== */
-.anchor-mark{position:absolute;top:0;right:0;width:0;height:0;border-top:12px solid var(--accent);border-left:12px solid transparent;z-index:1}
-.note{background:var(--note);border:1px solid var(--note-line);box-shadow:var(--shadow);padding:14px 16px;border-radius:2px;cursor:default}
-.note header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px;color:var(--muted)}
-.note header b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-size:12px}
-.note p{font-size:16px;line-height:1.45;color:var(--ink)}
-.cell.note-wrap{border:0;background:transparent;padding:10px 0 0 14px}
-@media (max-width:759px){.cell.note-wrap{padding:0}}
+.cell:has(> .comment){z-index:3}
+.cell:has(> .comment.open){z-index:8}
+.comment{position:absolute;top:0;right:0;width:0;height:0;cursor:default;font-size:16px}
+.c-pin{position:absolute;left:-4px;bottom:-4px;width:34px;height:34px;padding:3px;border:0;border-radius:50% 50% 50% 4px;background:var(--sheet);box-shadow:var(--float);cursor:pointer;transition:transform .15s}
+.c-pin:hover{transform:scale(1.08)}
+.c-pin img,.c-av{display:block;width:100%;height:100%;border-radius:50%;background:#fff;object-fit:cover}
+.comment.open .c-pin{box-shadow:var(--float),0 0 0 2px var(--accent)}
+.comment.unread .c-pin::after{content:"";position:absolute;top:-1px;right:-1px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--sheet)}
+.c-card{position:absolute;top:-30px;left:40px;width:var(--cw,280px);background:var(--sheet);border:1px solid var(--line);border-radius:12px;box-shadow:var(--float);padding:12px 14px 14px;transform-origin:-24px 20px;transition:opacity .18s,transform .18s}
+.comment:not(.open) .c-card{opacity:0;transform:scale(.2);pointer-events:none;visibility:hidden;transition:opacity .18s,transform .18s,visibility 0s .18s}
+.c-card header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:14px}
+.c-card .c-av{width:26px;height:26px;flex:none;box-shadow:0 0 0 1px var(--line)}
+.c-card header b{font-weight:700;color:var(--ink)}
+.c-card header span{color:var(--muted);font-size:13px}
+.c-ok{margin-left:auto;display:grid;place-items:center;width:30px;height:30px;border:1px solid transparent;border-radius:50%;background:transparent;color:var(--muted);cursor:pointer}
+.c-ok:hover{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.c-ok svg{width:16px;height:16px}
+.c-card p{font-size:15.5px;line-height:1.45;color:var(--ink)}
+/* phones: the card tucks in under the pin to save width */
+.comment.tight .c-card{top:10px;left:8px;transform-origin:0 -16px}
+/* popover mode (no room beside the cell): opens below the pin */
+.comment.pop .c-pin{left:auto;bottom:auto;right:-10px;top:-12px;width:30px;height:30px;border-radius:50% 4px 50% 50%}
+.comment.pop .c-card{top:34px;left:auto;right:-4px;transform-origin:calc(100% - 16px) -16px}
+@media (prefers-reduced-motion:reduce){.c-card,.c-pin{transition:none!important}}
 
 /* =====================================================================
    HOME
@@ -372,12 +404,14 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* =====================================================================
    TABS (bottom, like sheet tabs)
    ===================================================================== */
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:stretch;gap:0;background:var(--chrome);border-top:1px solid var(--line);padding-left:var(--gutter);padding-bottom:env(safe-area-inset-bottom,0px);overflow-x:auto;scrollbar-width:none}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:stretch;gap:0;background:var(--chrome);border-top:1px solid var(--line);padding-left:calc(var(--pagex,0px) + var(--gutter));padding-bottom:env(safe-area-inset-bottom,0px);overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{flex:none;height:48px;padding:0 20px;border:0;border-right:1px solid var(--line);background:transparent;font-size:15px;cursor:pointer;color:var(--ink)}
 .tab:hover{background:var(--sheet)}
 .tab[aria-selected="true"]{background:var(--sheet);color:var(--accent);font-weight:700;box-shadow:inset 0 -3px 0 var(--accent)}
 @media (max-width:759px){.tab{padding:0 14px}.tabs{padding-left:0}}
+/* keep the tab strip's edges in line with the page */
+[data-page] .tab:first-child{border-left:1px solid var(--line)}
 
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
@@ -394,10 +428,10 @@ button,input,select,textarea{font:inherit;color:inherit}
       <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 2a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
     </button>
   </div>
-  <div class="cols" aria-hidden="true">
+  <div class="cols" aria-hidden="true"><div class="cols-in">
     <span class="corner"></span>
-    <span class="letters"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></span>
-  </div>
+    <span class="letters"></span>
+  </div></div>
 </header>
 
 <main class="book">
@@ -409,22 +443,18 @@ button,input,select,textarea{font:inherit;color:inherit}
     <div class="cell hero pad hero-cell" data-fx='=TURN(messy_ideas, "useful products")'>
       <h1>I turn messy ideas into useful products.</h1>
     </div>
-    <div class="cell pic inserted" data-fx='=IMAGE("headshot.jpg")'>
+    <div class="cell pic inserted" id="homePic" data-fx='=IMAGE("headshot.jpg")'>
       <figure><img src="images/headshot.jpg" alt="Sage smiling, with the ocean behind him" width="900" height="900"><i></i><i></i><i></i><i></i></figure>
     </div>
 
     <div class="cell main pad">
-      <span class="anchor-mark" aria-hidden="true"></span>
       <p class="lede">I'm Sage, a product owner based in South Florida. Most of my work lives between business teams, developers, and the people using the product day to day. Sometimes that means shaping a backlog. Other times it means testing onboard a ship, chasing down a data issue, or helping a rollout get unstuck.</p>
       <div class="actions">
         <a class="btn" href="#work" data-go="work">See my work</a>
         <a class="btn ghost" href="#contact" data-go="contact">Get in touch</a>
       </div>
+      <aside class="comment" data-c="home" data-sm="#homePic"><p>Messy ideas are my favorite kind. Usually it just means nobody has looked closely enough yet.</p></aside>
     </div>
-    <aside class="cell side note-wrap beside-pic" aria-label="Comment from Sage">
-      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
-        <p>Messy ideas are my favorite kind. Usually it just means nobody has looked closely enough yet.</p></div>
-    </aside>
 
     <div class="cell main">
       <table class="tbl">
@@ -446,34 +476,27 @@ button,input,select,textarea{font:inherit;color:inherit}
   <!-- =============================== WORK =============================== -->
   <section class="sheet" id="work" role="tabpanel" aria-labelledby="tab-work" data-title="Work | Sejul Phanord">
     <div class="cell main pad" data-fx="Work">
-      <span class="anchor-mark" aria-hidden="true"></span>
       <div class="sheet-head"><h2>Work</h2><span class="muted small">Pick a row for the details</span></div>
       <p class="lede" style="margin-top:8px">Most of my time goes to Food &amp; Beverage technology at Royal Caribbean: building products with crew, getting them onboard, and keeping them running.</p>
+      <aside class="comment" data-c="work"><p>I like work where the spreadsheet eventually has to survive reality. Fitting, given where you're reading this.</p></aside>
     </div>
-    <aside class="cell side note-wrap" aria-label="Comment from Sage">
-      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
-        <p>I like work where the spreadsheet eventually has to survive reality. Fitting, given where you're reading this.</p></div>
-    </aside>
 
     <div class="cell all proj-rows">
       <div class="rowhead"><span>Project</span><span class="c-role">Role</span><span>Year</span><span class="c-area">Area</span></div>
       <ul class="rows" id="workRows"></ul>
     </div>
 
-    <div class="cell wide" id="workDetail" aria-live="polite"></div>
-    <aside class="cell note-col note-wrap" aria-label="Comment from Sage">
-      <div class="note"><header><b aria-hidden="true">S</b>Sage</header><p id="workNote"></p></div>
-    </aside>
+    <div class="cell wide" id="workDetail">
+      <div id="workBody" aria-live="polite"></div>
+      <aside class="comment" id="workNote"><p></p></aside>
+    </div>
 
     <div class="cell main side-rows">
       <div class="rowhead"><span>Side projects</span><span class="c-what">What it is</span><span>Status</span></div>
       <div class="row"><span><a href="https://hellasage.com/close-enough?ref=portfolio" target="_blank" rel="noopener"><b>Close Enough</b><span class="sr-only"> (opens in a new tab)</span></a><span class="what-m">A quiz that maps how personal and how touchy you are.</span></span><span class="c-what">A quiz that maps how personal and how touchy you are, with anonymous results and a public stats page.</span><span><span class="chip">Live</span></span></div>
       <div class="row"><span><b>Cafecito</b><span class="what-m">A voting flow for post-lunch Cuban coffee at the office.</span></span><span class="c-what">A Power Platform flow so the office can vote on post-lunch Cuban coffee, with a 1:30 cutoff.</span><span><span class="chip">In progress</span></span></div>
+      <aside class="comment" data-c="side"><p>hellasage.com is where the experiments live. This site is the tidy one.</p></aside>
     </div>
-    <aside class="cell side note-wrap" aria-label="Comment from Sage">
-      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
-        <p>hellasage.com is where the experiments live. This site is the tidy one.</p></div>
-    </aside>
 
     <div class="cell main pad" data-fx='=HYPERLINK("Sejul-Phanord-CV.docx")'>
       <p>Want the full résumé? <a href="Sejul-Phanord-CV.docx" download style="color:var(--accent);font-weight:700">Download my CV</a> or send me a note from the Contact tab.</p>
@@ -483,14 +506,10 @@ button,input,select,textarea{font:inherit;color:inherit}
   <!-- =============================== PHOTOS =============================== -->
   <section class="sheet" id="photos" role="tabpanel" aria-labelledby="tab-photos" data-title="Photos | Sejul Phanord">
     <div class="cell main pad" data-fx="Photos">
-      <span class="anchor-mark" aria-hidden="true"></span>
       <div class="sheet-head"><h2>Photos</h2><span class="muted small">Portraits, events, and wherever I end up</span></div>
       <p class="lede" style="margin-top:8px">A small sample of my personal work. Want to see more or plan a shoot? <a href="#contact" data-go="contact" style="color:var(--accent);font-weight:700">Send me a note.</a></p>
+      <aside class="comment" data-c="photos"><p>Everything here came from one camera and one lens: a Sony a6300 with a Sigma 18-50mm. The two ship shots were my phone.</p></aside>
     </div>
-    <aside class="cell side note-wrap" aria-label="Comment from Sage">
-      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
-        <p>Everything here came from one camera and one lens: a Sony a6300 with a Sigma 18-50mm. The two ship shots were my phone.</p></div>
-    </aside>
 
     <div class="cell main photo-rows" data-fx="=photos">
       <div class="filterbar filter"><label for="typeFilter">Filter by type</label>
@@ -516,7 +535,7 @@ button,input,select,textarea{font:inherit;color:inherit}
       <h1 class="h1-sub" style="max-width:20ch">I like seeing a problem through to a fix that actually works.</h1>
     </div>
 
-    <div class="cell pic inserted" data-fx='=IMAGE("about-portrait.jpg")'>
+    <div class="cell pic inserted" id="aboutPic" data-fx='=IMAGE("about-portrait.jpg")'>
       <figure><img src="images/about-portrait.jpg" alt="Sage checking his phone on a parking deck at golden hour" width="1294" height="924" loading="lazy"><i></i><i></i><i></i><i></i><figcaption>On a parking deck at golden hour</figcaption></figure>
     </div>
     <div class="cell facts-col">
@@ -529,11 +548,8 @@ button,input,select,textarea{font:inherit;color:inherit}
           <tr><th scope="row">Open to</th><td class="wrap">Product roles, consulting, creative collaborations</td></tr>
         </tbody>
       </table>
+      <aside class="comment" data-c="about" data-sm="#aboutPic"><p>Fun fact: most days after lunch, I make cafecito for the office. Enough people ask that I'm building a voting system for it.</p></aside>
     </div>
-    <aside class="cell note-col note-wrap beside-pic" aria-label="Comment from Sage">
-      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
-        <p>Fun fact: most days after lunch, I make cafecito for the office. Enough people ask that I'm building a voting system for it.</p></div>
-    </aside>
 
     <div class="cell wide pad">
       <div class="story-bar">
@@ -583,11 +599,8 @@ button,input,select,textarea{font:inherit;color:inherit}
         <input class="hp" type="text" name="company" id="f-company" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="send"><span class="status" id="formStatus" role="status"></span><button class="btn" type="submit" id="sendBtn">Send message</button></div>
       </form>
+      <aside class="comment" data-c="contact"><p>This goes straight to my inbox, and I read all of it. Yes, even the "just saying hi" ones.</p></aside>
     </div>
-    <aside class="cell side note-wrap" aria-label="Comment from Sage">
-      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
-        <p>This goes straight to my inbox, and I read all of it. Yes, even the "just saying hi" ones.</p></div>
-    </aside>
 
     <div class="cell main">
       <table class="tbl">
@@ -722,9 +735,10 @@ function colLetter(i){return String.fromCharCode(65+Math.max(0,Math.min(25,i)))}
 function cellRef(el){
   const sheet=el.closest('.sheet'); if(!sheet) return 'A1';
   const n=parseInt(getComputedStyle(sheet).gridTemplateColumns.split(' ').length,10)||8;
-  const w=sheet.clientWidth/n;
-  const x=el.offsetLeft-sheet.offsetLeft, y=el.offsetTop-sheet.offsetTop;
-  const c1=Math.round(x/w), c2=Math.max(c1,Math.round((x+el.offsetWidth)/w)-1);
+  const gap=parseFloat(getComputedStyle(sheet).columnGap)||0;
+  const w=(sheet.clientWidth-gap)/n;
+  const x=el.offsetLeft-sheet.offsetLeft-gap, y=el.offsetTop-sheet.offsetTop-gap;
+  const c1=Math.round(x/w), c2=Math.max(c1,Math.round((x+el.offsetWidth+gap)/w)-1);
   const r1=Math.round(y/ROW)+1, r2=Math.max(r1,Math.round((y+el.offsetHeight)/ROW));
   const a=colLetter(c1)+r1, b=colLetter(c2)+r2;
   return a===b?a:a+':'+b;
@@ -744,7 +758,7 @@ function select(el,text){
 document.addEventListener('click',e=>{
   if(e.target.closest('.grab')) return;
   const c=e.target.closest('.cell');
-  if(c && !c.classList.contains('note-wrap') && !e.target.closest('.rowbtn, .sortbtn, select, #openFull')) select(c);
+  if(c && !e.target.closest('.comment, .rowbtn, .sortbtn, select, #openFull')) select(c);
 });
 
 /* =====================================================================
@@ -766,29 +780,35 @@ function snap(sheet){
     c.style.minHeight=rows*ROW+'px';
   });
   const rows=Math.ceil(sheet.scrollHeight/ROW)+2;
-  if(gutter.childElementCount!==rows){
-    let html=''; for(let i=1;i<=rows;i++) html+='<span>'+i+'</span>';
+  if(gutter.childElementCount!==rows+1){
+    let html='<span class="sp"></span>'; for(let i=1;i<=rows;i++) html+='<span>'+i+'</span>';
     gutter.innerHTML=html;
   }
+  placeComments(sheet);
 }
 const activeSheet=()=>$('.sheet:not([hidden])');
 let snapT; const reSnap=()=>{clearTimeout(snapT);snapT=setTimeout(()=>snap(activeSheet()),60)};
 
-/* Column count follows the screen: 4 on phones, 6 on tablets, and on
-   desktops as many ~150px columns as fit. Content stays on the first 8. */
+/* Column count follows the screen: 4 on phones, 6 on tablets, 8 on
+   desktops. Past PAGE_MAX the sheet stops growing and sits centered on
+   the canvas as a page, so big monitors get margins instead of a sea of
+   empty columns. */
+const PAGE_MAX=1360;
 let lastN=0;
 function layout(){
-  const root=document.documentElement, w=$('#sheets').clientWidth;
-  const n = w<700 ? 4 : w<1200 ? 6 : Math.min(26,Math.max(8,Math.floor(w/150)));
+  const root=document.documentElement, vw=root.clientWidth;
+  const page = vw>=PAGE_MAX+48;
+  const pagew = page ? PAGE_MAX : vw;
+  const w = pagew-(parseFloat(getComputedStyle(root).getPropertyValue('--gutter'))||48);
+  const n = w<700 ? 4 : w<1200 ? 6 : 8;
   root.dataset.tier = n<=4 ? 'sm' : n<=6 ? 'md' : 'lg';
-  const cn=Math.min(n,8), colw=w/n;
-  root.style.setProperty('--colw',colw+'px');
-  root.style.setProperty('--sheetw',(colw*cn)+'px');
+  if(page) root.dataset.page=''; else delete root.dataset.page;
+  root.style.setProperty('--pagew',pagew+'px');
+  root.style.setProperty('--pagex',Math.max(0,(vw-pagew)/2)+'px');
   if(n!==lastN){
     root.style.setProperty('--n',n);
-    root.style.setProperty('--cn',cn);
-    let L=''; for(let i=0;i<n;i++) L+='<span>'+colLetter(i)+'</span>';
-    $('.cols .letters').innerHTML=L;
+    let L=''; for(let i=0;i<n;i++) L+='<span class="sp"></span><span>'+colLetter(i)+'</span>';
+    $('.cols .letters').innerHTML=L+'<span class="sp"></span>';
     // a new column count invalidates any cells someone resized
     $$('.cell.resized').forEach(resetCell);
     lastN=n;
@@ -814,15 +834,16 @@ document.addEventListener('pointerdown',e=>{
   e.preventDefault(); e.stopPropagation();
   const cell=g.parentElement, sheet=cell.parentElement;
   const n=getComputedStyle(sheet).gridTemplateColumns.split(' ').length||8;
-  const colw=sheet.clientWidth/n;
-  const startCol=Math.round((cell.offsetLeft-sheet.offsetLeft)/colw)+1;
+  const gap=parseFloat(getComputedStyle(sheet).columnGap)||0;
+  const colw=(sheet.clientWidth-gap)/n;
+  const startCol=Math.round((cell.offsetLeft-sheet.offsetLeft-gap)/colw)+1;
   const minSpan=Math.min(2,n-startCol+1);
   const fx=formula.textContent;
   g.setPointerCapture(e.pointerId);
   document.body.classList.add('resizing');
   const move=ev=>{
     const r=cell.getBoundingClientRect();
-    const span=Math.max(minSpan,Math.min(n-startCol+1,Math.round((ev.clientX-r.left)/colw)));
+    const span=Math.max(minSpan,Math.min(n-startCol+1,Math.round((ev.clientX-r.left+gap)/colw)));
     cell.style.gridColumn=startCol+' / span '+span;
     cell.classList.add('resized');
     cell.style.minHeight='';
@@ -845,6 +866,84 @@ document.addEventListener('dblclick',e=>{
 });
 
 /* =====================================================================
+   COMMENTS
+   Write a comment as <aside class="comment" data-c="some-id"><p>…</p></aside>
+   inside the cell it's about. This adds the pin, avatar, and Resolve
+   button. data-sm="#someCell" moves it to a different cell on phones.
+   Resolved comments stay resolved until the tab is closed.
+   ===================================================================== */
+const AVATAR='images/sage-face.png';
+const CHECK='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+let resolved={};
+try{ resolved=JSON.parse(sessionStorage.getItem('resolved')||'{}')||{}; }catch(e){}
+const saveResolved=()=>{ try{ sessionStorage.setItem('resolved',JSON.stringify(resolved)); }catch(e){} };
+let cSeq=0;
+function initComment(c){
+  if(!c.querySelector('.c-card')){
+    const p=c.querySelector('p'), id='cmt'+(++cSeq);
+    c.setAttribute('aria-label','Comment from Sage');
+    c.home=c.parentElement;
+    c.insertAdjacentHTML('afterbegin',
+      `<button type="button" class="c-pin" aria-expanded="false" aria-controls="${id}"><img src="${AVATAR}" alt="" width="28" height="28"></button>
+       <div class="c-card" id="${id}"><header><img class="c-av" src="${AVATAR}" alt="" width="26" height="26"><b>Sage</b>
+       <button type="button" class="c-ok" title="Resolve" aria-label="Resolve comment">${CHECK}</button></header></div>`);
+    c.querySelector('.c-card').appendChild(p);
+  }
+  delete c.dataset.mode;   // placeComments picks float or popover again
+  if(c.closest('.sheet:not([hidden])')) placeComments(c.closest('.sheet'));
+}
+function setOpen(c,open){
+  c.classList.toggle('open',open);
+  if(open) c.classList.remove('unread');
+  c.querySelector('.c-pin').setAttribute('aria-expanded',open);
+  const pin=c.querySelector('.c-pin');
+  pin.setAttribute('aria-label',(open?'Hide':'Show')+' comment from Sage');
+}
+/* Float the card beside its cell when there's room for it; otherwise
+   (phones, cells at the right edge) collapse to a pin that opens a
+   popover. Floating cards start open unless you've resolved them. */
+function placeComments(sheet){
+  if(!sheet) return;
+  const sr=sheet.getBoundingClientRect(), gap=parseFloat(getComputedStyle(sheet).columnGap)||0;
+  $$('.comment',sheet).forEach(c=>{
+    if(!c.querySelector('.c-card')) return;
+    const want=(small.matches && c.dataset.sm && $(c.dataset.sm)) || c.home;
+    if(c.parentElement!==want) want.appendChild(c);
+    const cr=want.getBoundingClientRect();
+    c.classList.toggle('tight',small.matches);
+    const room=sr.right-gap-cr.right-(small.matches?12:40);
+    const float=room>=(small.matches?140:220);
+    // cells on the first row: drop a floating pin a little so the header can't cover it
+    c.style.top=(float?Math.max(0,38-(cr.top-sr.top)):0)+'px';
+    c.style.setProperty('--cw',(float?Math.min(320,room):Math.min(300,cr.width-8))+'px');
+    const mode=float?'float':'pop';
+    if(c.dataset.mode!==mode){
+      c.dataset.mode=mode;
+      c.classList.toggle('pop',!float);
+      const done=resolved[c.dataset.c];
+      c.classList.toggle('unread',!float&&!done);
+      setOpen(c,float&&!done);
+    }
+  });
+}
+document.addEventListener('click',e=>{
+  const pin=e.target.closest('.c-pin'), ok=e.target.closest('.c-ok');
+  if(pin){ const c=pin.parentElement; setOpen(c,!c.classList.contains('open')); return; }
+  if(ok){
+    const c=ok.closest('.comment'); resolved[c.dataset.c]=1; saveResolved();
+    setOpen(c,false); c.querySelector('.c-pin').focus(); return;
+  }
+  // a click elsewhere closes any open popover, like clicking off a thread
+  $$('.comment.pop.open').forEach(c=>{ if(!c.contains(e.target)) setOpen(c,false); });
+});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape') return;
+  const c=e.target.closest&&e.target.closest('.comment.open');
+  if(c){ setOpen(c,false); c.querySelector('.c-pin').focus(); }
+});
+$$('.comment').forEach(initComment);
+
+/* =====================================================================
    TABS (hash based: #home, #work, #photos, #about, #contact)
    ===================================================================== */
 const TABS=['home','work','photos','about','contact'];
@@ -857,12 +956,12 @@ function show(id,{focus=false,push=true}={}){
   document.title=sheet.dataset.title;
   if(push && location.hash!=='#'+id) history.pushState(null,'','#'+id);
   window.scrollTo(0,0);
-  requestAnimationFrame(()=>{ snap(sheet); onShow[id]&&onShow[id](); });
+  requestAnimationFrame(()=>{ window.scrollTo(0,0); snap(sheet); onShow[id]&&onShow[id](); });
 }
 const onShow={
   home:()=>select($('#home .hero-cell')),
   work:()=>renderWork(),
-  photos:()=>photoFx(),
+  photos:()=>{ photoFx(); fitPreview(); },
   about:()=>select($('#about .cell.all')),
   contact:()=>select($('#contact .cell.all'))
 };
@@ -886,7 +985,7 @@ window.addEventListener('popstate',()=>show(location.hash.slice(1),{push:false})
    WORK
    ===================================================================== */
 let workSel=0;
-const workRows=$('#workRows'), homeWork=$('#homeWork'), detail=$('#workDetail'), workNote=$('#workNote');
+const workRows=$('#workRows'), homeWork=$('#homeWork'), detail=$('#workDetail'), workBody=$('#workBody'), workNote=$('#workNote');
 PROJECTS.forEach((p,i)=>{
   workRows.insertAdjacentHTML('beforeend',
     `<li><button type="button" class="rowbtn" data-i="${i}" aria-pressed="false" aria-controls="workDetail">
@@ -900,15 +999,17 @@ PROJECTS.forEach((p,i)=>{
 function renderWork(){
   const p=PROJECTS[workSel];
   $$('.rowbtn',workRows).forEach((b,i)=>b.setAttribute('aria-pressed',i===workSel));
-  detail.innerHTML=`<div class="detail${p.img?'':' no-pic'}">
+  workBody.innerHTML=`<div class="detail${p.img?'':' no-pic'}">
     ${p.img?`<figure><img src="${p.img}" alt="${esc(p.cap)}" loading="lazy"><figcaption>${esc(p.cap)}</figcaption></figure>`:''}
     <div class="body">
       <div><h3>${esc(p.name)}</h3><p class="small muted" style="margin-top:4px">${esc(p.role)}, ${esc(p.year)}</p></div>
       ${p.sections.map(([h,t])=>`<div><h4>${esc(h)}</h4><p>${esc(t)}</p></div>`).join('')}
       <p class="tags">${esc(p.tags)}</p>
     </div></div>`;
-  workNote.textContent=p.note;
-  const img=$('img',detail); if(img) img.addEventListener('load',reSnap,{once:true});
+  $('p',workNote).textContent=p.note;
+  workNote.dataset.c='work-'+p.id;
+  initComment(workNote);
+  const img=$('img',workBody); if(img) img.addEventListener('load',reSnap,{once:true});
   snap($('#work'));
   const table=workRows.closest('.cell');
   setFx('A'+(Math.round((table.offsetTop-table.parentNode.offsetTop)/ROW)+2+workSel), p.name);
@@ -1121,6 +1222,7 @@ $('#storyView').addEventListener('change',e=>{
 /* =====================================================================
    START
    ===================================================================== */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
 show((location.hash||'#home').slice(1),{push:false});
 </script>
 </body>
