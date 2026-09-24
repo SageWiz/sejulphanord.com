@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sejul Phanord | Product owner and photographer</title>
+<meta name="description" content="Sejul (Sage) Phanord is a product owner in South Florida building shipboard Food and Beverage technology, and a portrait, event, and travel photographer.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sejul Phanord | Product owner and photographer">
+<meta property="og:description" content="I turn messy ideas into useful products. Product work, shipboard rollouts, and photography.">
+<meta property="og:url" content="https://sejulphanord.com/">
+<meta property="og:image" content="https://sejulphanord.com/images/headshot.jpg">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232f5bea'/%3E%3Cpath d='M8 11h16M8 16h16M8 21h16M13 7v18' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+<script>
+  /* Apply a saved theme before first paint so the page never flashes. */
+  try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   CONFIG + TOKENS
+   The whole site is one workbook. Every sheet sits on a real grid:
+   --n columns across, 44px rows. Blocks ("cells") span columns and
+   snap their height to whole rows, so the gridlines always line up.
+   ===================================================================== */
+:root{
+  --row:44px;
+  --gutter:48px;
+  --n:8;
+  --font:'Bricolage Grotesque',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+
+  --sheet:#ffffff;
+  --chrome:#f6f7f9;
+  --line:#d5d9e0;
+  --grid:#e8eaee;
+  --ink:#1a1c20;
+  --ink-2:#353944;
+  --muted:#5f6573;
+  --head:#f0f3fb;
+  --accent:#2f5bea;
+  --on-accent:#ffffff;
+  --accent-soft:#eef2fe;
+  --note:#fff8d6;
+  --note-line:#e2d48f;
+  --shadow:0 8px 22px rgba(26,28,32,.12);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --sheet:#16181d; --chrome:#1d2027; --line:#30343d; --grid:#22262e;
+    --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --head:#1f2533;
+    --accent:#86a2ff; --on-accent:#0f1220; --accent-soft:#1f2a4a;
+    --note:#39341c; --note-line:#5d5427; --shadow:0 8px 22px rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --sheet:#16181d; --chrome:#1d2027; --line:#30343d; --grid:#22262e;
+  --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --head:#1f2533;
+  --accent:#86a2ff; --on-accent:#0f1220; --accent-soft:#1f2a4a;
+  --note:#39341c; --note-line:#5d5427; --shadow:0 8px 22px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+@media (max-width:1099px){:root{--n:6}}
+@media (max-width:759px){:root{--n:2;--gutter:32px}}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--sheet);color:var(--ink);font-family:var(--font);
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));
+}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* =====================================================================
+   TOP: formula bar + column letters (sticky)
+   ===================================================================== */
+.top{position:sticky;top:0;z-index:40;background:var(--chrome);padding-top:env(safe-area-inset-top,0px)}
+.fbar{display:flex;align-items:center;gap:12px;height:56px;padding:0 12px 0 16px;border-bottom:1px solid var(--line)}
+.brand{font-weight:800;font-size:18px;text-decoration:none;white-space:nowrap;flex:none}
+.namebox{flex:none;width:76px;height:34px;border:1px solid var(--line);background:var(--sheet);display:grid;place-items:center;font-size:14px;color:var(--muted);border-radius:2px}
+.fx{flex:none;font-style:italic;color:var(--muted)}
+.formula{flex:1;min-width:0;height:34px;border:1px solid var(--line);background:var(--sheet);display:flex;align-items:center;padding:0 12px;font-size:15px;border-radius:2px}
+.formula span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.theme-btn{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--sheet);display:grid;place-items:center;cursor:pointer}
+.theme-btn:hover{border-color:var(--ink)}
+.theme-btn svg{width:18px;height:18px}
+.cols{display:grid;grid-template-columns:var(--gutter) 1fr;height:28px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.cols .corner{border-right:1px solid var(--line)}
+.cols .letters{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr))}
+.cols .letters span{display:grid;place-items:center;border-right:1px solid var(--line)}
+@media (max-width:1099px){.cols .letters span:nth-child(n+7){display:none}}
+@media (max-width:759px){
+  .cols .letters span:nth-child(n+3){display:none}
+  .fbar{gap:8px;padding:0 8px 0 12px}
+  .namebox{display:none}
+  .brand{font-size:16px}
+}
+
+/* =====================================================================
+   SHEET: gutter of row numbers + grid of cells
+   ===================================================================== */
+.book{display:grid;grid-template-columns:var(--gutter) minmax(0,1fr);overflow-x:clip}
+.gutter{background:var(--chrome);border-right:1px solid var(--line);font-size:12px;color:var(--muted);overflow:hidden}
+.gutter span{display:grid;place-items:center;height:var(--row);border-bottom:1px solid var(--line)}
+.sheet{
+  display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));
+  row-gap:var(--row);align-items:start;grid-auto-flow:row dense;
+  padding-bottom:calc(var(--row) * 2);
+  background-image:
+    linear-gradient(to right,var(--grid) 1px,transparent 1px),
+    linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
+  background-size:calc(100% / var(--n)) var(--row);
+  min-height:calc(100vh - 132px);
+}
+.sheet[hidden]{display:none}
+
+/* spans: desktop (8) / tablet (6) / phone (2) */
+.all{grid-column:1 / -1}
+.hero{grid-column:span 6}.pic{grid-column:span 2}
+.main{grid-column:span 5}.side{grid-column:span 3}
+.wide{grid-column:span 6}.note-col{grid-column:span 2}.facts-col{grid-column:span 4}
+@media (max-width:1099px){
+  .hero,.main{grid-column:span 4}
+  .pic,.side,.note-col{grid-column:span 2}
+  .wide{grid-column:span 6}
+}
+@media (max-width:759px){
+  .hero,.main,.pic,.side,.wide,.note-col,.facts-col{grid-column:1 / -1}
+}
+
+/* a cell block */
+.cell{position:relative;background:var(--sheet);border:1px solid var(--line);min-width:0;cursor:cell}
+.cell.plain{border-color:transparent}
+.cell.sel{box-shadow:inset 0 0 0 2px var(--accent)}
+.cell.sel::after{content:"";position:absolute;right:-5px;bottom:-5px;width:9px;height:9px;background:var(--accent);border:2px solid var(--sheet);z-index:2}
+.pad{padding:18px 20px}
+.cell h1{font-size:clamp(40px,5.4vw,76px);line-height:.98;font-weight:800;letter-spacing:-.025em}
+.cell h2{font-size:clamp(28px,3vw,40px);line-height:1.05;font-weight:800;letter-spacing:-.02em}
+.cell h3{font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em}
+.lede{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:62ch}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* titled sheet header */
+.sheet-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:3px;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;border:2px solid var(--accent);background:var(--accent);color:var(--on-accent)}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.6;cursor:progress}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+
+/* =====================================================================
+   TABLES (spreadsheet look, real table semantics)
+   ===================================================================== */
+.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl th,.tbl td{border-bottom:1px solid var(--grid);border-right:1px solid var(--grid);padding:0 12px;height:var(--row);text-align:left;vertical-align:middle}
+.tbl tr > :last-child{border-right:0}
+.tbl thead th{background:var(--head);font-weight:700;border-bottom:1px solid var(--line)}
+.tbl th[scope="row"]{background:var(--head);font-weight:700;width:34%;color:var(--ink)}
+.tbl td.wrap,.tbl th.wrap{height:auto;padding-top:12px;padding-bottom:12px}
+.tbl tbody tr:last-child > *{border-bottom:0}
+.chip{display:inline-block;font-size:13px;background:var(--chrome);border:1px solid var(--line);border-radius:12px;padding:1px 10px;white-space:nowrap}
+
+/* clickable list rows (projects, photos) */
+.rows{list-style:none}
+.rowbtn{
+  display:grid;width:100%;min-height:var(--row);border:0;border-bottom:1px solid var(--grid);
+  background:var(--sheet);text-align:left;cursor:pointer;align-items:stretch;
+}
+.rowbtn > span{display:flex;align-items:center;padding:0 12px;border-right:1px solid var(--grid);min-width:0}
+.rowbtn > span:last-child{border-right:0}
+.rowbtn:hover{background:var(--chrome)}
+.rowbtn[aria-pressed="true"],.rowbtn[aria-current="true"]{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.rowhead{display:grid;background:var(--head);font-weight:700;font-size:15px;border-bottom:1px solid var(--line);min-height:var(--row)}
+.rowhead > span{display:flex;align-items:center;gap:8px;padding:0 12px;border-right:1px solid var(--grid)}
+.rowhead > span:last-child{border-right:0}
+.truncate{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* inserted image (with selection handles) */
+.inserted{padding:0;border:0;background:transparent}
+.inserted figure{position:relative;border:2px solid var(--accent);background:var(--sheet)}
+.inserted figure i{position:absolute;width:9px;height:9px;border:1.5px solid var(--accent);background:var(--sheet)}
+.inserted figure i:nth-of-type(1){left:-5px;top:-5px}.inserted figure i:nth-of-type(2){right:-5px;top:-5px}
+.inserted figure i:nth-of-type(3){left:-5px;bottom:-5px}.inserted figure i:nth-of-type(4){right:-5px;bottom:-5px}
+.inserted img{width:100%;height:auto}
+.inserted figcaption{padding:8px 12px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+
+/* =====================================================================
+   COMMENTS: the little notes I leave on the sheet
+   ===================================================================== */
+.anchor-mark{position:absolute;top:0;right:0;width:0;height:0;border-top:12px solid var(--accent);border-left:12px solid transparent;z-index:1}
+.note{background:var(--note);border:1px solid var(--note-line);box-shadow:var(--shadow);padding:14px 16px;border-radius:2px;cursor:default}
+.note header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px;color:var(--muted)}
+.note header b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-size:12px}
+.note p{font-size:16px;line-height:1.45;color:var(--ink)}
+.cell.note-wrap{border:0;background:transparent;padding:10px 0 0 14px}
+@media (max-width:759px){.cell.note-wrap{padding:0}}
+
+/* =====================================================================
+   HOME
+   ===================================================================== */
+.hero-cell{display:flex;align-items:center;min-height:calc(var(--row) * 5)}
+.hero-cell h1{max-width:13ch}
+
+/* =====================================================================
+   WORK
+   ===================================================================== */
+.proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1.3fr)}
+.proj-rows .rowbtn{font-size:16px}
+.proj-rows .rowbtn .name{font-weight:700}
+.detail{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px;padding:20px}
+.detail figure img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--chrome)}
+.detail figcaption{margin-top:8px;font-size:13px;color:var(--muted)}
+.detail .body{display:flex;flex-direction:column;gap:14px}
+.detail h4{font-size:14px;font-weight:700;margin-bottom:2px}
+.detail p{font-size:15.5px;line-height:1.55;color:var(--ink-2)}
+.detail .tags{font-size:13px;color:var(--muted)}
+.detail.no-pic{grid-template-columns:1fr}
+.side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) minmax(0,.8fr)}
+.side-rows .row{display:grid;min-height:var(--row);border-bottom:1px solid var(--grid)}
+.side-rows .row > span{display:flex;align-items:center;padding:8px 12px;border-right:1px solid var(--grid);min-width:0}
+.side-rows .row > span:last-child{border-right:0}
+@media (max-width:759px){
+  .proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.8fr)}
+  .proj-rows .c-role,.proj-rows .c-area{display:none!important}
+  .detail{grid-template-columns:1fr;padding:14px}
+  .side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,1fr) minmax(0,.6fr)}
+  .side-rows .c-what{display:none!important}
+  .side-rows .row .what-m{display:block}
+}
+.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr)}
+@media (max-width:759px){.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.7fr)}.home-rows .c-role{display:none!important}}
+.side-rows .row > span:first-child{flex-direction:column;align-items:flex-start;justify-content:center}
+@media (max-width:759px){.home-rows .truncate,.proj-rows .truncate{white-space:normal}}
+.what-m{display:none;font-size:14px;color:var(--muted);margin-top:2px}
+
+/* =====================================================================
+   PHOTOS
+   ===================================================================== */
+.photo-rows .rowbtn,.photo-rows .rowhead{grid-template-columns:88px minmax(0,2.2fr) minmax(0,1fr) 72px minmax(0,1.3fr)}
+.photo-rows .rowbtn{min-height:calc(var(--row) * 2)}
+.photo-rows .rowbtn .th{justify-content:center;padding:0}
+.photo-rows .rowbtn .th img{width:72px;height:72px;object-fit:cover}
+.photo-rows .rowbtn[aria-pressed="true"] .th img{outline:2px solid var(--accent);outline-offset:2px}
+.photo-rows .title{font-weight:600}
+.filter{display:flex;align-items:center;gap:6px}
+.filter select{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:var(--sheet) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 8px center;border-radius:3px;padding:3px 26px 3px 8px;font-size:14px;font-weight:500;cursor:pointer}
+.filterbar{min-height:var(--row);padding:0 12px;border-bottom:1px solid var(--line);font-size:14px;font-weight:700;background:var(--chrome)}
+.count{padding:10px 12px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+.preview{position:sticky;top:96px}
+.preview .frame{position:relative;background:#101114;aspect-ratio:1/1}
+.preview .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.preview .meta{padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.preview .meta b{font-size:18px}
+.preview .meta .btn{margin-top:10px;align-self:flex-start;min-height:40px}
+@media (max-width:1099px){
+  .photo-rows .rowbtn,.photo-rows .rowhead{grid-template-columns:80px minmax(0,2fr) minmax(0,1fr) 64px}
+  .photo-rows .c-cam{display:none!important}
+}
+@media (max-width:759px){
+  .preview-cell{display:none}
+  .photo-rows .rowbtn,.photo-rows .rowhead{grid-template-columns:72px minmax(0,1fr) 56px}
+  .photo-rows .c-type{display:none!important}
+  .photo-rows .rowbtn .th img{width:60px;height:60px}
+  .photo-rows .t-sub{display:block}
+}
+.t-sub{display:none;font-size:13px;color:var(--muted);font-weight:400}
+
+/* viewer */
+.viewer{border:0;padding:0;background:#08080a;color:#ebeae4;max-width:100vw;max-height:100vh;width:100vw;height:100vh;height:100dvh}
+.viewer::backdrop{background:#08080a}
+.viewer[open]{display:grid;grid-template-rows:minmax(0,1fr) auto}
+.viewer figure{display:grid;place-items:center;min-height:0;overflow:hidden;padding:60px 16px 8px}
+.viewer img{max-width:100%;max-height:calc(100dvh - 150px);object-fit:contain}
+.viewer .vbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 16px;padding:12px 20px calc(18px + env(safe-area-inset-bottom,0px))}
+.viewer .vcap b{font-weight:700}
+.viewer .vcap span{color:#a2a5ad;margin-left:10px;font-size:14px}
+.viewer .vbtns{display:flex;gap:8px}
+.viewer button{min-height:44px;padding:0 16px;border:1px solid #555;border-radius:3px;background:transparent;color:#ebeae4;font-weight:700;cursor:pointer}
+.viewer button:hover{border-color:#fff}
+.viewer .vclose{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px}
+
+/* =====================================================================
+   ABOUT
+   ===================================================================== */
+.story-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;font-size:14px}
+.story-bar label{font-weight:700}
+.story-bar select{border:1px solid var(--line);background:var(--sheet);border-radius:3px;padding:6px 10px;font-size:14px;cursor:pointer}
+.story p{font-size:17px;line-height:1.6;color:var(--ink-2);max-width:66ch}
+.story p + p{margin-top:12px}
+.does td,.does th{font-size:15px}
+.does td:first-child{font-weight:700;width:26%}
+.does td:last-child{color:var(--muted);width:26%}
+@media (max-width:759px){
+  .does thead{display:none}
+  .does tr{display:block;border-bottom:1px solid var(--line);padding:12px 0}
+  .does td{display:block;border:0!important;height:auto;padding:2px 12px;width:auto!important}
+}
+
+/* =====================================================================
+   CONTACT
+   ===================================================================== */
+.form .field{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-bottom:1px solid var(--grid)}
+.form label.k{display:flex;align-items:center;padding:0 12px;background:var(--head);font-weight:700;font-size:15px;border-right:1px solid var(--grid);min-height:var(--row)}
+.form input,.form select,.form textarea{width:100%;border:0;background:var(--sheet);padding:0 12px;min-height:var(--row);font-size:16px;border-radius:0}
+.form textarea{padding:12px;min-height:calc(var(--row) * 4);resize:vertical;line-height:1.5}
+.form input:focus-visible,.form select:focus-visible,.form textarea:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.form .field.bad label.k{color:#c0392b}
+.form .err{grid-column:2;font-size:13px;color:#c0392b;padding:0 12px 8px}
+:root[data-theme="dark"] .form .err,:root[data-theme="dark"] .form .field.bad label.k{color:#ff8a7a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .form .err,:root:not([data-theme="light"]) .form .field.bad label.k{color:#ff8a7a}}
+.form .send{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px}
+.form .status{font-size:14px;color:var(--muted)}
+.form .status.ok{color:var(--ink);font-weight:600}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+@media (max-width:759px){
+  .form .field{grid-template-columns:1fr}
+  .form label.k{min-height:36px;border-right:0}
+  .form .err{grid-column:1}
+}
+
+/* =====================================================================
+   TABS (bottom, like sheet tabs)
+   ===================================================================== */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:stretch;gap:0;background:var(--chrome);border-top:1px solid var(--line);padding-left:var(--gutter);padding-bottom:env(safe-area-inset-bottom,0px);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;height:48px;padding:0 20px;border:0;border-right:1px solid var(--line);background:transparent;font-size:15px;cursor:pointer;color:var(--ink)}
+.tab:hover{background:var(--sheet)}
+.tab[aria-selected="true"]{background:var(--sheet);color:var(--accent);font-weight:700;box-shadow:inset 0 -3px 0 var(--accent)}
+@media (max-width:759px){.tab{padding:0 14px}.tabs{padding-left:0}}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="fbar">
+    <a class="brand" href="#home" data-go="home">sejul_phanord</a>
+    <div class="namebox" id="nameBox" aria-hidden="true">A1</div>
+    <div class="fx" aria-hidden="true">fx</div>
+    <div class="formula" aria-hidden="true"><span id="formula">=TURN(messy_ideas, "useful products")</span></div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch theme">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 2a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+    </button>
+  </div>
+  <div class="cols" aria-hidden="true">
+    <span class="corner"></span>
+    <span class="letters"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></span>
+  </div>
+</header>
+
+<main class="book">
+  <div class="gutter" id="gutter" aria-hidden="true"></div>
+  <div>
+
+  <!-- =============================== HOME =============================== -->
+  <section class="sheet" id="home" role="tabpanel" aria-labelledby="tab-home" data-title="Sejul Phanord | Product owner and photographer">
+    <div class="cell hero pad hero-cell" data-fx='=TURN(messy_ideas, "useful products")'>
+      <h1>I turn messy ideas into useful products.</h1>
+    </div>
+    <div class="cell pic inserted" data-fx='=IMAGE("headshot.jpg")'>
+      <figure><img src="images/headshot.jpg" alt="Sage smiling, with the ocean behind him" width="900" height="900"><i></i><i></i><i></i><i></i></figure>
+    </div>
+
+    <div class="cell main pad">
+      <span class="anchor-mark" aria-hidden="true"></span>
+      <p class="lede">I'm Sage, a product owner based in South Florida. Most of my work lives between business teams, developers, and the people using the product day to day. Sometimes that means shaping a backlog. Other times it means testing onboard a ship, chasing down a data issue, or helping a rollout get unstuck.</p>
+      <div class="actions">
+        <a class="btn" href="#work" data-go="work">See my work</a>
+        <a class="btn ghost" href="#contact" data-go="contact">Get in touch</a>
+      </div>
+    </div>
+    <aside class="cell side note-wrap" aria-label="Comment from Sage">
+      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
+        <p>Messy ideas are my favorite kind. Usually it just means nobody has looked closely enough yet.</p></div>
+    </aside>
+
+    <div class="cell main">
+      <table class="tbl">
+        <caption class="sr-only">Quick facts</caption>
+        <tbody>
+          <tr><th scope="row">Based in</th><td>South Florida</td></tr>
+          <tr><th scope="row">Currently</th><td class="wrap">Product Owner, Food &amp; Beverage Technology at Royal Caribbean Group</td></tr>
+          <tr><th scope="row">Open to</th><td class="wrap">Product roles, consulting, creative collaborations</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cell all">
+      <div class="home-rows"><div class="rowhead"><span>Recent work</span><span class="c-role">Role</span><span>Year</span></div>
+      <ul class="rows" id="homeWork"></ul></div>
+    </div>
+  </section>
+
+  <!-- =============================== WORK =============================== -->
+  <section class="sheet" id="work" role="tabpanel" aria-labelledby="tab-work" data-title="Work | Sejul Phanord">
+    <div class="cell main pad" data-fx="Work">
+      <span class="anchor-mark" aria-hidden="true"></span>
+      <div class="sheet-head"><h2>Work</h2><span class="muted small">Pick a row for the details</span></div>
+      <p class="lede" style="margin-top:8px">Most of my time goes to Food &amp; Beverage technology at Royal Caribbean: building products with crew, getting them onboard, and keeping them running.</p>
+    </div>
+    <aside class="cell side note-wrap" aria-label="Comment from Sage">
+      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
+        <p>I like work where the spreadsheet eventually has to survive reality. Fitting, given where you're reading this.</p></div>
+    </aside>
+
+    <div class="cell all proj-rows">
+      <div class="rowhead"><span>Project</span><span class="c-role">Role</span><span>Year</span><span class="c-area">Area</span></div>
+      <ul class="rows" id="workRows"></ul>
+    </div>
+
+    <div class="cell wide" id="workDetail" aria-live="polite"></div>
+    <aside class="cell note-col note-wrap" aria-label="Comment from Sage">
+      <div class="note"><header><b aria-hidden="true">S</b>Sage</header><p id="workNote"></p></div>
+    </aside>
+
+    <div class="cell main side-rows">
+      <div class="rowhead"><span>Side projects</span><span class="c-what">What it is</span><span>Status</span></div>
+      <div class="row"><span><a href="https://hellasage.com/close-enough" target="_blank" rel="noopener"><b>Close Enough</b><span class="sr-only"> (opens in a new tab)</span></a><span class="what-m">A quiz that maps how personal and how touchy you are.</span></span><span class="c-what">A quiz that maps how personal and how touchy you are, with anonymous results and a public stats page.</span><span><span class="chip">Live</span></span></div>
+      <div class="row"><span><b>Cafecito</b><span class="what-m">A voting flow for post-lunch Cuban coffee at the office.</span></span><span class="c-what">A Power Platform flow so the office can vote on post-lunch Cuban coffee, with a 1:30 cutoff.</span><span><span class="chip">In progress</span></span></div>
+    </div>
+    <aside class="cell side note-wrap" aria-label="Comment from Sage">
+      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
+        <p>hellasage.com is where the experiments live. This site is the tidy one.</p></div>
+    </aside>
+
+    <div class="cell main pad" data-fx='=HYPERLINK("Sejul-Phanord-CV.docx")'>
+      <p>Want the full résumé? <a href="Sejul-Phanord-CV.docx" download style="color:var(--accent);font-weight:700">Download my CV</a> or send me a note from the Contact tab.</p>
+    </div>
+  </section>
+
+  <!-- =============================== PHOTOS =============================== -->
+  <section class="sheet" id="photos" role="tabpanel" aria-labelledby="tab-photos" data-title="Photos | Sejul Phanord">
+    <div class="cell main pad" data-fx="Photos">
+      <span class="anchor-mark" aria-hidden="true"></span>
+      <div class="sheet-head"><h2>Photos</h2><span class="muted small">Portraits, events, and wherever I end up</span></div>
+      <p class="lede" style="margin-top:8px">A small sample of my personal work. Want to see more or plan a shoot? <a href="#contact" data-go="contact" style="color:var(--accent);font-weight:700">Send me a note.</a></p>
+    </div>
+    <aside class="cell side note-wrap" aria-label="Comment from Sage">
+      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
+        <p>Everything here came from one camera and one lens: a Sony a6300 with a Sigma 18-50mm. The two ship shots were my phone.</p></div>
+    </aside>
+
+    <div class="cell main photo-rows">
+      <div class="filterbar filter"><label for="typeFilter">Filter by type</label>
+        <select id="typeFilter"><option value="">All</option><option>Portrait</option><option>Event</option><option>Sports</option><option>Nature</option><option>Travel</option><option>Ships</option></select>
+      </div>
+      <div class="rowhead"><span>Photo</span><span>Title</span><span class="c-type">Type</span><span>Year</span><span class="c-cam">Camera</span></div>
+      <ul class="rows" id="photoRows"></ul>
+      <div class="count" id="photoCount" aria-live="polite"></div>
+    </div>
+    <div class="cell side inserted preview-cell">
+      <div class="preview" id="preview"></div>
+    </div>
+  </section>
+
+  <!-- =============================== ABOUT =============================== -->
+  <section class="sheet" id="about" role="tabpanel" aria-labelledby="tab-about" data-title="About | Sejul Phanord">
+    <div class="cell all pad">
+      <h1 style="font-size:clamp(34px,4.2vw,58px);max-width:20ch">I like seeing a problem through to a fix that actually works.</h1>
+    </div>
+
+    <div class="cell pic inserted" data-fx='=IMAGE("about-portrait.jpg")'>
+      <figure><img src="images/about-portrait.jpg" alt="Sage checking his phone on a parking deck at golden hour" width="1294" height="924" loading="lazy"><i></i><i></i><i></i><i></i><figcaption>On a parking deck at golden hour</figcaption></figure>
+    </div>
+    <div class="cell facts-col">
+      <table class="tbl">
+        <caption class="sr-only">Quick facts</caption>
+        <tbody>
+          <tr><th scope="row">Location</th><td>South Florida</td></tr>
+          <tr><th scope="row">Currently</th><td class="wrap">Product Owner, Food &amp; Beverage Technology at Royal Caribbean Group</td></tr>
+          <tr><th scope="row">Background</th><td class="wrap">B.S. Industrial Engineering, minor in Mathematics, Nova Southeastern University</td></tr>
+          <tr><th scope="row">Open to</th><td class="wrap">Product roles, consulting, creative collaborations</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <aside class="cell note-col note-wrap" aria-label="Comment from Sage">
+      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
+        <p>Fun fact: most days after lunch, I make cafecito for the office. Enough people ask that I'm building a voting system for it.</p></div>
+    </aside>
+
+    <div class="cell wide pad">
+      <div class="story-bar">
+        <label for="storyView">View</label>
+        <select id="storyView"><option value="full">The full story</option><option value="quick">The quick version</option></select>
+      </div>
+      <div class="story" id="storyFull">
+        <p>I came into product through industrial engineering, business analysis, project coordination, QA, and a lot of learning by doing. That mix taught me to ask better questions, understand how the operation really works, and keep moving when the answer is not obvious.</p>
+        <p>At Royal Caribbean, I work on tools for Food &amp; Beverage teams, with a big focus on shipboard operations. I've led discovery, worked through requirements with design and engineering, tested products with crew, and turned what we learned onboard into clearer priorities for the team.</p>
+        <p>Outside of product work, I shoot portraits, events, and travel photography. It scratches a different part of my brain, but the instinct is similar: pay attention to people, notice the details, and be intentional about what you do next.</p>
+      </div>
+      <div class="story" id="storyQuick" hidden>
+        <p>Industrial engineer turned product owner. I build tools for Royal Caribbean's Food &amp; Beverage teams, test them onboard with crew, and shoot portraits and travel on the side.</p>
+      </div>
+    </div>
+
+    <div class="cell all">
+      <div class="pad" style="padding-bottom:12px"><h2 style="font-size:26px">What I do</h2></div>
+      <table class="tbl does">
+        <thead><tr><th scope="col">Capability</th><th scope="col">What it means</th><th scope="col">Skills</th></tr></thead>
+        <tbody>
+          <tr><td class="wrap">Product ownership and delivery</td><td class="wrap">I help take ideas from early conversations to something a team can actually build. That includes discovery, requirements, priorities, testing, demos, and the tradeoffs in between.</td><td class="wrap">Requirements, backlog, roadmapping, delivery</td></tr>
+          <tr><td class="wrap">Field ops and shipboard rollouts</td><td class="wrap">A lot of my work happens outside the office. I've supported pilots and deployments onboard ships, where hardware, connectivity, data, and real operating pressure all matter.</td><td class="wrap">Pilots, hardware, field research, QA</td></tr>
+          <tr><td class="wrap">Systems thinking</td><td class="wrap">Before I jump to a feature, I look at the full workflow: the people, roles, data, dependencies, and edge cases behind the request.</td><td class="wrap">Workflow design, data flows, edge cases</td></tr>
+          <tr><td class="wrap">Photography and storytelling</td><td class="wrap">I shoot portraits, events, and travel. I care about honest moments, strong framing, and making a person or place feel like itself.</td><td class="wrap">Portrait, editorial, travel, Lightroom</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- =============================== CONTACT =============================== -->
+  <section class="sheet" id="contact" role="tabpanel" aria-labelledby="tab-contact" data-title="Contact | Sejul Phanord">
+    <div class="cell all pad">
+      <h1 style="font-size:clamp(34px,4.2vw,58px)">Have something interesting in mind?</h1>
+      <p class="lede" style="margin-top:12px">I'm always happy to meet people working on thoughtful products, difficult operational problems, or a good creative idea. If that sounds like you, send me a note.</p>
+      <p class="muted small" style="margin-top:6px">Open to product roles, consulting, and creative collaborations.</p>
+    </div>
+
+    <div class="cell main" data-fx='=SEND(message, "Sage")'>
+      <div class="pad" style="padding-bottom:12px"><h2 style="font-size:26px">Insert a row</h2></div>
+      <form class="form" id="contactForm" novalidate>
+        <div class="field"><label class="k" for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+        <div class="field"><label class="k" for="f-email">Your email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label class="k" for="f-topic">About</label>
+          <select id="f-topic" name="topic"><option>A product role</option><option>Consulting</option><option>A photo shoot</option><option>Just saying hi</option></select></div>
+        <div class="field"><label class="k" for="f-msg">Message</label><textarea id="f-msg" name="message" required placeholder="What are you working on?"></textarea></div>
+        <input class="hp" type="text" name="company" id="f-company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="send"><span class="status" id="formStatus" role="status"></span><button class="btn" type="submit" id="sendBtn">Send message</button></div>
+      </form>
+    </div>
+    <aside class="cell side note-wrap" aria-label="Comment from Sage">
+      <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
+        <p>This goes straight to my inbox, and I read all of it. Yes, even the "just saying hi" ones.</p></div>
+    </aside>
+
+    <div class="cell main">
+      <table class="tbl">
+        <caption class="sr-only">Other places to find me</caption>
+        <thead><tr><th scope="col">Elsewhere</th><th scope="col">Where</th></tr></thead>
+        <tbody>
+          <tr><td><b>LinkedIn</b></td><td><a href="https://www.linkedin.com/in/sejul-phanord/" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">in/sejul-phanord<span class="sr-only"> (opens in a new tab)</span></a></td></tr>
+          <tr><td><b>Instagram</b></td><td><a href="https://www.instagram.com/hellasage/" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">@hellasage<span class="sr-only"> (opens in a new tab)</span></a></td></tr>
+          <tr><td><b>CV</b></td><td><a href="Sejul-Phanord-CV.docx" download style="color:var(--accent);font-weight:600">Sejul-Phanord-CV.docx</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cell all pad plain small muted">&copy; <span id="yr">2026</span> Sejul Phanord. Built as a spreadsheet, on purpose.</div>
+  </section>
+
+  </div>
+</main>
+
+<nav class="tabs" role="tablist" aria-label="Sheets">
+  <button class="tab" role="tab" id="tab-home" aria-controls="home" data-tab="home">Home</button>
+  <button class="tab" role="tab" id="tab-work" aria-controls="work" data-tab="work">Work</button>
+  <button class="tab" role="tab" id="tab-photos" aria-controls="photos" data-tab="photos">Photos</button>
+  <button class="tab" role="tab" id="tab-about" aria-controls="about" data-tab="about">About</button>
+  <button class="tab" role="tab" id="tab-contact" aria-controls="contact" data-tab="contact">Contact</button>
+</nav>
+
+<dialog class="viewer" id="viewer" aria-label="Photo viewer">
+  <button class="vclose" id="vClose" type="button">Close</button>
+  <figure><img id="vImg" alt=""></figure>
+  <div class="vbar">
+    <p class="vcap"><b id="vCap"></b><span id="vMeta"></span></p>
+    <div class="vbtns"><button type="button" id="vPrev">Previous</button><button type="button" id="vNext">Next</button></div>
+  </div>
+</dialog>
+
+<script>
+/* =====================================================================
+   CONTACT FORM SETUP
+   1. Get a free access key at https://web3forms.com using
+      contact@sejulphanord.com (forwarded to your Gmail).
+   2. Paste it below. The key is safe to be public; it only lets
+      people send messages to you, and your address never shows.
+   ===================================================================== */
+const WEB3FORMS_KEY = 'PASTE-YOUR-WEB3FORMS-ACCESS-KEY-HERE';
+
+/* =====================================================================
+   CONTENT
+   ===================================================================== */
+const PROJECTS = [
+  {
+    id:'guest-sense', name:'Guest Sense', role:'Product Owner / Analyst', year:'2025 to now', area:'Hospitality tech',
+    img:'images/work/guest-sense-ships.jpg', cap:'Icon and Independence of the Seas in port, 2024',
+    sections:[
+      ['What it is','Guest Sense is a crew-facing product that helps dining teams quickly understand who is seated at a table and what matters for their service. It brings useful guest context into one place so crew can spend less time piecing information together and more time with the guest.'],
+      ['What I do','I helped take Guest Sense from early discovery into funded delivery. We mapped the paper-heavy dining workflow with crew and scoped the MVP around what they needed at the table. Now I lead requirements, backlog refinement, pilot planning, and feedback with shipboard teams, working with design, engineering, data, QA, and the teams behind our source systems.'],
+      ['Testing it onboard','We tested Guest Sense during live dining service on multiple ships. That surfaced things a conference room never would: data mismatches, connectivity limits, usability gaps, and differences between venues. I also support hands-on QA and Playwright automation as the product grows.']
+    ],
+    tags:'Product discovery, shipboard pilots, requirements, QA',
+    note:'Biggest lesson from the pilots: nothing tests a design like a full dining room on a busy night.'
+  },
+  {
+    id:'rollouts', name:'Shipboard rollouts', role:'Field operations', year:'Ongoing', area:'Hardware & connectivity',
+    img:'images/work/dry-dock-deck.jpg', cap:'Onboard during a dry dock, 2026',
+    sections:[
+      ['What it is','A lot of my work happens outside the office. I help plan and support hardware deployments for Food & Beverage onboard, where it takes more than good software: the devices, the network connectivity, the data, and how all of it holds up under real operating pressure.'],
+      ['Where it happens','Some of it happens during dry docks, when a ship is out of service and every team is working on it at once. The plan has to account for all of that, not just our piece.']
+    ],
+    tags:'Hardware deployments, network connectivity, field ops',
+    note:'Dry dock tip: bring water, wear real shoes, and assume the Wi-Fi is a rumor.'
+  },
+  {
+    id:'fnb-systems', name:'F&B systems and guides', role:'Product analyst', year:'Ongoing', area:'F&B operations',
+    img:'images/work/fnb-operations.jpg', cap:'Food & Beverage Operations',
+    sections:[
+      ['What it is','Guest Sense isn\u2019t the only thing I look after. I also support other Food & Beverage systems, including Win On Waste and CrunchTime.'],
+      ['What I do','Part of keeping those systems useful is documentation. I write and maintain the user guides in Confluence, so teams can find answers themselves instead of waiting on someone.']
+    ],
+    tags:'Win On Waste, CrunchTime, Confluence, support',
+    note:'A good user guide is part of the product. If people can\u2019t figure it out, it doesn\u2019t matter how well it was built.'
+  }
+];
+
+const CAM = 'Sony a6300', LENS = 'Sigma 18-50mm F2.8', PHONE = 'Galaxy S24 Ultra';
+const PHOTOS = [
+  ['museum-hallway','In the museum hallway','Portrait','2026',CAM,LENS],
+  ['red-dress-staircase','Red dress on the staircase','Portrait','2024',CAM,LENS],
+  ['first-birthday','First birthday','Portrait','2025',CAM,LENS],
+  ['walking-down-the-aisle','Walking down the aisle','Event','2024',CAM,LENS],
+  ['first-dance','First dance under the lights','Event','2024',CAM,LENS],
+  ['waiting-on-the-draw','Waiting on the draw','Sports','2024',CAM,LENS],
+  ['faceoff','Faceoff','Sports','2024',CAM,LENS],
+  ['bee-blue-blossoms','Bee in the blue blossoms','Nature','2026',CAM,LENS],
+  ['squirrel-monkey','Squirrel monkey','Nature','2026',CAM,LENS],
+  ['church-tower','Church tower through the trees','Travel','2026',CAM,LENS],
+  ['mariner-dry-dock','Mariner in dry dock','Ships','2026',PHONE,''],
+  ['shipyard-sunset','Sunset over the shipyard','Ships','2025',PHONE,'']
+].map(([slug,title,type,year,cam,lens])=>({slug,title,type,year,cam,lens,
+  full:'images/photos/'+slug+'.jpg', thumb:'images/photos/thumbs/'+slug+'.jpg'}));
+
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ROW = 44;
+const small = window.matchMedia('(max-width:759px)');
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* =====================================================================
+   THEME (follows the device until you pick; your pick is remembered)
+   ===================================================================== */
+(function(){
+  const root=document.documentElement, btn=$('#themeBtn'), mq=window.matchMedia('(prefers-color-scheme:dark)');
+  const cur=()=>root.getAttribute('data-theme')||(mq.matches?'dark':'light');
+  const sync=()=>btn.setAttribute('aria-label',cur()==='dark'?'Switch to light theme':'Switch to dark theme');
+  btn.addEventListener('click',()=>{
+    const next=cur()==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('theme',next)}catch(e){}
+    sync();
+  });
+  mq.addEventListener('change',sync); sync();
+})();
+
+/* =====================================================================
+   FORMULA BAR + CELL SELECTION
+   ===================================================================== */
+const nameBox=$('#nameBox'), formula=$('#formula');
+function colLetter(i){return String.fromCharCode(65+Math.max(0,Math.min(25,i)))}
+function cellRef(el){
+  const sheet=el.closest('.sheet'); if(!sheet) return 'A1';
+  const n=parseInt(getComputedStyle(sheet).gridTemplateColumns.split(' ').length,10)||8;
+  const w=sheet.clientWidth/n;
+  const x=el.offsetLeft-sheet.offsetLeft, y=el.offsetTop-sheet.offsetTop;
+  const c1=Math.round(x/w), c2=Math.max(c1,Math.round((x+el.offsetWidth)/w)-1);
+  const r1=Math.round(y/ROW)+1, r2=Math.max(r1,Math.round((y+el.offsetHeight)/ROW));
+  const a=colLetter(c1)+r1, b=colLetter(c2)+r2;
+  return a===b?a:a+':'+b;
+}
+function setFx(ref,text){nameBox.textContent=ref;formula.textContent=text}
+function select(el,text){
+  $$('.cell.sel').forEach(c=>c.classList.remove('sel'));
+  if(!el) return;
+  el.classList.add('sel');
+  const t=text||el.dataset.fx||((el.querySelector('h1,h2,h3,p,th,td,b')||{}).textContent||'').trim().replace(/\s+/g,' ');
+  setFx(cellRef(el), t.length>90?t.slice(0,88)+'\u2026':t);
+}
+document.addEventListener('click',e=>{
+  const c=e.target.closest('.cell');
+  if(c && !c.classList.contains('note-wrap') && !e.target.closest('.rowbtn')) select(c);
+});
+
+/* =====================================================================
+   GRID: snap every cell to whole rows, then number the rows
+   ===================================================================== */
+const gutter=$('#gutter');
+function snap(sheet){
+  if(!sheet || sheet.hidden) return;
+  // table rows that wrap get rounded up to whole rows too
+  $$('.tbl tbody tr, .side-rows .row',sheet).forEach(r=>{
+    r.style.height='';
+    const h=r.getBoundingClientRect().height;
+    if(h>ROW+1) r.style.height=Math.ceil((h-0.5)/ROW)*ROW+'px';
+  });
+  $$(':scope > .cell',sheet).forEach(c=>{
+    c.style.minHeight='';
+    const h=c.getBoundingClientRect().height;
+    c.style.minHeight=Math.max(1,Math.ceil((h-0.5)/ROW))*ROW+'px';
+  });
+  const rows=Math.ceil(sheet.scrollHeight/ROW)+2;
+  if(gutter.childElementCount!==rows){
+    let html=''; for(let i=1;i<=rows;i++) html+='<span>'+i+'</span>';
+    gutter.innerHTML=html;
+  }
+}
+const activeSheet=()=>$('.sheet:not([hidden])');
+let snapT; const reSnap=()=>{clearTimeout(snapT);snapT=setTimeout(()=>snap(activeSheet()),60)};
+window.addEventListener('resize',reSnap);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(reSnap);
+window.addEventListener('load',reSnap);
+
+/* =====================================================================
+   TABS (hash based: #home, #work, #photos, #about, #contact)
+   ===================================================================== */
+const TABS=['home','work','photos','about','contact'];
+const tabBtns=$$('.tab');
+function show(id,{focus=false,push=true}={}){
+  if(!TABS.includes(id)) id='home';
+  TABS.forEach(t=>{ const s=document.getElementById(t); s.hidden = t!==id; });
+  tabBtns.forEach(b=>{const on=b.dataset.tab===id; b.setAttribute('aria-selected',on); b.tabIndex=on?0:-1; if(on&&focus) b.focus();});
+  const sheet=document.getElementById(id);
+  document.title=sheet.dataset.title;
+  if(push && location.hash!=='#'+id) history.pushState(null,'','#'+id);
+  window.scrollTo(0,0);
+  requestAnimationFrame(()=>{ snap(sheet); onShow[id]&&onShow[id](); });
+}
+const onShow={
+  home:()=>select($('#home .hero-cell')),
+  work:()=>renderWork(),
+  photos:()=>photoFx(),
+  about:()=>select($('#about .cell.all')),
+  contact:()=>select($('#contact .cell.all'))
+};
+tabBtns.forEach((b,i)=>{
+  b.addEventListener('click',()=>show(b.dataset.tab));
+  b.addEventListener('keydown',e=>{
+    let j=null;
+    if(e.key==='ArrowRight') j=(i+1)%tabBtns.length;
+    if(e.key==='ArrowLeft') j=(i-1+tabBtns.length)%tabBtns.length;
+    if(e.key==='Home') j=0; if(e.key==='End') j=tabBtns.length-1;
+    if(j!==null){e.preventDefault(); show(tabBtns[j].dataset.tab,{focus:true});}
+  });
+});
+document.addEventListener('click',e=>{
+  const a=e.target.closest('[data-go]'); if(!a) return;
+  e.preventDefault(); show(a.dataset.go);
+});
+window.addEventListener('popstate',()=>show(location.hash.slice(1),{push:false}));
+
+/* =====================================================================
+   WORK
+   ===================================================================== */
+let workSel=0;
+const workRows=$('#workRows'), homeWork=$('#homeWork'), detail=$('#workDetail'), workNote=$('#workNote');
+PROJECTS.forEach((p,i)=>{
+  workRows.insertAdjacentHTML('beforeend',
+    `<li><button type="button" class="rowbtn" data-i="${i}" aria-pressed="false" aria-controls="workDetail">
+      <span class="name truncate">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span><span class="c-area truncate">${esc(p.area)}</span>
+    </button></li>`);
+  homeWork.insertAdjacentHTML('beforeend',
+    `<li><button type="button" class="rowbtn" data-i="${i}">
+      <span class="truncate" style="font-weight:700">${esc(p.name)}</span><span class="c-role truncate">${esc(p.role)}</span><span class="truncate">${esc(p.year)}</span>
+    </button></li>`);
+});
+function renderWork(){
+  const p=PROJECTS[workSel];
+  $$('.rowbtn',workRows).forEach((b,i)=>b.setAttribute('aria-pressed',i===workSel));
+  detail.innerHTML=`<div class="detail${p.img?'':' no-pic'}">
+    ${p.img?`<figure><img src="${p.img}" alt="${esc(p.cap)}" loading="lazy"><figcaption>${esc(p.cap)}</figcaption></figure>`:''}
+    <div class="body">
+      <div><h3>${esc(p.name)}</h3><p class="small muted" style="margin-top:4px">${esc(p.role)}, ${esc(p.year)}</p></div>
+      ${p.sections.map(([h,t])=>`<div><h4>${esc(h)}</h4><p>${esc(t)}</p></div>`).join('')}
+      <p class="tags">${esc(p.tags)}</p>
+    </div></div>`;
+  workNote.textContent=p.note;
+  const img=$('img',detail); if(img) img.addEventListener('load',reSnap,{once:true});
+  snap($('#work'));
+  const table=workRows.closest('.cell');
+  setFx('A'+(Math.round((table.offsetTop-table.parentNode.offsetTop)/ROW)+2+workSel), p.name);
+  $$('.cell.sel').forEach(c=>c.classList.remove('sel'));
+}
+workRows.addEventListener('click',e=>{
+  const b=e.target.closest('.rowbtn'); if(!b) return;
+  workSel=+b.dataset.i; renderWork();
+  if(small.matches) detail.scrollIntoView({behavior:'smooth',block:'start'});
+});
+homeWork.addEventListener('click',e=>{
+  const b=e.target.closest('.rowbtn'); if(!b) return;
+  workSel=+b.dataset.i; show('work');
+});
+
+/* =====================================================================
+   PHOTOS: filterable rows, preview on wide screens, full viewer
+   ===================================================================== */
+let photoSel=0, visible=PHOTOS.map((_,i)=>i);
+const photoRows=$('#photoRows'), preview=$('#preview'), count=$('#photoCount'), typeFilter=$('#typeFilter');
+function renderPhotoRows(){
+  photoRows.innerHTML=visible.map(i=>{const p=PHOTOS[i];return `<li><button type="button" class="rowbtn" data-i="${i}" aria-pressed="${i===photoSel}">
+    <span class="th"><img src="${p.thumb}" alt="" width="72" height="72" loading="lazy"></span>
+    <span><span><span class="title">${esc(p.title)}</span><span class="t-sub">${esc(p.type)}</span></span></span>
+    <span class="c-type"><span class="chip">${esc(p.type)}</span></span>
+    <span>${esc(p.year)}</span>
+    <span class="c-cam truncate">${esc(p.cam)}</span>
+  </button></li>`}).join('');
+  count.textContent='Showing '+visible.length+' of '+PHOTOS.length+(typeFilter.value?' ('+typeFilter.value+')':'');
+  reSnap();
+}
+function photoFx(){
+  const t=$('#photos .photo-rows'), pos=Math.max(0,visible.indexOf(photoSel)), top=t.offsetTop-t.parentNode.offsetTop;
+  $$('.cell.sel').forEach(c=>c.classList.remove('sel'));
+  setFx('A'+(Math.round(top/ROW)+3+pos*2),'=IMAGE("'+PHOTOS[photoSel].slug+'.jpg")');
+}
+function renderPreview(){
+  const p=PHOTOS[photoSel];
+  preview.innerHTML=`<figure><div class="frame"><img src="${p.full}" alt="${esc(p.title)}"></div><i></i><i></i><i></i><i></i>
+    <div class="meta"><b>${esc(p.title)}</b><span class="small muted">${esc(p.type)}, ${esc(p.year)}</span><span class="small muted">${esc(p.cam)}${p.lens?', '+esc(p.lens):''}</span>
+    <button type="button" class="btn ghost" id="openFull">Open full size</button></div></figure>`;
+  $('#openFull').addEventListener('click',()=>openViewer(photoSel));
+}
+function pickPhoto(i){
+  photoSel=i;
+  $$('.rowbtn',photoRows).forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));
+  photoFx();
+  $$('.cell.sel').forEach(c=>c.classList.remove('sel'));
+  renderPreview();
+}
+photoRows.addEventListener('click',e=>{
+  const b=e.target.closest('.rowbtn'); if(!b) return;
+  const i=+b.dataset.i;
+  if(small.matches){ photoSel=i; openViewer(i); } else pickPhoto(i);
+});
+typeFilter.addEventListener('change',()=>{
+  const t=typeFilter.value;
+  visible=PHOTOS.map((p,i)=>(!t||p.type===t)?i:-1).filter(i=>i>=0);
+  if(!visible.includes(photoSel)) photoSel=visible[0];
+  renderPhotoRows(); renderPreview();
+  setFx('C1', t?'=FILTER(photos, type = "'+t+'")':'=FILTER(photos, type = *)');
+});
+renderPhotoRows(); renderPreview();
+
+// viewer
+const dlg=$('#viewer'), vImg=$('#vImg'), vCap=$('#vCap'), vMeta=$('#vMeta');
+let vAt=0, opener=null;
+function vShow(k){
+  vAt=(k+visible.length)%visible.length;
+  const p=PHOTOS[visible[vAt]];
+  vImg.src=p.full; vImg.alt=p.title; vCap.textContent=p.title;
+  vMeta.textContent=p.type+', '+p.year+' ('+(vAt+1)+' of '+visible.length+')';
+}
+function openViewer(i){ opener=document.activeElement; vShow(Math.max(0,visible.indexOf(i))); dlg.showModal(); }
+$('#vPrev').addEventListener('click',()=>vShow(vAt-1));
+$('#vNext').addEventListener('click',()=>vShow(vAt+1));
+$('#vClose').addEventListener('click',()=>dlg.close());
+dlg.addEventListener('click',e=>{ if(e.target===dlg||e.target.tagName==='FIGURE') dlg.close(); });
+dlg.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'){e.preventDefault();vShow(vAt+1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();vShow(vAt-1)}
+});
+dlg.addEventListener('close',()=>{ if(opener&&opener.focus) opener.focus(); });
+
+/* =====================================================================
+   ABOUT: quick version / full story
+   ===================================================================== */
+$('#storyView').addEventListener('change',e=>{
+  const quick=e.target.value==='quick';
+  $('#storyQuick').hidden=!quick; $('#storyFull').hidden=quick;
+  snap($('#about'));
+  const sc=e.target.closest('.cell');
+  setFx('A'+(Math.round((sc.offsetTop-sc.parentNode.offsetTop)/ROW)+1), quick?'=LEFT(story, 1 sentence)':'=story');
+});
+
+/* =====================================================================
+   CONTACT: sends through Web3Forms to contact@sejulphanord.com
+   ===================================================================== */
+(function(){
+  const form=$('#contactForm'), status=$('#formStatus'), btn=$('#sendBtn');
+  const fields={name:$('#f-name'),email:$('#f-email'),message:$('#f-msg')};
+  const opened=Date.now();
+  function setErr(el,msg){
+    const f=el.closest('.field'); let err=f.querySelector('.err');
+    if(msg){ f.classList.add('bad'); el.setAttribute('aria-invalid','true');
+      if(!err){ err=document.createElement('p'); err.className='err'; err.id=el.id+'-err'; f.appendChild(err); el.setAttribute('aria-describedby',err.id); }
+      err.textContent=msg;
+    } else { f.classList.remove('bad'); el.removeAttribute('aria-invalid'); if(err) err.remove(); el.removeAttribute('aria-describedby'); }
+  }
+  function validate(){
+    let ok=true, first=null;
+    const checks=[
+      [fields.name, v=>v.trim()?'':'Add your name so I know who I\u2019m talking to.'],
+      [fields.email, v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())?'':'I\u2019ll need a real email to write back.'],
+      [fields.message, v=>v.trim().length>=10?'':'Say a little more (at least a sentence).']
+    ];
+    checks.forEach(([el,fn])=>{ const m=fn(el.value); setErr(el,m); if(m){ok=false; first=first||el;} });
+    if(first) first.focus();
+    reSnap();
+    return ok;
+  }
+  Object.values(fields).forEach(el=>el.addEventListener('input',()=>{ if(el.closest('.field').classList.contains('bad')) setErr(el,''); }));
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    status.className='status'; status.textContent='';
+    if(!validate()) return;
+    // quiet spam guards: the hidden field and a too-fast submit
+    if($('#f-company').value || Date.now()-opened<2500){ status.className='status ok'; status.textContent='Thanks, it\u2019s on its way.'; form.reset(); return; }
+    if(!WEB3FORMS_KEY || WEB3FORMS_KEY.startsWith('PASTE')){
+      status.textContent='The form isn\u2019t connected yet. LinkedIn is the fastest way to reach me for now.'; return;
+    }
+    btn.disabled=true; btn.textContent='Sending\u2026';
+    const topic=$('#f-topic').value;
+    try{
+      const res=await fetch('https://api.web3forms.com/submit',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({
+          access_key:WEB3FORMS_KEY,
+          subject:'sejulphanord.com: '+topic+' from '+fields.name.value.trim(),
+          from_name:'sejulphanord.com',
+          name:fields.name.value.trim(),
+          email:fields.email.value.trim(),
+          topic:topic,
+          message:fields.message.value.trim()
+        })
+      });
+      const data=await res.json().catch(()=>({}));
+      if(res.ok && data.success!==false){
+        form.reset(); status.className='status ok';
+        status.textContent='Sent. Thanks for reaching out, I\u2019ll get back to you soon.';
+      } else throw new Error(data.message||'Request failed');
+    }catch(err){
+      status.textContent='That didn\u2019t go through. Try again in a minute, or reach me on LinkedIn.';
+    }finally{
+      btn.disabled=false; btn.textContent='Send message';
+    }
+  });
+})();
+
+/* =====================================================================
+   START
+   ===================================================================== */
+show((location.hash||'#home').slice(1),{push:false});
+</script>
+</body>
+</html>
