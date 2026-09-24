@@ -65,7 +65,7 @@
   color-scheme:dark;
 }
 @media (max-width:1099px){:root{--n:6}}
-@media (max-width:759px){:root{--n:2;--gutter:32px}}
+@media (max-width:759px){:root{--n:4;--gutter:32px}}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
@@ -97,9 +97,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .cols .corner{border-right:1px solid var(--line)}
 .cols .letters{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr))}
 .cols .letters span{display:grid;place-items:center;border-right:1px solid var(--line)}
-@media (max-width:1099px){.cols .letters span:nth-child(n+7){display:none}}
 @media (max-width:759px){
-  .cols .letters span:nth-child(n+3){display:none}
   .fbar{gap:8px;padding:0 8px 0 12px}
   .namebox{display:none}
   .brand{font-size:16px}
@@ -111,40 +109,70 @@ button,input,select,textarea{font:inherit;color:inherit}
 .book{display:grid;grid-template-columns:var(--gutter) minmax(0,1fr);overflow-x:clip}
 .gutter{background:var(--chrome);border-right:1px solid var(--line);font-size:12px;color:var(--muted);overflow:hidden}
 .gutter span{display:grid;place-items:center;height:var(--row);border-bottom:1px solid var(--line)}
-.sheet{
-  display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));
-  row-gap:var(--row);align-items:start;grid-auto-flow:row dense;
-  padding-bottom:calc(var(--row) * 2);
+/* The gridlines run the full width; the content grid only uses the first
+   8 columns (--cn), so wide monitors just show more empty columns. */
+#sheets{
   background-image:
     linear-gradient(to right,var(--grid) 1px,transparent 1px),
     linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
-  background-size:calc(100% / var(--n)) var(--row);
+  background-size:var(--colw,calc(100% / var(--n))) var(--row);
   min-height:calc(100vh - 132px);
+}
+.sheet{
+  display:grid;grid-template-columns:repeat(var(--cn,var(--n)),minmax(0,1fr));
+  width:var(--sheetw,100%);
+  row-gap:var(--row);align-items:start;grid-auto-flow:row dense;
+  padding-bottom:calc(var(--row) * 2);
 }
 .sheet[hidden]{display:none}
 
-/* spans: desktop (8) / tablet (6) / phone (2) */
-.all{grid-column:1 / -1}
+/* spans. JS picks the column count from the screen width:
+   phones get 4 columns, tablets 6, and desktops 8 or more (about 150px each,
+   so a bigger monitor shows more empty columns, like a real spreadsheet).
+   Content is designed on 8 columns and never stretches past them. */
+.all{grid-column:1 / span 8}
 .hero{grid-column:span 6}.pic{grid-column:span 2}
 .main{grid-column:span 5}.side{grid-column:span 3}
 .wide{grid-column:span 6}.note-col{grid-column:span 2}.facts-col{grid-column:span 4}
 @media (max-width:1099px){
-  .hero,.main{grid-column:span 4}
+  .all,.wide{grid-column:1 / -1}
+  .hero,.main,.facts-col{grid-column:span 4}
   .pic,.side,.note-col{grid-column:span 2}
-  .wide{grid-column:span 6}
 }
 @media (max-width:759px){
-  .hero,.main,.pic,.side,.wide,.note-col,.facts-col{grid-column:1 / -1}
+  .all,.hero,.main,.wide,.facts-col{grid-column:1 / -1}
+  .pic{grid-column:1 / span 2}
+  .note-wrap{grid-column:2 / span 3}
+  .note-wrap.beside-pic{grid-column:3 / span 2}
+  .side:not(.note-wrap){grid-column:1 / -1}
 }
+[data-tier="lg"] .all{grid-column:1 / span 8}
+[data-tier="lg"] .hero{grid-column:span 6}[data-tier="lg"] .pic{grid-column:span 2}
+[data-tier="lg"] .main{grid-column:span 5}[data-tier="lg"] .side{grid-column:span 3}
+[data-tier="lg"] .wide{grid-column:span 6}[data-tier="lg"] .note-col{grid-column:span 2}
+[data-tier="lg"] .facts-col{grid-column:span 4}
+[data-tier="md"] .all,[data-tier="md"] .wide{grid-column:1 / -1}
+[data-tier="md"] .hero,[data-tier="md"] .main,[data-tier="md"] .facts-col{grid-column:span 4}
+[data-tier="md"] .pic,[data-tier="md"] .side,[data-tier="md"] .note-col{grid-column:span 2}
+[data-tier="sm"] .all,[data-tier="sm"] .hero,[data-tier="sm"] .main,[data-tier="sm"] .wide,[data-tier="sm"] .facts-col{grid-column:1 / -1}
+[data-tier="sm"] .pic{grid-column:1 / span 2}
+[data-tier="sm"] .note-wrap{grid-column:2 / span 3}
+[data-tier="sm"] .note-wrap.beside-pic{grid-column:3 / span 2}
+[data-tier="sm"] .side:not(.note-wrap){grid-column:1 / -1}
+[data-tier="sm"] .preview-cell{display:none}
 
 /* a cell block */
-.cell{position:relative;background:var(--sheet);border:1px solid var(--line);min-width:0;cursor:cell}
+.cell{position:relative;background:var(--sheet);border:1px solid var(--line);min-width:0;cursor:cell;container-type:inline-size}
 .cell.plain{border-color:transparent}
 .cell.sel{box-shadow:inset 0 0 0 2px var(--accent)}
-.cell.sel::after{content:"";position:absolute;right:-5px;bottom:-5px;width:9px;height:9px;background:var(--accent);border:2px solid var(--sheet);z-index:2}
+.grab{position:absolute;right:-7px;bottom:-7px;width:13px;height:13px;background:var(--accent);border:2px solid var(--sheet);z-index:6;cursor:nwse-resize;touch-action:none}
+.grab::before{content:"";position:absolute;inset:-12px}
+.grab:hover{transform:scale(1.25)}
+.resizing,.resizing *{cursor:nwse-resize!important;user-select:none!important}
+.cell.resized{overflow-wrap:anywhere}
 .pad{padding:18px 20px}
-.cell h1{font-size:clamp(40px,5.4vw,76px);line-height:.98;font-weight:800;letter-spacing:-.025em}
-.cell h2{font-size:clamp(28px,3vw,40px);line-height:1.05;font-weight:800;letter-spacing:-.02em}
+.cell h1{font-size:clamp(30px,10cqi,92px);line-height:.98;font-weight:800;letter-spacing:-.025em}
+.cell h2{font-size:clamp(26px,6cqi,40px);line-height:1.05;font-weight:800;letter-spacing:-.02em}
 .cell h3{font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em}
 .lede{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:62ch}
 .muted{color:var(--muted)}
@@ -168,7 +196,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tbl tr > :last-child{border-right:0}
 .tbl thead th{background:var(--head);font-weight:700;border-bottom:1px solid var(--line)}
 .tbl th[scope="row"]{background:var(--head);font-weight:700;width:34%;color:var(--ink)}
-.tbl td.wrap,.tbl th.wrap{height:auto;padding-top:12px;padding-bottom:12px}
+.tbl td.wrap,.tbl th.wrap{height:auto;padding-top:10px;padding-bottom:10px}
 .tbl tbody tr:last-child > *{border-bottom:0}
 .chip{display:inline-block;font-size:13px;background:var(--chrome);border:1px solid var(--line);border-radius:12px;padding:1px 10px;white-space:nowrap}
 
@@ -212,6 +240,7 @@ button,input,select,textarea{font:inherit;color:inherit}
    ===================================================================== */
 .hero-cell{display:flex;align-items:center;min-height:calc(var(--row) * 5)}
 .hero-cell h1{max-width:13ch}
+.cell h1.h1-sub{font-size:clamp(28px,6.4cqi,60px)}
 
 /* =====================================================================
    WORK
@@ -220,7 +249,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .proj-rows .rowbtn{font-size:16px}
 .proj-rows .rowbtn .name{font-weight:700}
 .detail{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px;padding:20px}
-.detail figure img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--chrome)}
+.detail figure img{width:100%;height:auto;background:var(--chrome)}
 .detail figcaption{margin-top:8px;font-size:13px;color:var(--muted)}
 .detail .body{display:flex;flex-direction:column;gap:14px}
 .detail h4{font-size:14px;font-weight:700;margin-bottom:2px}
@@ -257,10 +286,20 @@ button,input,select,textarea{font:inherit;color:inherit}
 .filter{display:flex;align-items:center;gap:6px}
 .filter select{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:var(--sheet) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 8px center;border-radius:3px;padding:3px 26px 3px 8px;font-size:14px;font-weight:500;cursor:pointer}
 .filterbar{min-height:var(--row);padding:0 12px;border-bottom:1px solid var(--line);font-size:14px;font-weight:700;background:var(--chrome)}
+.rowhead > span.sortcell{padding:0}
+.sortbtn{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;height:100%;min-height:var(--row);padding:0 12px;border:0;background:transparent;font-weight:700;font-size:15px;text-align:left;cursor:pointer}
+.sortbtn:hover{background:var(--accent-soft)}
+.sortbtn i{width:10px;height:12px;flex:none;opacity:.28;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 12'%3E%3Cpath d='M5 1 2 4.5h6zM5 11 2 7.5h6z' fill='%23667'/%3E%3C/svg%3E")}
+.sortbtn:hover i{opacity:.6}
+.sortbtn[data-dir="asc"] i,.sortbtn[data-dir="desc"] i{opacity:1;background:var(--accent);-webkit-mask:no-repeat center/contain var(--arrow);mask:no-repeat center/contain var(--arrow)}
+.sortbtn[data-dir="asc"]{--arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 12'%3E%3Cpath d='M5 2 1 8h8z'/%3E%3C/svg%3E")}
+.sortbtn[data-dir="desc"]{--arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 12'%3E%3Cpath d='M5 10 1 4h8z'/%3E%3C/svg%3E")}
+.sortbtn[data-dir]{color:var(--accent)}
 .count{padding:10px 12px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
 .preview{position:sticky;top:96px}
-.preview .frame{position:relative;background:#101114;aspect-ratio:1/1}
-.preview .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+/* the preview frame takes the photo's own shape: no bars, no cropping */
+.preview figure{max-width:100%}
+.preview .frame img{display:block;max-width:100%;height:auto}
 .preview .meta{padding:14px 16px;display:flex;flex-direction:column;gap:4px}
 .preview .meta b{font-size:18px}
 .preview .meta .btn{margin-top:10px;align-self:flex-start;min-height:40px}
@@ -363,7 +402,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 <main class="book">
   <div class="gutter" id="gutter" aria-hidden="true"></div>
-  <div>
+  <div id="sheets">
 
   <!-- =============================== HOME =============================== -->
   <section class="sheet" id="home" role="tabpanel" aria-labelledby="tab-home" data-title="Sejul Phanord | Product owner and photographer">
@@ -382,7 +421,7 @@ button,input,select,textarea{font:inherit;color:inherit}
         <a class="btn ghost" href="#contact" data-go="contact">Get in touch</a>
       </div>
     </div>
-    <aside class="cell side note-wrap" aria-label="Comment from Sage">
+    <aside class="cell side note-wrap beside-pic" aria-label="Comment from Sage">
       <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
         <p>Messy ideas are my favorite kind. Usually it just means nobody has looked closely enough yet.</p></div>
     </aside>
@@ -453,11 +492,16 @@ button,input,select,textarea{font:inherit;color:inherit}
         <p>Everything here came from one camera and one lens: a Sony a6300 with a Sigma 18-50mm. The two ship shots were my phone.</p></div>
     </aside>
 
-    <div class="cell main photo-rows">
+    <div class="cell main photo-rows" data-fx="=photos">
       <div class="filterbar filter"><label for="typeFilter">Filter by type</label>
         <select id="typeFilter"><option value="">All</option><option>Portrait</option><option>Event</option><option>Sports</option><option>Nature</option><option>Travel</option><option>Ships</option></select>
       </div>
-      <div class="rowhead"><span>Photo</span><span>Title</span><span class="c-type">Type</span><span>Year</span><span class="c-cam">Camera</span></div>
+      <div class="rowhead" id="photoHead"><span>Photo</span>
+        <span class="sortcell"><button type="button" class="sortbtn" data-key="title">Title<i aria-hidden="true"></i></button></span>
+        <span class="sortcell c-type"><button type="button" class="sortbtn" data-key="type">Type<i aria-hidden="true"></i></button></span>
+        <span class="sortcell"><button type="button" class="sortbtn" data-key="year">Year<i aria-hidden="true"></i></button></span>
+        <span class="sortcell c-cam"><button type="button" class="sortbtn" data-key="cam">Camera<i aria-hidden="true"></i></button></span>
+      </div>
       <ul class="rows" id="photoRows"></ul>
       <div class="count" id="photoCount" aria-live="polite"></div>
     </div>
@@ -469,7 +513,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   <!-- =============================== ABOUT =============================== -->
   <section class="sheet" id="about" role="tabpanel" aria-labelledby="tab-about" data-title="About | Sejul Phanord">
     <div class="cell all pad">
-      <h1 style="font-size:clamp(34px,4.2vw,58px);max-width:20ch">I like seeing a problem through to a fix that actually works.</h1>
+      <h1 class="h1-sub" style="max-width:20ch">I like seeing a problem through to a fix that actually works.</h1>
     </div>
 
     <div class="cell pic inserted" data-fx='=IMAGE("about-portrait.jpg")'>
@@ -486,7 +530,7 @@ button,input,select,textarea{font:inherit;color:inherit}
         </tbody>
       </table>
     </div>
-    <aside class="cell note-col note-wrap" aria-label="Comment from Sage">
+    <aside class="cell note-col note-wrap beside-pic" aria-label="Comment from Sage">
       <div class="note"><header><b aria-hidden="true">S</b>Sage</header>
         <p>Fun fact: most days after lunch, I make cafecito for the office. Enough people ask that I'm building a voting system for it.</p></div>
     </aside>
@@ -523,7 +567,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   <!-- =============================== CONTACT =============================== -->
   <section class="sheet" id="contact" role="tabpanel" aria-labelledby="tab-contact" data-title="Contact | Sejul Phanord">
     <div class="cell all pad">
-      <h1 style="font-size:clamp(34px,4.2vw,58px)">Have something interesting in mind?</h1>
+      <h1 class="h1-sub">Have something interesting in mind?</h1>
       <p class="lede" style="margin-top:12px">I'm always happy to meet people working on thoughtful products, difficult operational problems, or a good creative idea. If that sounds like you, send me a note.</p>
       <p class="muted small" style="margin-top:6px">Open to product roles, consulting, and creative collaborations.</p>
     </div>
@@ -651,7 +695,7 @@ const $ = (s,r=document)=>r.querySelector(s);
 const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const ROW = 44;
-const small = window.matchMedia('(max-width:759px)');
+const small = { get matches(){ return document.documentElement.dataset.tier==='sm'; } };
 document.getElementById('yr').textContent = new Date().getFullYear();
 
 /* =====================================================================
@@ -688,14 +732,19 @@ function cellRef(el){
 function setFx(ref,text){nameBox.textContent=ref;formula.textContent=text}
 function select(el,text){
   $$('.cell.sel').forEach(c=>c.classList.remove('sel'));
+  $$('.grab').forEach(g=>g.remove());
   if(!el) return;
   el.classList.add('sel');
+  const g=document.createElement('span');
+  g.className='grab'; g.title='Drag to resize this cell (double-click to reset)'; g.setAttribute('aria-hidden','true');
+  el.appendChild(g);
   const t=text||el.dataset.fx||((el.querySelector('h1,h2,h3,p,th,td,b')||{}).textContent||'').trim().replace(/\s+/g,' ');
   setFx(cellRef(el), t.length>90?t.slice(0,88)+'\u2026':t);
 }
 document.addEventListener('click',e=>{
+  if(e.target.closest('.grab')) return;
   const c=e.target.closest('.cell');
-  if(c && !c.classList.contains('note-wrap') && !e.target.closest('.rowbtn')) select(c);
+  if(c && !c.classList.contains('note-wrap') && !e.target.closest('.rowbtn, .sortbtn, select, #openFull')) select(c);
 });
 
 /* =====================================================================
@@ -713,7 +762,8 @@ function snap(sheet){
   $$(':scope > .cell',sheet).forEach(c=>{
     c.style.minHeight='';
     const h=c.getBoundingClientRect().height;
-    c.style.minHeight=Math.max(1,Math.ceil((h-0.5)/ROW))*ROW+'px';
+    const rows=Math.max(1,Math.ceil((h-0.5)/ROW), +(c.dataset.userRows||0));
+    c.style.minHeight=rows*ROW+'px';
   });
   const rows=Math.ceil(sheet.scrollHeight/ROW)+2;
   if(gutter.childElementCount!==rows){
@@ -723,9 +773,76 @@ function snap(sheet){
 }
 const activeSheet=()=>$('.sheet:not([hidden])');
 let snapT; const reSnap=()=>{clearTimeout(snapT);snapT=setTimeout(()=>snap(activeSheet()),60)};
-window.addEventListener('resize',reSnap);
+
+/* Column count follows the screen: 4 on phones, 6 on tablets, and on
+   desktops as many ~150px columns as fit. Content stays on the first 8. */
+let lastN=0;
+function layout(){
+  const root=document.documentElement, w=$('#sheets').clientWidth;
+  const n = w<700 ? 4 : w<1200 ? 6 : Math.min(26,Math.max(8,Math.floor(w/150)));
+  root.dataset.tier = n<=4 ? 'sm' : n<=6 ? 'md' : 'lg';
+  const cn=Math.min(n,8), colw=w/n;
+  root.style.setProperty('--colw',colw+'px');
+  root.style.setProperty('--sheetw',(colw*cn)+'px');
+  if(n!==lastN){
+    root.style.setProperty('--n',n);
+    root.style.setProperty('--cn',cn);
+    let L=''; for(let i=0;i<n;i++) L+='<span>'+colLetter(i)+'</span>';
+    $('.cols .letters').innerHTML=L;
+    // a new column count invalidates any cells someone resized
+    $$('.cell.resized').forEach(resetCell);
+    lastN=n;
+  }
+}
+layout();
+window.addEventListener('resize',()=>{ layout(); fitPreview(); reSnap(); });
+// scrollbars appearing, late images, and font swaps change sizes without a resize event
+if('ResizeObserver' in window) new ResizeObserver(()=>{ layout(); reSnap(); }).observe($('#sheets'));
+document.addEventListener('load',e=>{ if(e.target.tagName==='IMG') reSnap(); },true);
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(reSnap);
 window.addEventListener('load',reSnap);
+
+/* =====================================================================
+   RESIZE: drag a selected cell's corner to change its size.
+   Just for fun; nothing is saved, and a reload puts everything back.
+   ===================================================================== */
+function resetCell(c){
+  c.style.gridColumn=''; delete c.dataset.userRows; c.classList.remove('resized');
+}
+document.addEventListener('pointerdown',e=>{
+  const g=e.target.closest('.grab'); if(!g) return;
+  e.preventDefault(); e.stopPropagation();
+  const cell=g.parentElement, sheet=cell.parentElement;
+  const n=getComputedStyle(sheet).gridTemplateColumns.split(' ').length||8;
+  const colw=sheet.clientWidth/n;
+  const startCol=Math.round((cell.offsetLeft-sheet.offsetLeft)/colw)+1;
+  const minSpan=Math.min(2,n-startCol+1);
+  const fx=formula.textContent;
+  g.setPointerCapture(e.pointerId);
+  document.body.classList.add('resizing');
+  const move=ev=>{
+    const r=cell.getBoundingClientRect();
+    const span=Math.max(minSpan,Math.min(n-startCol+1,Math.round((ev.clientX-r.left)/colw)));
+    cell.style.gridColumn=startCol+' / span '+span;
+    cell.classList.add('resized');
+    cell.style.minHeight='';
+    const natural=Math.max(1,Math.ceil((cell.getBoundingClientRect().height-0.5)/ROW));
+    const want=Math.max(natural,Math.round((ev.clientY-r.top)/ROW));
+    cell.dataset.userRows=want;
+    cell.style.minHeight=want*ROW+'px';
+    setFx(cellRef(cell),fx);
+  };
+  const up=()=>{
+    g.removeEventListener('pointermove',move); g.removeEventListener('pointerup',up); g.removeEventListener('pointercancel',up);
+    document.body.classList.remove('resizing');
+    snap(activeSheet()); setFx(cellRef(cell),fx);
+  };
+  g.addEventListener('pointermove',move); g.addEventListener('pointerup',up); g.addEventListener('pointercancel',up);
+});
+document.addEventListener('dblclick',e=>{
+  const g=e.target.closest('.grab'); if(!g) return;
+  const cell=g.parentElement; resetCell(cell); snap(activeSheet()); setFx(cellRef(cell),formula.textContent);
+});
 
 /* =====================================================================
    TABS (hash based: #home, #work, #photos, #about, #contact)
@@ -795,7 +912,7 @@ function renderWork(){
   snap($('#work'));
   const table=workRows.closest('.cell');
   setFx('A'+(Math.round((table.offsetTop-table.parentNode.offsetTop)/ROW)+2+workSel), p.name);
-  $$('.cell.sel').forEach(c=>c.classList.remove('sel'));
+  $$('.cell.sel').forEach(c=>c.classList.remove('sel')); $$('.grab').forEach(g=>g.remove());
 }
 workRows.addEventListener('click',e=>{
   const b=e.target.closest('.rowbtn'); if(!b) return;
@@ -820,12 +937,13 @@ function renderPhotoRows(){
     <span>${esc(p.year)}</span>
     <span class="c-cam truncate">${esc(p.cam)}</span>
   </button></li>`}).join('');
-  count.textContent='Showing '+visible.length+' of '+PHOTOS.length+(typeFilter.value?' ('+typeFilter.value+')':'');
+  const sortTxt = sortKey ? ', sorted by '+SORT_NAME[sortKey].toLowerCase()+(sortKey==='year'?(sortDir<0?' (newest first)':' (oldest first)'):(sortDir>0?' (A to Z)':' (Z to A)')) : '';
+  count.textContent='Showing '+visible.length+' of '+PHOTOS.length+(typeFilter.value?' ('+typeFilter.value+')':'')+sortTxt;
   reSnap();
 }
 function photoFx(){
   const t=$('#photos .photo-rows'), pos=Math.max(0,visible.indexOf(photoSel)), top=t.offsetTop-t.parentNode.offsetTop;
-  $$('.cell.sel').forEach(c=>c.classList.remove('sel'));
+  $$('.cell.sel').forEach(c=>c.classList.remove('sel')); $$('.grab').forEach(g=>g.remove());
   setFx('A'+(Math.round(top/ROW)+3+pos*2),'=IMAGE("'+PHOTOS[photoSel].slug+'.jpg")');
 }
 function renderPreview(){
@@ -834,12 +952,27 @@ function renderPreview(){
     <div class="meta"><b>${esc(p.title)}</b><span class="small muted">${esc(p.type)}, ${esc(p.year)}</span><span class="small muted">${esc(p.cam)}${p.lens?', '+esc(p.lens):''}</span>
     <button type="button" class="btn ghost" id="openFull">Open full size</button></div></figure>`;
   $('#openFull').addEventListener('click',()=>openViewer(photoSel));
+  const img=$('#preview img');
+  if(img.complete && img.naturalWidth) fitPreview(); else img.addEventListener('load',fitPreview,{once:true});
+}
+/* Size the preview to the photo: as big as the column allows, short enough
+   to stay on screen, and the frame hugs the image on every side. */
+function fitPreview(){
+  const fig=$('#preview figure'), img=$('#preview img');
+  if(!fig||!img||!img.naturalWidth) return;
+  const W=Math.max(120,$('#preview').clientWidth-4);
+  const H=Math.max(240,window.innerHeight-340);
+  const k=Math.min(W/img.naturalWidth, H/img.naturalHeight);
+  const w=Math.floor(img.naturalWidth*k), h=Math.floor(img.naturalHeight*k);
+  img.style.width=w+'px'; img.style.height=h+'px';
+  fig.style.width=(w+4)+'px';
+  reSnap();
 }
 function pickPhoto(i){
   photoSel=i;
   $$('.rowbtn',photoRows).forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));
   photoFx();
-  $$('.cell.sel').forEach(c=>c.classList.remove('sel'));
+  $$('.cell.sel').forEach(c=>c.classList.remove('sel')); $$('.grab').forEach(g=>g.remove());
   renderPreview();
 }
 photoRows.addEventListener('click',e=>{
@@ -847,12 +980,45 @@ photoRows.addEventListener('click',e=>{
   const i=+b.dataset.i;
   if(small.matches){ photoSel=i; openViewer(i); } else pickPhoto(i);
 });
-typeFilter.addEventListener('change',()=>{
+/* Sorting: click a column header. First click sorts it (newest first for
+   Year, A to Z for the rest), second click flips it, third click goes back
+   to my original order. Works together with the type filter. */
+let sortKey=null, sortDir=1;
+const SORT_NAME={title:'Title',type:'Type',year:'Year',cam:'Camera'};
+function applyView(){
   const t=typeFilter.value;
-  visible=PHOTOS.map((p,i)=>(!t||p.type===t)?i:-1).filter(i=>i>=0);
+  const idx=PHOTOS.map((_,i)=>i).filter(i=>!t||PHOTOS[i].type===t);
+  if(sortKey) idx.sort((a,b)=>{
+    const A=PHOTOS[a][sortKey], B=PHOTOS[b][sortKey];
+    const c = sortKey==='year' ? (+A)-(+B) : A.localeCompare(B);
+    return (c*sortDir) || (a-b);
+  });
+  visible=idx;
   if(!visible.includes(photoSel)) photoSel=visible[0];
+  $$('#photoHead .sortbtn').forEach(b=>{
+    const on=b.dataset.key===sortKey;
+    if(on) b.dataset.dir=sortDir>0?'asc':'desc'; else delete b.dataset.dir;
+    const name=SORT_NAME[b.dataset.key].toLowerCase();
+    b.setAttribute('aria-label', on
+      ? 'Sorted by '+name+(sortDir>0?(sortKey==='year'?', oldest first':', A to Z'):(sortKey==='year'?', newest first':', Z to A'))+'. Click to change.'
+      : 'Sort by '+name);
+  });
   renderPhotoRows(); renderPreview();
+}
+typeFilter.addEventListener('change',()=>{
+  applyView();
+  const t=typeFilter.value;
   setFx('C1', t?'=FILTER(photos, type = "'+t+'")':'=FILTER(photos, type = *)');
+});
+$('#photoHead').addEventListener('click',e=>{
+  const b=e.target.closest('.sortbtn'); if(!b) return;
+  const key=b.dataset.key, first = key==='year' ? -1 : 1;
+  if(sortKey!==key){ sortKey=key; sortDir=first; }
+  else if(sortDir===first){ sortDir=-first; }
+  else { sortKey=null; sortDir=1; }
+  applyView();
+  const col={title:'B',type:'C',year:'D',cam:'E'}[key];
+  setFx(col+'7', sortKey ? '=SORT(photos, "'+SORT_NAME[sortKey]+'", '+(sortDir>0?'TRUE':'FALSE')+')' : '=photos');
 });
 renderPhotoRows(); renderPreview();
 
