@@ -44,12 +44,9 @@
   --ink:#1a1c20;
   --ink-2:#353944;
   --muted:#5f6573;
-  --head:#f0f3fb;
-  --accent:#2f5bea;
   --on-accent:#ffffff;
-  --accent-soft:#eef2fe;
-  --canvas:#e3e6eb;
-  --gapfill:#f3f4f7;
+  --canvas-base:#e3e6eb;
+  --hue:var(--acc-l);
   --shadow:0 8px 22px rgba(26,28,32,.12);
   --float:0 1px 2px rgba(26,28,32,.08),0 10px 28px rgba(26,28,32,.16);
   color-scheme:light;
@@ -57,21 +54,42 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --sheet:#16181d; --chrome:#1d2027; --line:#30343d; --grid:#22262e;
-    --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --head:#1f2533;
-    --accent:#86a2ff; --on-accent:#0f1220; --accent-soft:#1f2a4a;
-    --canvas:#0c0d10; --gapfill:#1a1d23; --shadow:0 8px 22px rgba(0,0,0,.45);
+    --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --on-accent:#0f1220;
+    --canvas-base:#0c0d10; --hue:var(--acc-d); --shadow:0 8px 22px rgba(0,0,0,.45);
     --float:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.55);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --sheet:#16181d; --chrome:#1d2027; --line:#30343d; --grid:#22262e;
-  --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --head:#1f2533;
-  --accent:#86a2ff; --on-accent:#0f1220; --accent-soft:#1f2a4a;
-  --canvas:#0c0d10; --gapfill:#1a1d23; --shadow:0 8px 22px rgba(0,0,0,.45);
+  --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --on-accent:#0f1220;
+  --canvas-base:#0c0d10; --hue:var(--acc-d); --shadow:0 8px 22px rgba(0,0,0,.45);
   --float:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.55);
   color-scheme:dark;
 }
+/* SHEET COLORS: each sheet has its own color, like colored sheet tabs in
+   Excel. --acc-l/--acc-d are the text/button color in light/dark mode,
+   --tone is the fill color. Everything tinted is mixed from these. */
+:root{--acc-l:#2f5bea;--acc-d:#86a2ff;--tone:#2f5bea}
+:root[data-sheet="home"]{--acc-l:#6a3fd6;--acc-d:#b49bff;--tone:#7c4dff}
+:root[data-sheet="work"]{--acc-l:#2f5bea;--acc-d:#86a2ff;--tone:#2f5bea}
+:root[data-sheet="photos"]{--acc-l:#8a5d00;--acc-d:#f0c14b;--tone:#e5a91a}
+:root[data-sheet="about"]{--acc-l:#3f7a4c;--acc-d:#9cc9a6;--tone:#6f9f78}
+:root[data-sheet="contact"]{--acc-l:#16804f;--acc-d:#5fd39b;--tone:#1f9d63}
+:root{
+  --accent:var(--hue);
+  --accent-soft:color-mix(in srgb,var(--hue) 12%,var(--sheet));
+  --head:color-mix(in srgb,var(--tone) 9%,var(--sheet));
+  --gapfill:color-mix(in srgb,var(--tone) 8%,var(--chrome));
+  --tint:color-mix(in srgb,var(--tone) 14%,var(--sheet));
+  --canvas:color-mix(in srgb,var(--tone) 13%,var(--canvas-base));
+}
+/* the texture: a faint scatter of little icons that fits each sheet */
+:root[data-sheet="home"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%203l1.9%205.6L19.5%2010l-5.6%201.9L12%2017.5l-1.9-5.6L4.5%2010l5.6-1.4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M9%2018h6M10%2021h4M12%203a6%206%200%200%200-3.8%2010.6c.6.6.8%201.4.8%202.4h6c0-1%20.2-1.8.8-2.4A6%206%200%200%200%2012%203z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%203l1.9%205.6L19.5%2010l-5.6%201.9L12%2017.5l-1.9-5.6L4.5%2010l5.6-1.4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M9%2018h6M10%2021h4M12%203a6%206%200%200%200-3.8%2010.6c.6.6.8%201.4.8%202.4h6c0-1%20.2-1.8.8-2.4A6%206%200%200%200%2012%203z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%203l1.9%205.6L19.5%2010l-5.6%201.9L12%2017.5l-1.9-5.6L4.5%2010l5.6-1.4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="work"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M12%207.5V21M5%2012H2.5a9.5%209.5%200%200%200%2019%200H19M8%2011h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224%22%2F%3E%3Cpath%20d%3D%22M5.6%205.6l3.6%203.6M14.8%2014.8l3.6%203.6M18.4%205.6l-3.6%203.6M9.2%2014.8l-3.6%203.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M12%207.5V21M5%2012H2.5a9.5%209.5%200%200%200%2019%200H19M8%2011h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224%22%2F%3E%3Cpath%20d%3D%22M5.6%205.6l3.6%203.6M14.8%2014.8l3.6%203.6M18.4%205.6l-3.6%203.6M9.2%2014.8l-3.6%203.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M12%207.5V21M5%2012H2.5a9.5%209.5%200%200%200%2019%200H19M8%2011h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="photos"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208h4l2-3h6l2%203h4v11H3z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%223.8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208V4h4M17%204h4v4M21%2016v4h-4M7%2020H3v-4%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208h4l2-3h6l2%203h4v11H3z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%223.8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208V4h4M17%204h4v4M21%2016v4h-4M7%2020H3v-4%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208h4l2-3h6l2%203h4v11H3z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%223.8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="about"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M5%2019C5%2010%2010.5%204.5%2020%204.5%2020%2013.5%2014%2019%205%2019zM5%2019l8.5-8.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M5%2019C5%2010%2010.5%204.5%2020%204.5%2020%2013.5%2014%2019%205%2019zM5%2019l8.5-8.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="contact"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%205h16v11H10l-5%204v-4H4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%205h16v11H10l-5%204v-4H4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
 @media (max-width:1099px){:root{--n:6}}
 @media (max-width:759px){:root{--n:4;--gutter:32px;--gap:10px}}
 
@@ -196,6 +214,13 @@ button,input,select,textarea{font:inherit;color:inherit}
 .lede{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:62ch}
 .muted{color:var(--muted)}
 .small{font-size:14px}
+
+/* header cells: a light tint of the sheet color with the icon texture on top */
+.cell.head{isolation:isolate;background:var(--tint);border-color:color-mix(in srgb,var(--tone) 35%,var(--line))}
+.cell.head::before,body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--tone);-webkit-mask:var(--texture) 0 0/200px 200px repeat;mask:var(--texture) 0 0/200px 200px repeat;opacity:.16}
+body::before{position:fixed;opacity:.22}
+.cell.head .lede,.cell.head .muted{color:color-mix(in srgb,var(--tone) 25%,var(--ink-2))}
 
 /* titled sheet header */
 .sheet-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px}
@@ -424,6 +449,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tab{flex:none;height:48px;padding:0 20px;border:0;border-right:1px solid var(--line);background:transparent;font-size:15px;cursor:pointer;color:var(--ink)}
 .tab:hover{background:var(--sheet)}
 .tab[aria-selected="true"]{background:var(--sheet);color:var(--accent);font-weight:700;box-shadow:inset 0 -3px 0 var(--accent)}
+/* colored sheet tabs: every tab shows its sheet's color, the open one fills with it */
+.tab[data-tab="home"]{--t:#7c4dff}.tab[data-tab="work"]{--t:#2f5bea}.tab[data-tab="photos"]{--t:#e5a91a}.tab[data-tab="about"]{--t:#6f9f78}.tab[data-tab="contact"]{--t:#1f9d63}
+.tab{box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--t) 70%,transparent)}
+.tab[aria-selected="true"]{color:var(--ink);background:color-mix(in srgb,var(--t) 16%,var(--sheet));box-shadow:inset 0 -4px 0 var(--t)}
 @media (max-width:759px){.tab{padding:0 14px}.tabs{padding-left:0}}
 /* keep the tab strip's edges in line with the page */
 [data-page] .tab:first-child{border-left:1px solid var(--line)}
@@ -455,7 +484,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== HOME =============================== -->
   <section class="sheet" id="home" role="tabpanel" aria-labelledby="tab-home" data-title="Sejul Phanord | Product owner and photographer">
-    <div class="cell hero pad hero-cell" data-fx='=TURN(messy_ideas, "useful products")'>
+    <div class="cell hero pad hero-cell head" data-fx='=TURN(messy_ideas, "useful products")'>
       <h1 class="fit">I turn messy ideas into useful products.</h1>
     </div>
     <div class="cell pic inserted" id="homePic" data-fx='=IMAGE("headshot.jpg")'>
@@ -490,7 +519,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== WORK =============================== -->
   <section class="sheet" id="work" role="tabpanel" aria-labelledby="tab-work" data-title="Work | Sejul Phanord">
-    <div class="cell main pad" data-fx="Work">
+    <div class="cell main pad head" data-fx="Work">
       <div class="sheet-head"><h2 class="fit" data-max="120">Work</h2><span class="muted small">Pick a row for the details</span></div>
       <p class="lede" style="margin-top:8px">Most of my time goes to Food &amp; Beverage technology at Royal Caribbean: building products with crew, getting them onboard, and keeping them running.</p>
       <aside class="comment" data-c="work"><p>I like work where the spreadsheet eventually has to survive reality. Fitting, given where you're reading this.</p></aside>
@@ -520,7 +549,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== PHOTOS =============================== -->
   <section class="sheet" id="photos" role="tabpanel" aria-labelledby="tab-photos" data-title="Photos | Sejul Phanord">
-    <div class="cell main pad" data-fx="Photos">
+    <div class="cell main pad head" data-fx="Photos">
       <div class="sheet-head"><h2 class="fit" data-max="120">Photos</h2><span class="muted small">Portraits, events, and wherever I end up</span></div>
       <p class="lede" style="margin-top:8px">A small sample of my personal work. Want to see more or plan a shoot? <a href="#contact" data-go="contact" style="color:var(--accent);font-weight:700">Send me a note.</a></p>
       <aside class="comment" data-c="photos"><p>Everything here came from one camera and one lens: a Sony a6300 with a Sigma 18-50mm. The two ship shots were my phone.</p></aside>
@@ -546,7 +575,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== ABOUT =============================== -->
   <section class="sheet" id="about" role="tabpanel" aria-labelledby="tab-about" data-title="About | Sejul Phanord">
-    <div class="cell all pad">
+    <div class="cell all pad head">
       <h1 class="h1-sub fit">I like seeing a problem through to a fix that actually works.</h1>
     </div>
 
@@ -597,7 +626,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== CONTACT =============================== -->
   <section class="sheet" id="contact" role="tabpanel" aria-labelledby="tab-contact" data-title="Contact | Sejul Phanord">
-    <div class="cell all pad">
+    <div class="cell all pad head">
       <h1 class="h1-sub fit">Have something interesting in mind?</h1>
       <p class="lede" style="margin-top:12px">I'm always happy to meet people working on thoughtful products, difficult operational problems, or a good creative idea. If that sounds like you, send me a note.</p>
       <p class="muted small" style="margin-top:6px">Open to product roles, consulting, and creative collaborations.</p>
@@ -1052,6 +1081,7 @@ function show(id,{focus=false,push=true}={}){
   TABS.forEach(t=>{ const s=document.getElementById(t); s.hidden = t!==id; });
   tabBtns.forEach(b=>{const on=b.dataset.tab===id; b.setAttribute('aria-selected',on); b.tabIndex=on?0:-1; if(on&&focus) b.focus();});
   const sheet=document.getElementById(id);
+  document.documentElement.dataset.sheet=id;
   document.title=sheet.dataset.title;
   if(push && location.hash!=='#'+id) history.pushState(null,'','#'+id);
   window.scrollTo(0,0);
