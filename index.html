@@ -18,7 +18,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@1,8..60,800&family=Cormorant:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,800&display=swap" rel="stylesheet">
 <style>
 /* =====================================================================
    CONFIG + TOKENS
@@ -36,10 +36,10 @@
   --n:8;
   --gap:16px;
   --font:'Bricolage Grotesque',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
-  /* big headlines: Source Serif bold italic. Small titles: Cormorant italic.
+  /* big headlines: Source Serif bold italic. Small titles: Source Serif semibold.
      Both fall back to the device's own serif if the web font can't load. */
   --head-font:'Source Serif 4',Georgia,'Times New Roman',serif;
-  --title-font:'Cormorant',Georgia,'Times New Roman',serif;
+  --title-font:'Source Serif 4',Georgia,'Times New Roman',serif;
 
   --sheet:#ffffff;
   --chrome:#f6f7f9;
@@ -216,17 +216,18 @@ button,input,select,textarea{font:inherit;color:inherit}
 .cell h2{font-size:clamp(26px,6cqi,40px);line-height:1.05;font-family:var(--head-font);font-style:italic;font-weight:800;letter-spacing:-.01em}
 .cell h3{font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em}
 /* small titles and taglines */
-.cell h2.title,.cell h3,.sheet-head > span{font-family:var(--title-font);font-style:italic;font-weight:700;letter-spacing:0}
-.cell h2.title{font-size:30px}
-.cell h3{font-size:28px}
-.sheet-head > span{font-size:18px;font-weight:600}
+.cell h2.title,.cell h3,.sheet-head > span{font-family:var(--title-font);font-style:normal;font-weight:600;letter-spacing:-.005em}
+.cell h2.title{font-size:28px}
+.cell h3{font-size:26px}
+.sheet-head > span{font-size:16px}
 .lede{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:62ch}
 .muted{color:var(--muted)}
 .small{font-size:14px}
 
-/* header cells: a light tint of the sheet color with the icon texture on top */
+/* header cells: a solid light tint of the sheet color, like a filled cell.
+   Add class="textured" to a header cell to put the icon texture on it too. */
 .cell.head{isolation:isolate;background:var(--tint);border-color:color-mix(in srgb,var(--tone) 35%,var(--line))}
-.cell.head::before,body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+.cell.head.textured::before,body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:var(--tone);-webkit-mask:var(--texture) 0 0/200px 200px repeat;mask:var(--texture) 0 0/200px 200px repeat;opacity:.16}
 body::before{position:fixed;opacity:.22}
 .cell.head .lede,.cell.head .muted{color:color-mix(in srgb,var(--tone) 25%,var(--ink-2))}
