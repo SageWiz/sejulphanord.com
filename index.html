@@ -18,7 +18,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@1,8..60,800&display=swap" rel="stylesheet">
 <style>
 /* =====================================================================
    CONFIG + TOKENS
@@ -36,10 +36,10 @@
   --n:8;
   --gap:16px;
   --font:'Bricolage Grotesque',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
-  /* big headlines: Source Serif bold italic. Small titles: Source Serif semibold.
+  /* big headlines: Source Serif bold italic. Small titles stay in the sans-serif.
      Both fall back to the device's own serif if the web font can't load. */
   --head-font:'Source Serif 4',Georgia,'Times New Roman',serif;
-  --title-font:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --title-font:var(--font);
 
   --sheet:#ffffff;
   --chrome:#f6f7f9;
@@ -216,10 +216,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .cell h2{font-size:clamp(26px,6cqi,40px);line-height:1.05;font-family:var(--head-font);font-style:italic;font-weight:800;letter-spacing:-.01em}
 .cell h3{font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em}
 /* small titles and taglines */
-.cell h2.title,.cell h3,.sheet-head > span{font-family:var(--title-font);font-style:normal;font-weight:600;letter-spacing:-.005em}
-.cell h2.title{font-size:28px}
-.cell h3{font-size:26px}
-.sheet-head > span{font-size:16px}
+.cell h2.title,.cell h3{font-family:var(--title-font);font-style:normal;font-weight:700;letter-spacing:-.01em}
+.cell h2.title{font-size:26px}
 .lede{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:62ch}
 .muted{color:var(--muted)}
 .small{font-size:14px}
@@ -328,6 +326,12 @@ body::before{position:fixed;opacity:.22}
 .detail h4{font-size:14px;font-weight:700;margin-bottom:2px}
 .detail p{font-size:15.5px;line-height:1.55;color:var(--ink-2)}
 .detail .tags{font-size:13px;color:var(--muted)}
+.kpis{display:flex;flex-wrap:wrap;border:1px solid var(--line);background:var(--sheet)}
+.kpi{flex:1 1 150px;padding:10px 14px;border-right:1px solid var(--grid)}
+.kpi:last-child{border-right:0}
+.kpi b{display:block;font-size:30px;line-height:1.1;font-weight:800;letter-spacing:-.02em;color:var(--accent)}
+.kpi span{font-size:13px;color:var(--muted)}
+.employer th[scope="row"]{width:30%}
 .detail.no-pic{grid-template-columns:1fr}
 .side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) minmax(0,.8fr)}
 .side-rows .row{display:grid;min-height:var(--row);border-bottom:1px solid var(--grid)}
@@ -531,12 +535,21 @@ body::before{position:fixed;opacity:.22}
   <section class="sheet" id="work" role="tabpanel" aria-labelledby="tab-work" data-title="Work | Sejul Phanord">
     <div class="cell main pad head" data-fx="Work">
       <div class="sheet-head"><h2 class="fit" data-max="120">Work</h2><span class="muted small">Pick a row for the details</span></div>
-      <p class="lede" style="margin-top:8px">Most of my time goes to Food &amp; Beverage technology at Royal Caribbean: building products with crew, getting them onboard, and keeping them running.</p>
+      <p class="lede" style="margin-top:8px">Everything below is from my time at Royal Caribbean Group: the products, the testing, and the ships.</p>
+      <table class="tbl employer" style="margin-top:16px">
+        <caption class="sr-only">Current employer</caption>
+        <tbody>
+          <tr><th scope="row">Company</th><td><b>Royal Caribbean Group</b>, Miramar, FL</td></tr>
+          <tr><th scope="row">Team</th><td>Food &amp; Beverage Technology</td></tr>
+          <tr><th scope="row">Role</th><td class="wrap">Product Owner / Product Analyst, Dec 2022 to now</td></tr>
+          <tr><th scope="row">Before that</th><td class="wrap">IT Project Coordinator, Food &amp; Beverage, Jul to Dec 2022</td></tr>
+        </tbody>
+      </table>
       <aside class="comment" data-c="work"><p>I like work where the spreadsheet eventually has to survive reality. Fitting, given where you're reading this.</p></aside>
     </div>
 
     <div class="cell all proj-rows">
-      <div class="rowhead"><span>Project</span><span class="c-role">Role</span><span>Year</span><span class="c-area">Area</span><span class="c-go" aria-hidden="true"></span></div>
+      <div class="rowhead"><span>Project</span><span class="c-role">My part</span><span>When</span><span class="c-area">Area</span><span class="c-go" aria-hidden="true"></span></div>
       <ul class="rows" id="workRows"></ul>
     </div>
 
@@ -706,35 +719,57 @@ const WEB3FORMS_KEY = '40cd820f-655b-4967-acc5-0cd8b1965f8f';
    ===================================================================== */
 const PROJECTS = [
   {
-    id:'guest-sense', name:'Guest Sense', role:'Product Owner / Analyst', year:'2025 to now', area:'Hospitality tech',
+    id:'guestsense', name:'GuestSense', role:'Product owner', year:'2025 to now', area:'Crew-facing dining app',
     img:'images/work/guest-sense-ships.jpg', cap:'Icon and Independence of the Seas in port, 2024',
     sections:[
-      ['What it is','Guest Sense is a crew-facing product that helps dining teams quickly understand who is seated at a table and what matters for their service. It brings useful guest context into one place so crew can spend less time piecing information together and more time with the guest.'],
-      ['What I do','I helped take Guest Sense from early discovery into funded delivery. We mapped the paper-heavy dining workflow with crew and scoped the MVP around what they needed at the table. Now I lead requirements, backlog refinement, pilot planning, and feedback with shipboard teams, working with design, engineering, data, QA, and the teams behind our source systems.'],
-      ['Testing it onboard','We tested Guest Sense during live dining service on multiple ships. That surfaced things a conference room never would: data mismatches, connectivity limits, usability gaps, and differences between venues. I also support hands-on QA and Playwright automation as the product grows.']
+      ['What it is','GuestSense gives shipboard dining teams table-level guest context (preferences, notes, loyalty status) during live service, so crew spend less time piecing information together and more time with the guest.'],
+      ['My part','I supported discovery with the business and shipboard crew to understand the paper-heavy dining workflow, then carried the build: user stories, acceptance criteria, role definitions, and edge cases, plus backlog refinement, prioritization, and demos with F&B operations, design, engineering, data, and QA.'],
+      ['Live pilots','I planned and ran live-service pilots on multiple ships, then turned crew and leadership feedback into fixes for data mismatches, connectivity limits, usability gaps, and differences between venues.']
     ],
-    tags:'Product discovery, shipboard pilots, requirements, QA',
+    tags:'Product ownership, discovery, user stories, live pilots',
     note:'Biggest lesson from the pilots: nothing tests a design like a full dining room on a busy night.'
   },
   {
-    id:'rollouts', name:'Shipboard rollouts', role:'Field operations', year:'Ongoing', area:'Hardware & connectivity',
+    id:'qa-automation', name:'QA and test automation', role:'Built the regression suite', year:'2025 to now', area:'GuestSense mobile and tablet',
+    img:'', cap:'',
+    stats:[['27','passing Playwright tests on mobile'],['14','where the suite started']],
+    sections:[
+      ['What I built','Playwright regression automation for the GuestSense mobile and tablet workflows. I grew the passing mobile suite from 14 to 27 tests, so release checks run the same way every time.'],
+      ['Hands-on QA','I also test by hand, and I write the acceptance criteria that both the manual checks and the automated tests are built against.']
+    ],
+    tags:'Playwright, regression testing, acceptance criteria, QA',
+    note:'Every test I automate is one less thing someone has to remember to check before a release.'
+  },
+  {
+    id:'deployments', name:'Dry docks and live deployments', role:'Planned and supported', year:'2022 to now', area:'Shipboard hardware',
     img:'images/work/dry-dock-deck.jpg', cap:'Onboard during a dry dock, 2026',
     sections:[
-      ['What it is','A lot of my work happens outside the office. I help plan and support hardware deployments for Food & Beverage onboard, where it takes more than good software: the devices, the network connectivity, the data, and how all of it holds up under real operating pressure.'],
-      ['Where it happens','Some of it happens during dry docks, when a ship is out of service and every team is working on it at once. The plan has to account for all of that, not just our piece.']
+      ['Dry docks','When a ship goes into dry dock, every team is working on it at once. I plan and support Food & Beverage hardware deployments during those windows, lining up devices, network connectivity, and data with everyone else on the ship.'],
+      ['Live deployments','The rest happens while ships are in service, so the plan has to work around real operations. That includes the GuestSense pilots, beverage connectivity projects, and the fleet-wide Win On Waste and CrunchTime rollouts.']
     ],
-    tags:'Hardware deployments, network connectivity, field ops',
+    tags:'Hardware deployments, network connectivity, dry docks, field ops',
     note:'Dry dock tip: bring water, wear real shoes, and assume the Wi-Fi is a rumor.'
   },
   {
-    id:'fnb-systems', name:'F&B systems and guides', role:'Product analyst', year:'Ongoing', area:'F&B operations',
+    id:'artly', name:'Artly robotic coffee POC', role:'Led the POC', year:'', area:'Miramar office',
+    img:'', cap:'',
+    stats:[['~2,900','orders in the first two months'],['~3,500','drinks served']],
+    sections:[
+      ['What it was','A proof of concept for a robotic barista from Artly, running at our Miramar office.'],
+      ['My part','I led the POC, coordinating the vendor, Facilities, and IT to get it installed and running, then tracked how it was used.']
+    ],
+    tags:'Vendor coordination, POC, Facilities, IT',
+    note:'A robot made about 3,500 drinks at our office. I still make the cafecito.'
+  },
+  {
+    id:'wow-crunchtime', name:'Win On Waste and CrunchTime', role:'Deployments and support', year:'2022 to now', area:'Fleet-wide F&B systems',
     img:'images/work/fnb-operations.jpg', cap:'Food & Beverage Operations',
     sections:[
-      ['What it is','Guest Sense isn\u2019t the only thing I look after. I also support other Food & Beverage systems, including Win On Waste and CrunchTime.'],
-      ['What I do','Part of keeping those systems useful is documentation. I write and maintain the user guides in Confluence, so teams can find answers themselves instead of waiting on someone.']
+      ['Rollouts','As IT Project Coordinator in 2022, I coordinated fleet-wide deployments and upgrades for both systems, tracking readiness, documentation, and timelines across product and shipboard teams, and supported the Senior Product Manager on deployment planning and newbuild documentation.'],
+      ['Today','I support both systems and keep their SOPs and user guides current in Confluence and SharePoint. Earlier in this role I also built the F&B Executive Committee demo showcase.']
     ],
-    tags:'Win On Waste, CrunchTime, Confluence, support',
-    note:'A good user guide is part of the product. If people can\u2019t figure it out, it doesn\u2019t matter how well it was built.'
+    tags:'Fleet-wide deployments, upgrades, newbuilds, SOPs',
+    note:'Fleet-wide means every ship and every venue. The readiness checklist gets long.'
   }
 ];
 
@@ -1142,7 +1177,8 @@ function renderWork(){
   workBody.innerHTML=`<div class="detail${p.img?'':' no-pic'}">
     ${p.img?`<figure><img src="${p.img}" alt="${esc(p.cap)}" loading="lazy"><figcaption>${esc(p.cap)}</figcaption></figure>`:''}
     <div class="body">
-      <div><h3>${esc(p.name)}</h3><p class="small muted" style="margin-top:4px">${esc(p.role)}, ${esc(p.year)}</p></div>
+      <div><h3>${esc(p.name)}</h3><p class="small muted" style="margin-top:4px">${esc(p.company||'Royal Caribbean Group')}${p.year?', '+esc(p.year):''}</p></div>
+      ${p.stats?`<div class="kpis">${p.stats.map(([n,l])=>`<div class="kpi"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join('')}</div>`:''}
       ${p.sections.map(([h,t])=>`<div><h4>${esc(h)}</h4><p>${esc(t)}</p></div>`).join('')}
       <p class="tags">${esc(p.tags)}</p>
     </div></div>`;
