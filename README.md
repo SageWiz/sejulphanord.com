@@ -59,7 +59,7 @@ Quick facts appear in two places, Home and About. Search `Quick facts` and updat
 Search `Side projects`. Each row is a name, a one-line description (it appears twice: once for desktop, once in `what-m` for phones), and a status chip.
 
 ### Change colors
-The color tokens are at the top of the `<style>` block. `--accent` sets the blue, and there's a light value and a dark value. Change both. `--canvas` is the gray around the page on big screens, and `--gapfill` shades the narrow spacer columns.
+The color tokens are at the top of the `<style>` block. `--accent` sets the blue, and there's a light value and a dark value. Change both. Each sheet has its own color (search `SHEET COLORS`): Home purple, Work blue, Photos sunflower, About sage, Contact burgundy. `--canvas` is the tinted background around the page on big screens, and `--gapfill` shades the narrow spacer columns.
 
 ### Layout
 The sheet has 8 columns on desktop, 6 on tablets, and 4 on phones. Narrow shaded spacer columns sit between them (`--gap`), so blocks never touch. Past `PAGE_MAX` (in the script) the sheet stops growing and sits centered on a gray canvas, like Excel's Page Layout view.
@@ -67,7 +67,7 @@ The sheet has 8 columns on desktop, 6 on tablets, and 4 on phones. Narrow shaded
 ### Headers and resizing
 Click a cell and drag the blue square on its corner to resize it. It follows the pointer smoothly, then glides to the nearest whole cell when you let go. Each cell can grow or shrink by up to 2 columns and 2 rows (`LIMIT` in the script), and double-clicking the square puts it back. Nothing is saved.
 
-Header text sizes itself to its cell: any heading with `class="fit"` gets the largest font size that fits the cell's width and rows, so it grows and shrinks as the cell is resized. `data-max="120"` caps how big it can get (the default is 180px). To make another heading do this, add `class="fit"` to it.
+Big headlines use Source Serif bold italic (`--head-font`) and small titles use Cormorant italic (`--title-font`). Header text sizes itself to its cell: any heading with `class="fit"` gets the largest font size that fits the cell's width and rows, so it grows and shrinks as the cell is resized. `data-max="120"` caps how big it can get (the default is 180px). To make another heading do this, add `class="fit"` to it.
 
 ## Contact form
 The form sends through [Web3Forms](https://web3forms.com) to contact@sejulphanord.com, which Namecheap forwards to my inbox. The access key is set in `WEB3FORMS_KEY` near the top of the script. It's meant to be public.

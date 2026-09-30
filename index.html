@@ -18,7 +18,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@1,8..60,800&family=Cormorant:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
 <style>
 /* =====================================================================
    CONFIG + TOKENS
@@ -36,6 +36,10 @@
   --n:8;
   --gap:16px;
   --font:'Bricolage Grotesque',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  /* big headlines: Source Serif bold italic. Small titles: Cormorant italic.
+     Both fall back to the device's own serif if the web font can't load. */
+  --head-font:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --title-font:'Cormorant',Georgia,'Times New Roman',serif;
 
   --sheet:#ffffff;
   --chrome:#f6f7f9;
@@ -75,7 +79,7 @@
 :root[data-sheet="work"]{--acc-l:#2f5bea;--acc-d:#86a2ff;--tone:#2f5bea}
 :root[data-sheet="photos"]{--acc-l:#8a5d00;--acc-d:#f0c14b;--tone:#e5a91a}
 :root[data-sheet="about"]{--acc-l:#3f7a4c;--acc-d:#9cc9a6;--tone:#6f9f78}
-:root[data-sheet="contact"]{--acc-l:#16804f;--acc-d:#5fd39b;--tone:#1f9d63}
+:root[data-sheet="contact"]{--acc-l:#9b1d3a;--acc-d:#f08aa0;--tone:#a3223f}
 :root{
   --accent:var(--hue);
   --accent-soft:color-mix(in srgb,var(--hue) 12%,var(--sheet));
@@ -208,9 +212,14 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* headings that size themselves to their cell never break mid-word */
 .fit{overflow-wrap:normal}
 .pad{padding:18px 20px}
-.cell h1{font-size:clamp(30px,10cqi,92px);line-height:.98;font-weight:800;letter-spacing:-.025em}
-.cell h2{font-size:clamp(26px,6cqi,40px);line-height:1.05;font-weight:800;letter-spacing:-.02em}
+.cell h1{font-size:clamp(30px,10cqi,92px);line-height:1;font-family:var(--head-font);font-style:italic;font-weight:800;letter-spacing:-.015em}
+.cell h2{font-size:clamp(26px,6cqi,40px);line-height:1.05;font-family:var(--head-font);font-style:italic;font-weight:800;letter-spacing:-.01em}
 .cell h3{font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em}
+/* small titles and taglines */
+.cell h2.title,.cell h3,.sheet-head > span{font-family:var(--title-font);font-style:italic;font-weight:700;letter-spacing:0}
+.cell h2.title{font-size:30px}
+.cell h3{font-size:28px}
+.sheet-head > span{font-size:18px;font-weight:600}
 .lede{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:62ch}
 .muted{color:var(--muted)}
 .small{font-size:14px}
@@ -450,7 +459,7 @@ body::before{position:fixed;opacity:.22}
 .tab:hover{background:var(--sheet)}
 .tab[aria-selected="true"]{background:var(--sheet);color:var(--accent);font-weight:700;box-shadow:inset 0 -3px 0 var(--accent)}
 /* colored sheet tabs: every tab shows its sheet's color, the open one fills with it */
-.tab[data-tab="home"]{--t:#7c4dff}.tab[data-tab="work"]{--t:#2f5bea}.tab[data-tab="photos"]{--t:#e5a91a}.tab[data-tab="about"]{--t:#6f9f78}.tab[data-tab="contact"]{--t:#1f9d63}
+.tab[data-tab="home"]{--t:#7c4dff}.tab[data-tab="work"]{--t:#2f5bea}.tab[data-tab="photos"]{--t:#e5a91a}.tab[data-tab="about"]{--t:#6f9f78}.tab[data-tab="contact"]{--t:#a3223f}
 .tab{box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--t) 70%,transparent)}
 .tab[aria-selected="true"]{color:var(--ink);background:color-mix(in srgb,var(--t) 16%,var(--sheet));box-shadow:inset 0 -4px 0 var(--t)}
 @media (max-width:759px){.tab{padding:0 14px}.tabs{padding-left:0}}
@@ -611,7 +620,7 @@ body::before{position:fixed;opacity:.22}
     </div>
 
     <div class="cell all">
-      <div class="pad" style="padding-bottom:12px"><h2 style="font-size:26px">What I do</h2></div>
+      <div class="pad" style="padding-bottom:12px"><h2 class="title">What I do</h2></div>
       <table class="tbl does">
         <thead><tr><th scope="col">Capability</th><th scope="col">What it means</th><th scope="col">Skills</th></tr></thead>
         <tbody>
@@ -633,7 +642,7 @@ body::before{position:fixed;opacity:.22}
     </div>
 
     <div class="cell main" data-fx='=SEND(message, "Sage")'>
-      <div class="pad" style="padding-bottom:12px"><h2 style="font-size:26px">Insert a row</h2></div>
+      <div class="pad" style="padding-bottom:12px"><h2 class="title">Insert a row</h2></div>
       <form class="form" id="contactForm" novalidate>
         <div class="field"><label class="k" for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
         <div class="field"><label class="k" for="f-email">Your email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
