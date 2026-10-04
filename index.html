@@ -18,7 +18,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@1,8..60,800&display=swap" rel="stylesheet">
 <style>
 /* =====================================================================
    CONFIG + TOKENS
@@ -36,6 +36,10 @@
   --n:8;
   --gap:16px;
   --font:'Bricolage Grotesque',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  /* big headlines: Source Serif bold italic. Small titles stay in the sans-serif.
+     Both fall back to the device's own serif if the web font can't load. */
+  --head-font:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --title-font:var(--font);
 
   --sheet:#ffffff;
   --chrome:#f6f7f9;
@@ -44,12 +48,9 @@
   --ink:#1a1c20;
   --ink-2:#353944;
   --muted:#5f6573;
-  --head:#f0f3fb;
-  --accent:#2f5bea;
   --on-accent:#ffffff;
-  --accent-soft:#eef2fe;
-  --canvas:#e3e6eb;
-  --gapfill:#f3f4f7;
+  --canvas-base:#e3e6eb;
+  --hue:var(--acc-l);
   --shadow:0 8px 22px rgba(26,28,32,.12);
   --float:0 1px 2px rgba(26,28,32,.08),0 10px 28px rgba(26,28,32,.16);
   color-scheme:light;
@@ -57,21 +58,42 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --sheet:#16181d; --chrome:#1d2027; --line:#30343d; --grid:#22262e;
-    --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --head:#1f2533;
-    --accent:#86a2ff; --on-accent:#0f1220; --accent-soft:#1f2a4a;
-    --canvas:#0c0d10; --gapfill:#1a1d23; --shadow:0 8px 22px rgba(0,0,0,.45);
+    --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --on-accent:#0f1220;
+    --canvas-base:#0c0d10; --hue:var(--acc-d); --shadow:0 8px 22px rgba(0,0,0,.45);
     --float:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.55);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --sheet:#16181d; --chrome:#1d2027; --line:#30343d; --grid:#22262e;
-  --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --head:#1f2533;
-  --accent:#86a2ff; --on-accent:#0f1220; --accent-soft:#1f2a4a;
-  --canvas:#0c0d10; --gapfill:#1a1d23; --shadow:0 8px 22px rgba(0,0,0,.45);
+  --ink:#e9eaee; --ink-2:#c9ccd4; --muted:#a0a6b3; --on-accent:#0f1220;
+  --canvas-base:#0c0d10; --hue:var(--acc-d); --shadow:0 8px 22px rgba(0,0,0,.45);
   --float:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.55);
   color-scheme:dark;
 }
+/* SHEET COLORS: each sheet has its own color, like colored sheet tabs in
+   Excel. --acc-l/--acc-d are the text/button color in light/dark mode,
+   --tone is the fill color. Everything tinted is mixed from these. */
+:root{--acc-l:#2f5bea;--acc-d:#86a2ff;--tone:#2f5bea}
+:root[data-sheet="home"]{--acc-l:#6a3fd6;--acc-d:#b49bff;--tone:#7c4dff}
+:root[data-sheet="work"]{--acc-l:#2f5bea;--acc-d:#86a2ff;--tone:#2f5bea}
+:root[data-sheet="photos"]{--acc-l:#8a5d00;--acc-d:#f0c14b;--tone:#e5a91a}
+:root[data-sheet="about"]{--acc-l:#3f7a4c;--acc-d:#9cc9a6;--tone:#6f9f78}
+:root[data-sheet="contact"]{--acc-l:#9b1d3a;--acc-d:#f08aa0;--tone:#a3223f}
+:root{
+  --accent:var(--hue);
+  --accent-soft:color-mix(in srgb,var(--hue) 12%,var(--sheet));
+  --head:color-mix(in srgb,var(--tone) 9%,var(--sheet));
+  --gapfill:color-mix(in srgb,var(--tone) 8%,var(--chrome));
+  --tint:color-mix(in srgb,var(--tone) 14%,var(--sheet));
+  --canvas:color-mix(in srgb,var(--tone) 13%,var(--canvas-base));
+}
+/* the texture: a faint scatter of little icons that fits each sheet */
+:root[data-sheet="home"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%203l1.9%205.6L19.5%2010l-5.6%201.9L12%2017.5l-1.9-5.6L4.5%2010l5.6-1.4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M9%2018h6M10%2021h4M12%203a6%206%200%200%200-3.8%2010.6c.6.6.8%201.4.8%202.4h6c0-1%20.2-1.8.8-2.4A6%206%200%200%200%2012%203z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%203l1.9%205.6L19.5%2010l-5.6%201.9L12%2017.5l-1.9-5.6L4.5%2010l5.6-1.4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M9%2018h6M10%2021h4M12%203a6%206%200%200%200-3.8%2010.6c.6.6.8%201.4.8%202.4h6c0-1%20.2-1.8.8-2.4A6%206%200%200%200%2012%203z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%203l1.9%205.6L19.5%2010l-5.6%201.9L12%2017.5l-1.9-5.6L4.5%2010l5.6-1.4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="work"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M12%207.5V21M5%2012H2.5a9.5%209.5%200%200%200%2019%200H19M8%2011h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224%22%2F%3E%3Cpath%20d%3D%22M5.6%205.6l3.6%203.6M14.8%2014.8l3.6%203.6M18.4%205.6l-3.6%203.6M9.2%2014.8l-3.6%203.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M12%207.5V21M5%2012H2.5a9.5%209.5%200%200%200%2019%200H19M8%2011h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224%22%2F%3E%3Cpath%20d%3D%22M5.6%205.6l3.6%203.6M14.8%2014.8l3.6%203.6M18.4%205.6l-3.6%203.6M9.2%2014.8l-3.6%203.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M12%207.5V21M5%2012H2.5a9.5%209.5%200%200%200%2019%200H19M8%2011h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="photos"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208h4l2-3h6l2%203h4v11H3z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%223.8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208V4h4M17%204h4v4M21%2016v4h-4M7%2020H3v-4%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208h4l2-3h6l2%203h4v11H3z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%223.8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208V4h4M17%204h4v4M21%2016v4h-4M7%2020H3v-4%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208h4l2-3h6l2%203h4v11H3z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%223.8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="about"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M5%2019C5%2010%2010.5%204.5%2020%204.5%2020%2013.5%2014%2019%205%2019zM5%2019l8.5-8.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M5%2019C5%2010%2010.5%204.5%2020%204.5%2020%2013.5%2014%2019%205%2019zM5%2019l8.5-8.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="contact"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%205h16v11H10l-5%204v-4H4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%205h16v11H10l-5%204v-4H4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
 @media (max-width:1099px){:root{--n:6}}
 @media (max-width:759px){:root{--n:4;--gutter:32px;--gap:10px}}
 
@@ -190,12 +212,23 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* headings that size themselves to their cell never break mid-word */
 .fit{overflow-wrap:normal}
 .pad{padding:18px 20px}
-.cell h1{font-size:clamp(30px,10cqi,92px);line-height:.98;font-weight:800;letter-spacing:-.025em}
-.cell h2{font-size:clamp(26px,6cqi,40px);line-height:1.05;font-weight:800;letter-spacing:-.02em}
+.cell h1{font-size:clamp(30px,10cqi,92px);line-height:1;font-family:var(--head-font);font-style:italic;font-weight:800;letter-spacing:-.015em}
+.cell h2{font-size:clamp(26px,6cqi,40px);line-height:1.05;font-family:var(--head-font);font-style:italic;font-weight:800;letter-spacing:-.01em}
 .cell h3{font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em}
+/* small titles and taglines */
+.cell h2.title,.cell h3{font-family:var(--title-font);font-style:normal;font-weight:700;letter-spacing:-.01em}
+.cell h2.title{font-size:26px}
 .lede{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:62ch}
 .muted{color:var(--muted)}
 .small{font-size:14px}
+
+/* header cells: a solid light tint of the sheet color, like a filled cell.
+   Add class="textured" to a header cell to put the icon texture on it too. */
+.cell.head{isolation:isolate;background:var(--tint);border-color:color-mix(in srgb,var(--tone) 35%,var(--line))}
+.cell.head.textured::before,body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--tone);-webkit-mask:var(--texture) 0 0/200px 200px repeat;mask:var(--texture) 0 0/200px 200px repeat;opacity:.16}
+body::before{position:fixed;opacity:.22}
+.cell.head .lede,.cell.head .muted{color:color-mix(in srgb,var(--tone) 25%,var(--ink-2))}
 
 /* titled sheet header */
 .sheet-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px}
@@ -293,6 +326,12 @@ button,input,select,textarea{font:inherit;color:inherit}
 .detail h4{font-size:14px;font-weight:700;margin-bottom:2px}
 .detail p{font-size:15.5px;line-height:1.55;color:var(--ink-2)}
 .detail .tags{font-size:13px;color:var(--muted)}
+.kpis{display:flex;flex-wrap:wrap;border:1px solid var(--line);background:var(--sheet)}
+.kpi{flex:1 1 150px;padding:10px 14px;border-right:1px solid var(--grid)}
+.kpi:last-child{border-right:0}
+.kpi b{display:block;font-size:30px;line-height:1.1;font-weight:800;letter-spacing:-.02em;color:var(--accent)}
+.kpi span{font-size:13px;color:var(--muted)}
+.employer th[scope="row"]{width:30%}
 .detail.no-pic{grid-template-columns:1fr}
 .side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) minmax(0,.8fr)}
 .side-rows .row{display:grid;min-height:var(--row);border-bottom:1px solid var(--grid)}
@@ -424,6 +463,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tab{flex:none;height:48px;padding:0 20px;border:0;border-right:1px solid var(--line);background:transparent;font-size:15px;cursor:pointer;color:var(--ink)}
 .tab:hover{background:var(--sheet)}
 .tab[aria-selected="true"]{background:var(--sheet);color:var(--accent);font-weight:700;box-shadow:inset 0 -3px 0 var(--accent)}
+/* colored sheet tabs: every tab shows its sheet's color, the open one fills with it */
+.tab[data-tab="home"]{--t:#7c4dff}.tab[data-tab="work"]{--t:#2f5bea}.tab[data-tab="photos"]{--t:#e5a91a}.tab[data-tab="about"]{--t:#6f9f78}.tab[data-tab="contact"]{--t:#a3223f}
+.tab{box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--t) 70%,transparent)}
+.tab[aria-selected="true"]{color:var(--ink);background:color-mix(in srgb,var(--t) 16%,var(--sheet));box-shadow:inset 0 -4px 0 var(--t)}
 @media (max-width:759px){.tab{padding:0 14px}.tabs{padding-left:0}}
 /* keep the tab strip's edges in line with the page */
 [data-page] .tab:first-child{border-left:1px solid var(--line)}
@@ -455,7 +498,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== HOME =============================== -->
   <section class="sheet" id="home" role="tabpanel" aria-labelledby="tab-home" data-title="Sejul Phanord | Product owner and photographer">
-    <div class="cell hero pad hero-cell" data-fx='=TURN(messy_ideas, "useful products")'>
+    <div class="cell hero pad hero-cell head" data-fx='=TURN(messy_ideas, "useful products")'>
       <h1 class="fit">I turn messy ideas into useful products.</h1>
     </div>
     <div class="cell pic inserted" id="homePic" data-fx='=IMAGE("headshot.jpg")'>
@@ -490,14 +533,24 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== WORK =============================== -->
   <section class="sheet" id="work" role="tabpanel" aria-labelledby="tab-work" data-title="Work | Sejul Phanord">
-    <div class="cell main pad" data-fx="Work">
+    <div class="cell main pad head" data-fx="Work">
       <div class="sheet-head"><h2 class="fit" data-max="120">Work</h2><span class="muted small">Pick a row for the details</span></div>
-      <p class="lede" style="margin-top:8px">Most of my time goes to Food &amp; Beverage technology at Royal Caribbean: building products with crew, getting them onboard, and keeping them running.</p>
+      <p class="lede" style="margin-top:8px">Everything below is from my time at Royal Caribbean Group: the products, the testing, and the ships.</p>
+      <table class="tbl employer" style="margin-top:16px">
+        <caption class="sr-only">Current employer</caption>
+        <tbody>
+          <tr><th scope="row">Company</th><td><b>Royal Caribbean Group</b>, Miramar, FL</td></tr>
+          <tr><th scope="row">Team</th><td>Food &amp; Beverage Technology</td></tr>
+          <tr><th scope="row">Role</th><td class="wrap">Product Owner, Aug 2025 to now</td></tr>
+          <tr><th scope="row">Before that</th><td class="wrap">Product Analyst, Dec 2022 to 2024</td></tr>
+          <tr><th scope="row">Earlier</th><td class="wrap">IT Project Coordinator, Food &amp; Beverage, Jul to Dec 2022</td></tr>
+        </tbody>
+      </table>
       <aside class="comment" data-c="work"><p>I like work where the spreadsheet eventually has to survive reality. Fitting, given where you're reading this.</p></aside>
     </div>
 
     <div class="cell all proj-rows">
-      <div class="rowhead"><span>Project</span><span class="c-role">Role</span><span>Year</span><span class="c-area">Area</span><span class="c-go" aria-hidden="true"></span></div>
+      <div class="rowhead"><span>Project</span><span class="c-role">My part</span><span>When</span><span class="c-area">Area</span><span class="c-go" aria-hidden="true"></span></div>
       <ul class="rows" id="workRows"></ul>
     </div>
 
@@ -520,7 +573,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== PHOTOS =============================== -->
   <section class="sheet" id="photos" role="tabpanel" aria-labelledby="tab-photos" data-title="Photos | Sejul Phanord">
-    <div class="cell main pad" data-fx="Photos">
+    <div class="cell main pad head" data-fx="Photos">
       <div class="sheet-head"><h2 class="fit" data-max="120">Photos</h2><span class="muted small">Portraits, events, and wherever I end up</span></div>
       <p class="lede" style="margin-top:8px">A small sample of my personal work. Want to see more or plan a shoot? <a href="#contact" data-go="contact" style="color:var(--accent);font-weight:700">Send me a note.</a></p>
       <aside class="comment" data-c="photos"><p>Everything here came from one camera and one lens: a Sony a6300 with a Sigma 18-50mm. The two ship shots were my phone.</p></aside>
@@ -546,7 +599,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== ABOUT =============================== -->
   <section class="sheet" id="about" role="tabpanel" aria-labelledby="tab-about" data-title="About | Sejul Phanord">
-    <div class="cell all pad">
+    <div class="cell all pad head">
       <h1 class="h1-sub fit">I like seeing a problem through to a fix that actually works.</h1>
     </div>
 
@@ -582,7 +635,7 @@ button,input,select,textarea{font:inherit;color:inherit}
     </div>
 
     <div class="cell all">
-      <div class="pad" style="padding-bottom:12px"><h2 style="font-size:26px">What I do</h2></div>
+      <div class="pad" style="padding-bottom:12px"><h2 class="title">What I do</h2></div>
       <table class="tbl does">
         <thead><tr><th scope="col">Capability</th><th scope="col">What it means</th><th scope="col">Skills</th></tr></thead>
         <tbody>
@@ -597,14 +650,14 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   <!-- =============================== CONTACT =============================== -->
   <section class="sheet" id="contact" role="tabpanel" aria-labelledby="tab-contact" data-title="Contact | Sejul Phanord">
-    <div class="cell all pad">
+    <div class="cell all pad head">
       <h1 class="h1-sub fit">Have something interesting in mind?</h1>
       <p class="lede" style="margin-top:12px">I'm always happy to meet people working on thoughtful products, difficult operational problems, or a good creative idea. If that sounds like you, send me a note.</p>
       <p class="muted small" style="margin-top:6px">Open to product roles, consulting, and creative collaborations.</p>
     </div>
 
     <div class="cell main" data-fx='=SEND(message, "Sage")'>
-      <div class="pad" style="padding-bottom:12px"><h2 style="font-size:26px">Insert a row</h2></div>
+      <div class="pad" style="padding-bottom:12px"><h2 class="title">Insert a row</h2></div>
       <form class="form" id="contactForm" novalidate>
         <div class="field"><label class="k" for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
         <div class="field"><label class="k" for="f-email">Your email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
@@ -667,35 +720,57 @@ const WEB3FORMS_KEY = '40cd820f-655b-4967-acc5-0cd8b1965f8f';
    ===================================================================== */
 const PROJECTS = [
   {
-    id:'guest-sense', name:'Guest Sense', role:'Product Owner / Analyst', year:'2025 to now', area:'Hospitality tech',
+    id:'guestsense', name:'GuestSense', role:'Product owner', year:'2025 to now', area:'Crew-facing dining app',
     img:'images/work/guest-sense-ships.jpg', cap:'Icon and Independence of the Seas in port, 2024',
     sections:[
-      ['What it is','Guest Sense is a crew-facing product that helps dining teams quickly understand who is seated at a table and what matters for their service. It brings useful guest context into one place so crew can spend less time piecing information together and more time with the guest.'],
-      ['What I do','I helped take Guest Sense from early discovery into funded delivery. We mapped the paper-heavy dining workflow with crew and scoped the MVP around what they needed at the table. Now I lead requirements, backlog refinement, pilot planning, and feedback with shipboard teams, working with design, engineering, data, QA, and the teams behind our source systems.'],
-      ['Testing it onboard','We tested Guest Sense during live dining service on multiple ships. That surfaced things a conference room never would: data mismatches, connectivity limits, usability gaps, and differences between venues. I also support hands-on QA and Playwright automation as the product grows.']
+      ['What it is','GuestSense gives shipboard dining teams table-level guest context (preferences, notes, loyalty status) during live service, so crew spend less time piecing information together and more time with the guest.'],
+      ['My part','I supported discovery with the business and shipboard crew to understand the paper-heavy dining workflow, then carried the build: user stories, acceptance criteria, role definitions, and edge cases, plus backlog refinement, prioritization, and demos with F&B operations, design, engineering, data, and QA.'],
+      ['Live pilots','I planned and ran live-service pilots on multiple ships, then turned crew and leadership feedback into fixes for data mismatches, connectivity limits, usability gaps, and differences between venues.']
     ],
-    tags:'Product discovery, shipboard pilots, requirements, QA',
+    tags:'Product ownership, discovery, user stories, live pilots',
     note:'Biggest lesson from the pilots: nothing tests a design like a full dining room on a busy night.'
   },
   {
-    id:'rollouts', name:'Shipboard rollouts', role:'Field operations', year:'Ongoing', area:'Hardware & connectivity',
+    id:'qa-automation', name:'QA and test automation', role:'Hands-on QA and automation', year:'2023 to now', area:'xDining, then GuestSense',
+    img:'', cap:'',
+    sections:[
+      ['xDining','Next, I moved into QA on xDining from 2023 to 2024. Being the one who finds the problems changed how I write requirements.'],
+      ['GuestSense','As product owner, I still own QA for GuestSense. I built Playwright regression automation for the mobile and tablet workflows, growing the passing mobile suite with each version, and I write the acceptance criteria that both the manual and automated checks are built against.']
+    ],
+    tags:'QA, Playwright, regression testing, acceptance criteria',
+    note:'Every test I automate is one less thing someone has to remember to check before a release.'
+  },
+  {
+    id:'deployments', name:'Dry docks and live deployments', role:'Planned and supported', year:'2024 to now', area:'Shipboard hardware',
     img:'images/work/dry-dock-deck.jpg', cap:'Onboard during a dry dock, 2026',
     sections:[
-      ['What it is','A lot of my work happens outside the office. I help plan and support hardware deployments for Food & Beverage onboard, where it takes more than good software: the devices, the network connectivity, the data, and how all of it holds up under real operating pressure.'],
-      ['Where it happens','Some of it happens during dry docks, when a ship is out of service and every team is working on it at once. The plan has to account for all of that, not just our piece.']
+      ['Dry docks','When a ship goes into dry dock, every team is working on it at once. I plan and support Food & Beverage hardware deployments during those windows, lining up devices, network connectivity, and data with everyone else on the ship.'],
+      ['Live deployments','The rest happens while ships are in service, so the plan has to work around real operations, like the live GuestSense pilots.']
     ],
-    tags:'Hardware deployments, network connectivity, field ops',
+    tags:'Hardware deployments, network connectivity, dry docks, field ops',
     note:'Dry dock tip: bring water, wear real shoes, and assume the Wi-Fi is a rumor.'
   },
   {
-    id:'fnb-systems', name:'F&B systems and guides', role:'Product analyst', year:'Ongoing', area:'F&B operations',
-    img:'images/work/fnb-operations.jpg', cap:'Food & Beverage Operations',
+    id:'artly', name:'Artly robotic barista', role:'Led the PoC', year:'2024 to Jul 2026', area:'Miramar office',
+    img:'', cap:'',
+    stats:[['7,891','orders during the PoC'],['9,224','items sold']],
     sections:[
-      ['What it is','Guest Sense isn\u2019t the only thing I look after. I also support other Food & Beverage systems, including Win On Waste and CrunchTime.'],
-      ['What I do','Part of keeping those systems useful is documentation. I write and maintain the user guides in Confluence, so teams can find answers themselves instead of waiting on someone.']
+      ['What it was','A 90-day trial of Artly’s robotic barista at our Miramar office, to see whether a robot could run a real coffee station for RCG.'],
+      ['Getting it live','I wrote the project plan, trial scope, and architecture docs, and coordinated every approval it needed: the security review, firewall rules and network access, legal and procurement for the trial agreement, and Facilities for placement, plumbing, power, and storage for dairy, syrups, and cups.'],
+      ['Running it','Once it was serving, I wrote the support documentation and an SLA/OLA covering escalation paths and who owns what, and worked through the day-to-day issues any busy coffee station runs into.'],
+      ['What came next','The PoC turned into a commercial evaluation. I built a five-year cost model and helped define an operating model for a wider rollout, including what the vendor would own and what we would.']
     ],
-    tags:'Win On Waste, CrunchTime, Confluence, support',
-    note:'A good user guide is part of the product. If people can\u2019t figure it out, it doesn\u2019t matter how well it was built.'
+    tags:'Vendor management, security review, networking, SLAs, cost modeling',
+    note:'A robot sold over 9,000 drinks at our office. I still make the cafecito.'
+  },
+  {
+    id:'wow-crunchtime', name:'Win On Waste and CrunchTime', role:'Where I started', year:'2022 to 2023', area:'First product role',
+    img:'', cap:'',
+    sections:[
+      ['Where I started','My first product role: It was a fast, steep introduction to how product work really runs onboard. Coordinated upgrades for one application and worked on assisting with rollout for the other.']
+    ],
+    tags:'Deployments, upgrades, first product role',
+    note:'My trial by fire. A lot of the questions I ask now, I learned to ask here.'
   }
 ];
 
@@ -1052,6 +1127,7 @@ function show(id,{focus=false,push=true}={}){
   TABS.forEach(t=>{ const s=document.getElementById(t); s.hidden = t!==id; });
   tabBtns.forEach(b=>{const on=b.dataset.tab===id; b.setAttribute('aria-selected',on); b.tabIndex=on?0:-1; if(on&&focus) b.focus();});
   const sheet=document.getElementById(id);
+  document.documentElement.dataset.sheet=id;
   document.title=sheet.dataset.title;
   if(push && location.hash!=='#'+id) history.pushState(null,'','#'+id);
   window.scrollTo(0,0);
@@ -1102,7 +1178,8 @@ function renderWork(){
   workBody.innerHTML=`<div class="detail${p.img?'':' no-pic'}">
     ${p.img?`<figure><img src="${p.img}" alt="${esc(p.cap)}" loading="lazy"><figcaption>${esc(p.cap)}</figcaption></figure>`:''}
     <div class="body">
-      <div><h3>${esc(p.name)}</h3><p class="small muted" style="margin-top:4px">${esc(p.role)}, ${esc(p.year)}</p></div>
+      <div><h3>${esc(p.name)}</h3><p class="small muted" style="margin-top:4px">${esc(p.company||'Royal Caribbean Group')}${p.year?', '+esc(p.year):''}</p></div>
+      ${p.stats?`<div class="kpis">${p.stats.map(([n,l])=>`<div class="kpi"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join('')}</div>`:''}
       ${p.sections.map(([h,t])=>`<div><h4>${esc(h)}</h4><p>${esc(t)}</p></div>`).join('')}
       <p class="tags">${esc(p.tags)}</p>
     </div></div>`;
