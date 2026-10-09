@@ -34,7 +34,8 @@
   --row:44px;
   --gutter:48px;
   --n:8;
-  --gap:16px;
+  --gap:6px;
+  --P:160px;   /* one column plus its spacer, in px; set by the script to match the screen */
   --font:'Bricolage Grotesque',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
   /* big headlines: Source Serif bold italic. Small titles stay in the sans-serif.
      Both fall back to the device's own serif if the web font can't load. */
@@ -95,7 +96,7 @@
 :root[data-sheet="about"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M5%2019C5%2010%2010.5%204.5%2020%204.5%2020%2013.5%2014%2019%205%2019zM5%2019l8.5-8.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M5%2019C5%2010%2010.5%204.5%2020%204.5%2020%2013.5%2014%2019%205%2019zM5%2019l8.5-8.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
 :root[data-sheet="contact"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%205h16v11H10l-5%204v-4H4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%205h16v11H10l-5%204v-4H4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
 @media (max-width:1099px){:root{--n:6}}
-@media (max-width:759px){:root{--n:4;--gutter:32px;--gap:10px}}
+@media (max-width:759px){:root{--n:4;--gutter:32px;--gap:4px}}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
@@ -196,9 +197,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 [data-tier="sm"] .preview-cell{display:none}
 
 /* a cell block */
-.cell{position:relative;background:var(--sheet);border:1px solid var(--line);min-width:0;cursor:cell;container-type:inline-size}
-.cell.plain{border-color:transparent}
-.cell.sel{box-shadow:inset 0 0 0 2px var(--accent)}
+.cell{position:relative;background:var(--sheet);outline:1px solid var(--line);outline-offset:-1px;min-width:0;cursor:cell;container-type:inline-size}
+.cell.plain{outline-color:transparent}
+.cell.sel{outline:2px solid var(--accent);outline-offset:-2px}
 .grab{position:absolute;right:-7px;bottom:-7px;width:13px;height:13px;background:var(--accent);border:2px solid var(--sheet);z-index:6;cursor:nwse-resize;touch-action:none}
 .grab::before{content:"";position:absolute;inset:-12px}
 .grab:hover{transform:scale(1.25)}
@@ -206,7 +207,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .cell.resized{overflow-wrap:anywhere}
 /* resizing: the cell follows the pointer, lifts while you drag, then
    glides to the nearest whole cell when you let go */
-.cell.dragging{z-index:9;box-shadow:var(--float),inset 0 0 0 2px var(--accent)}
+.cell.dragging{z-index:9;box-shadow:var(--float)}
 .cell.settling{z-index:9;transition:width .24s cubic-bezier(.2,.8,.2,1),min-height .24s cubic-bezier(.2,.8,.2,1)}
 .cell.settling .fit{transition:font-size .24s cubic-bezier(.2,.8,.2,1)}
 /* headings that size themselves to their cell never break mid-word */
@@ -224,11 +225,17 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* header cells: a solid light tint of the sheet color, like a filled cell.
    Add class="textured" to a header cell to put the icon texture on it too. */
-.cell.head{isolation:isolate;background:var(--tint);border-color:color-mix(in srgb,var(--tone) 35%,var(--line))}
+.cell.head{isolation:isolate;background:var(--tint)}
+.cell.head:not(.sel){outline-color:color-mix(in srgb,var(--tone) 35%,var(--line))}
 .cell.head.textured::before,body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:var(--tone);-webkit-mask:var(--texture) 0 0/200px 200px repeat;mask:var(--texture) 0 0/200px 200px repeat;opacity:.16}
 body::before{position:fixed;opacity:.22}
 .cell.head .lede,.cell.head .muted{color:color-mix(in srgb,var(--tone) 25%,var(--ink-2))}
+
+/* one-line cells: a single row when the text fits on one line */
+.cell.line{display:flex;align-items:center;padding:8px 20px}
+/* a title row on top of a table, exactly one row tall */
+.title-row{display:flex;align-items:center;min-height:var(--row);padding:0 20px}
 
 /* titled sheet header */
 .sheet-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px}
@@ -243,13 +250,19 @@ body::before{position:fixed;opacity:.22}
 /* =====================================================================
    TABLES (spreadsheet look, real table semantics)
    ===================================================================== */
-.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:15px}
 .tbl th,.tbl td{border-bottom:1px solid var(--grid);border-right:1px solid var(--grid);padding:0 12px;height:var(--row);text-align:left;vertical-align:middle}
 .tbl tr > :last-child{border-right:0}
 .tbl thead th{background:var(--head);font-weight:700;border-bottom:1px solid var(--line)}
-.tbl th[scope="row"]{background:var(--head);font-weight:700;width:34%;color:var(--ink)}
+.tbl th[scope="row"]{background:var(--head);font-weight:700;color:var(--ink)}
+/* Column widths are whole sheet columns (--P), so a table's inner lines
+   carry on the sheet's own gridlines. The first column ends at a column's
+   right edge, hence "- var(--gap) + 1px". */
+:root{--c1:calc(var(--P) - var(--gap) + 1px);--c2:calc(var(--P) * 2 - var(--gap) + 1px);--c3:calc(var(--P) * 3 - var(--gap) + 1px);--c4:calc(var(--P) * 4 - var(--gap) + 1px)}
+.tbl.kv{table-layout:fixed}
+.tbl.kv tr > :first-child{width:var(--c1)}
+[data-tier="sm"] .tbl.kv tr > :first-child{width:var(--c2)}
 .tbl td.wrap,.tbl th.wrap{height:auto;padding-top:10px;padding-bottom:10px}
-.tbl tbody tr:last-child > *{border-bottom:0}
 .chip{display:inline-block;font-size:13px;background:var(--chrome);border:1px solid var(--line);border-radius:12px;padding:1px 10px;white-space:nowrap}
 
 /* clickable list rows (projects, photos) */
@@ -268,12 +281,12 @@ body::before{position:fixed;opacity:.22}
 .truncate{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* inserted image (with selection handles) */
-.inserted{padding:0;border:0;background:transparent}
+.cell.inserted{padding:0;outline:0;background:transparent}
 .inserted figure{position:relative;border:2px solid var(--accent);background:var(--sheet)}
 .inserted figure i{position:absolute;width:9px;height:9px;border:1.5px solid var(--accent);background:var(--sheet)}
 .inserted figure i:nth-of-type(1){left:-5px;top:-5px}.inserted figure i:nth-of-type(2){right:-5px;top:-5px}
 .inserted figure i:nth-of-type(3){left:-5px;bottom:-5px}.inserted figure i:nth-of-type(4){right:-5px;bottom:-5px}
-.inserted img{width:100%;height:auto}
+.inserted img{width:100%;height:auto;object-fit:cover}
 .inserted figcaption{padding:8px 12px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
 
 /* =====================================================================
@@ -316,7 +329,9 @@ body::before{position:fixed;opacity:.22}
 /* =====================================================================
    WORK
    ===================================================================== */
-.proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1.3fr) 44px}
+.proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,var(--c3)) minmax(0,calc(var(--P) * 2)) minmax(0,var(--P)) minmax(0,1fr) 44px}
+[data-tier="md"] .proj-rows .rowbtn,[data-tier="md"] .proj-rows .rowhead{grid-template-columns:minmax(0,var(--c2)) minmax(0,calc(var(--P) * 2)) minmax(0,1fr) 44px}
+[data-tier="md"] .proj-rows .c-area{display:none!important}
 .proj-rows .rowbtn{font-size:16px}
 .proj-rows .rowbtn .name{font-weight:700}
 .detail{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px;padding:20px}
@@ -331,22 +346,23 @@ body::before{position:fixed;opacity:.22}
 .kpi:last-child{border-right:0}
 .kpi b{display:block;font-size:30px;line-height:1.1;font-weight:800;letter-spacing:-.02em;color:var(--accent)}
 .kpi span{font-size:13px;color:var(--muted)}
-.employer th[scope="row"]{width:30%}
 .detail.no-pic{grid-template-columns:1fr}
-.side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) minmax(0,.8fr)}
+.side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,var(--c1)) minmax(0,calc(var(--P) * 3)) minmax(0,1fr)}
+[data-tier="md"] .side-rows .rowhead,[data-tier="md"] .side-rows .row{grid-template-columns:minmax(0,var(--c1)) minmax(0,calc(var(--P) * 2)) minmax(0,1fr)}
 .side-rows .row{display:grid;min-height:var(--row);border-bottom:1px solid var(--grid)}
 .side-rows .row > span{display:flex;align-items:center;padding:8px 12px;border-right:1px solid var(--grid);min-width:0}
 .side-rows .row > span:last-child{border-right:0}
 @media (max-width:759px){
-  .proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.8fr) 36px}
+  .proj-rows .rowbtn,.proj-rows .rowhead{grid-template-columns:minmax(0,var(--c2)) minmax(0,1fr) 36px}
   .proj-rows .c-role,.proj-rows .c-area{display:none!important}
   .detail{grid-template-columns:1fr;padding:14px}
-  .side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,1fr) minmax(0,.6fr)}
+  .side-rows .rowhead,.side-rows .row{grid-template-columns:minmax(0,var(--c2)) minmax(0,1fr)}
   .side-rows .c-what{display:none!important}
   .side-rows .row .what-m{display:block}
 }
-.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,2fr) minmax(0,1.5fr) minmax(0,1fr) 44px}
-@media (max-width:759px){.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,1fr) minmax(0,.7fr) 36px}.home-rows .c-role{display:none!important}}
+.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,var(--c4)) minmax(0,calc(var(--P) * 3)) minmax(0,1fr) 44px}
+[data-tier="md"] .home-rows .rowbtn,[data-tier="md"] .home-rows .rowhead{grid-template-columns:minmax(0,var(--c2)) minmax(0,calc(var(--P) * 2)) minmax(0,1fr) 44px}
+@media (max-width:759px){.home-rows .rowbtn,.home-rows .rowhead{grid-template-columns:minmax(0,var(--c2)) minmax(0,1fr) 36px}.home-rows .c-role{display:none!important}}
 /* the little dropdown-style arrow at the end of each work row: a hint
    that the row opens. It points down on the project that's open. */
 .rowbtn > span.c-go{justify-content:center;padding:0}
@@ -363,7 +379,7 @@ body::before{position:fixed;opacity:.22}
 /* =====================================================================
    PHOTOS
    ===================================================================== */
-.photo-rows .rowbtn,.photo-rows .rowhead{grid-template-columns:88px minmax(0,2.2fr) minmax(0,1fr) 72px minmax(0,1.3fr)}
+.photo-rows .rowbtn,.photo-rows .rowhead{grid-template-columns:88px minmax(0,calc(var(--c2) - 88px)) minmax(0,var(--P)) minmax(0,var(--P)) minmax(0,1fr)}
 .photo-rows .rowbtn{min-height:calc(var(--row) * 2)}
 .photo-rows .rowbtn .th{justify-content:center;padding:0}
 .photo-rows .rowbtn .th img{width:72px;height:72px;object-fit:cover}
@@ -373,7 +389,7 @@ body::before{position:fixed;opacity:.22}
 .filter select{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:var(--sheet) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 8px center;border-radius:3px;padding:3px 26px 3px 8px;font-size:14px;font-weight:500;cursor:pointer}
 .filterbar{min-height:var(--row);padding:0 12px;border-bottom:1px solid var(--line);font-size:14px;font-weight:700;background:var(--chrome)}
 .rowhead > span.sortcell{padding:0}
-.sortbtn{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;height:100%;min-height:var(--row);padding:0 12px;border:0;background:transparent;font-weight:700;font-size:15px;text-align:left;cursor:pointer}
+.sortbtn{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;height:100%;min-height:calc(var(--row) - 1px);padding:0 12px;border:0;background:transparent;font-weight:700;font-size:15px;text-align:left;cursor:pointer}
 .sortbtn:hover{background:var(--accent-soft)}
 .sortbtn i{width:10px;height:12px;flex:none;opacity:.28;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 12'%3E%3Cpath d='M5 1 2 4.5h6zM5 11 2 7.5h6z' fill='%23667'/%3E%3C/svg%3E")}
 .sortbtn:hover i{opacity:.6}
@@ -381,7 +397,7 @@ body::before{position:fixed;opacity:.22}
 .sortbtn[data-dir="asc"]{--arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 12'%3E%3Cpath d='M5 2 1 8h8z'/%3E%3C/svg%3E")}
 .sortbtn[data-dir="desc"]{--arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 12'%3E%3Cpath d='M5 10 1 4h8z'/%3E%3C/svg%3E")}
 .sortbtn[data-dir]{color:var(--accent)}
-.count{padding:10px 12px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+.count{display:flex;align-items:center;min-height:var(--row);padding:0 12px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
 .preview{position:sticky;top:96px}
 /* the preview frame takes the photo's own shape: no bars, no cropping */
 .preview figure{max-width:100%}
@@ -390,12 +406,12 @@ body::before{position:fixed;opacity:.22}
 .preview .meta b{font-size:18px}
 .preview .meta .btn{margin-top:10px;align-self:flex-start;min-height:40px}
 @media (max-width:1099px){
-  .photo-rows .rowbtn,.photo-rows .rowhead{grid-template-columns:80px minmax(0,2fr) minmax(0,1fr) 64px}
+  .photo-rows .rowbtn,.photo-rows .rowhead{grid-template-columns:80px minmax(0,calc(var(--c2) - 80px)) minmax(0,var(--P)) minmax(0,1fr)}
   .photo-rows .c-cam{display:none!important}
 }
 @media (max-width:759px){
   .preview-cell{display:none}
-  .photo-rows .rowbtn,.photo-rows .rowhead{grid-template-columns:72px minmax(0,1fr) 56px}
+  .photo-rows .rowbtn,.photo-rows .rowhead{grid-template-columns:72px minmax(0,calc(var(--c3) - 72px)) minmax(0,1fr)}
   .photo-rows .c-type{display:none!important}
   .photo-rows .rowbtn .th img{width:60px;height:60px}
   .photo-rows .t-sub{display:block}
@@ -425,8 +441,12 @@ body::before{position:fixed;opacity:.22}
 .story p{font-size:17px;line-height:1.6;color:var(--ink-2);max-width:66ch}
 .story p + p{margin-top:12px}
 .does td,.does th{font-size:15px}
-.does td:first-child{font-weight:700;width:26%}
-.does td:last-child{color:var(--muted);width:26%}
+.tbl.does{table-layout:fixed}
+.does td:first-child{font-weight:700}
+.does td:last-child{color:var(--muted)}
+.does thead th:first-child{width:var(--c2)}
+.does thead th:nth-child(2){width:calc(var(--P) * 4)}
+[data-tier="md"] .does thead th:nth-child(2){width:calc(var(--P) * 2)}
 @media (max-width:759px){
   .does thead{display:none}
   .does tr{display:block;border-bottom:1px solid var(--line);padding:12px 0}
@@ -436,22 +456,22 @@ body::before{position:fixed;opacity:.22}
 /* =====================================================================
    CONTACT
    ===================================================================== */
-.form .field{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);border-bottom:1px solid var(--grid)}
-.form label.k{display:flex;align-items:center;padding:0 12px;background:var(--head);font-weight:700;font-size:15px;border-right:1px solid var(--grid);min-height:var(--row)}
-.form input,.form select,.form textarea{width:100%;border:0;background:var(--sheet);padding:0 12px;min-height:var(--row);font-size:16px;border-radius:0}
-.form textarea{padding:12px;min-height:calc(var(--row) * 4);resize:vertical;line-height:1.5}
+.form .field{display:grid;grid-template-columns:minmax(0,var(--c1)) minmax(0,1fr);border-bottom:1px solid var(--grid)}
+.form label.k{display:flex;align-items:center;padding:0 12px;background:var(--head);font-weight:700;font-size:15px;border-right:1px solid var(--grid);min-height:calc(var(--row) - 1px)}
+.form input,.form select,.form textarea{width:100%;border:0;background:var(--sheet);padding:0 12px;min-height:calc(var(--row) - 1px);font-size:16px;border-radius:0}
+.form textarea{padding:12px;min-height:calc(var(--row) * 4 - 1px);resize:vertical;line-height:1.5}
 .form input:focus-visible,.form select:focus-visible,.form textarea:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .form .field.bad label.k{color:#c0392b}
 .form .err{grid-column:2;font-size:13px;color:#c0392b;padding:0 12px 8px}
 :root[data-theme="dark"] .form .err,:root[data-theme="dark"] .form .field.bad label.k{color:#ff8a7a}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .form .err,:root:not([data-theme="light"]) .form .field.bad label.k{color:#ff8a7a}}
-.form .send{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px}
+.form .send{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:0 12px;min-height:calc(var(--row) * 2)}
 .form .status{font-size:14px;color:var(--muted)}
 .form .status.ok{color:var(--ink);font-weight:600}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 @media (max-width:759px){
   .form .field{grid-template-columns:1fr}
-  .form label.k{min-height:36px;border-right:0}
+  .form label.k{min-height:var(--row);border-right:0}
   .form .err{grid-column:1}
 }
 
@@ -515,8 +535,7 @@ body::before{position:fixed;opacity:.22}
     </div>
 
     <div class="cell main">
-      <table class="tbl">
-        <caption class="sr-only">Quick facts</caption>
+      <table class="tbl kv" aria-label="Quick facts">
         <tbody>
           <tr><th scope="row">Based in</th><td>South Florida</td></tr>
           <tr><th scope="row">Currently</th><td class="wrap">Product Owner, Food &amp; Beverage Technology at Royal Caribbean Group</td></tr>
@@ -536,8 +555,10 @@ body::before{position:fixed;opacity:.22}
     <div class="cell main pad head" data-fx="Work">
       <div class="sheet-head"><h2 class="fit" data-max="120">Work</h2><span class="muted small">Pick a row for the details</span></div>
       <p class="lede" style="margin-top:8px">Everything below is from my time at Royal Caribbean Group: the products, the testing, and the ships.</p>
-      <table class="tbl employer" style="margin-top:16px">
-        <caption class="sr-only">Current employer</caption>
+      <aside class="comment" data-c="work"><p>I like work where the spreadsheet eventually has to survive reality. Fitting, given where you're reading this.</p></aside>
+    </div>
+    <div class="cell main">
+      <table class="tbl kv employer" aria-label="Current employer">
         <tbody>
           <tr><th scope="row">Company</th><td><b>Royal Caribbean Group</b>, Miramar, FL</td></tr>
           <tr><th scope="row">Team</th><td>Food &amp; Beverage Technology</td></tr>
@@ -546,7 +567,6 @@ body::before{position:fixed;opacity:.22}
           <tr><th scope="row">Earlier</th><td class="wrap">IT Project Coordinator, Food &amp; Beverage, Jul to Dec 2022</td></tr>
         </tbody>
       </table>
-      <aside class="comment" data-c="work"><p>I like work where the spreadsheet eventually has to survive reality. Fitting, given where you're reading this.</p></aside>
     </div>
 
     <div class="cell all proj-rows">
@@ -566,7 +586,7 @@ body::before{position:fixed;opacity:.22}
       <aside class="comment" data-c="side"><p>hellasage.com is where the experiments live. This site is the tidy one.</p></aside>
     </div>
 
-    <div class="cell main pad" data-fx='=HYPERLINK("Sejul-Phanord-CV.docx")'>
+    <div class="cell main line" data-fx='=HYPERLINK("Sejul-Phanord-CV.docx")'>
       <p>Want the full résumé? <a href="Sejul-Phanord-CV.docx" download style="color:var(--accent);font-weight:700">Download my CV</a> or send me a note from the Contact tab.</p>
     </div>
   </section>
@@ -607,8 +627,7 @@ body::before{position:fixed;opacity:.22}
       <figure><img src="images/about-portrait.jpg" alt="Sage checking his phone on a parking deck at golden hour" width="1294" height="924" loading="lazy"><i></i><i></i><i></i><i></i><figcaption>On a parking deck at golden hour</figcaption></figure>
     </div>
     <div class="cell facts-col">
-      <table class="tbl">
-        <caption class="sr-only">Quick facts</caption>
+      <table class="tbl kv" aria-label="Quick facts">
         <tbody>
           <tr><th scope="row">Location</th><td>South Florida</td></tr>
           <tr><th scope="row">Currently</th><td class="wrap">Product Owner, Food &amp; Beverage Technology at Royal Caribbean Group</td></tr>
@@ -635,7 +654,7 @@ body::before{position:fixed;opacity:.22}
     </div>
 
     <div class="cell all">
-      <div class="pad" style="padding-bottom:12px"><h2 class="title">What I do</h2></div>
+      <div class="title-row"><h2 class="title">What I do</h2></div>
       <table class="tbl does">
         <thead><tr><th scope="col">Capability</th><th scope="col">What it means</th><th scope="col">Skills</th></tr></thead>
         <tbody>
@@ -657,7 +676,7 @@ body::before{position:fixed;opacity:.22}
     </div>
 
     <div class="cell main" data-fx='=SEND(message, "Sage")'>
-      <div class="pad" style="padding-bottom:12px"><h2 class="title">Insert a row</h2></div>
+      <div class="title-row"><h2 class="title">Insert a row</h2></div>
       <form class="form" id="contactForm" novalidate>
         <div class="field"><label class="k" for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
         <div class="field"><label class="k" for="f-email">Your email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
@@ -671,8 +690,7 @@ body::before{position:fixed;opacity:.22}
     </div>
 
     <div class="cell main">
-      <table class="tbl">
-        <caption class="sr-only">Other places to find me</caption>
+      <table class="tbl kv" aria-label="Other places to find me">
         <thead><tr><th scope="col">Elsewhere</th><th scope="col">Where</th></tr></thead>
         <tbody>
           <tr><td><b>LinkedIn</b></td><td><a href="https://www.linkedin.com/in/sejul-phanord/" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">in/sejul-phanord<span class="sr-only"> (opens in a new tab)</span></a></td></tr>
@@ -682,7 +700,7 @@ body::before{position:fixed;opacity:.22}
       </table>
     </div>
 
-    <div class="cell all pad plain small muted">&copy; <span id="yr">2026</span> Sejul Phanord. Built as a spreadsheet, on purpose.</div>
+    <div class="cell all line plain small muted">&copy; <span id="yr">2026</span> Sejul Phanord. Built as a spreadsheet, on purpose.</div>
   </section>
 
   </div>
@@ -857,20 +875,21 @@ document.addEventListener('click',e=>{
 const gutter=$('#gutter');
 function snap(sheet){
   if(!sheet || sheet.hidden) return;
-  // table rows that wrap get rounded up to whole rows too
-  $$('.tbl tbody tr, .side-rows .row',sheet).forEach(r=>{
-    r.style.height='';
-    const h=r.getBoundingClientRect().height;
-    if(h>ROW+1) r.style.height=Math.ceil((h-0.5)/ROW)*ROW+'px';
+  snapRows(sheet);
+  // pictures on the sheet are trimmed (a few pixels at most) to fill whole rows
+  $$('.cell.pic figure > img',sheet).forEach(img=>{
+    img.style.height='';
+    if(!img.complete||!img.naturalWidth) return;
+    const H=img.closest('figure').getBoundingClientRect().height, ih=img.getBoundingClientRect().height;
+    img.style.height=(ih+Math.max(1,Math.round(H/ROW))*ROW-H)+'px';
   });
   $$(':scope > .cell',sheet).forEach(c=>{
     if(c.classList.contains('dragging')||c.classList.contains('settling')) return;
     const f=$('.fit',c);
-    if(f){ c.style.minHeight=fitCell(c,f)*ROW+'px'; return; }
-    c.style.minHeight='';
+    if(f){ setRows(c,fitCell(c,f)); return; }
+    c.style.minHeight=''; c.style.height='';
     const h=c.getBoundingClientRect().height;
-    const rows=Math.max(1,Math.ceil((h-0.5)/ROW), +(c.dataset.userRows||0));
-    c.style.minHeight=rows*ROW+'px';
+    setRows(c,Math.max(1,Math.ceil((h-1)/ROW), +(c.dataset.userRows||0)));
   });
   const rows=Math.ceil(sheet.scrollHeight/ROW)+2;
   if(gutter.childElementCount!==rows+1){
@@ -878,6 +897,22 @@ function snap(sheet){
     gutter.innerHTML=html;
   }
   placeComments(sheet);
+}
+/* Table rows, list rows and form fields that wrap get rounded up to whole rows too. */
+function snapRows(scope){
+  $$('.tbl tbody tr, .side-rows .row, .rowbtn, .form .field',scope).forEach(r=>{
+    r.style.height='';
+    const h=r.getBoundingClientRect().height;
+    const k=Math.max(1,Math.ceil((h-1)/ROW));
+    if(Math.abs(h-k*ROW)>0.01) r.style.height=k*ROW+'px';
+  });
+}
+/* A cell is always a whole number of rows. If its content runs a fraction
+   of a pixel past them, pin the height so the rows below stay on the grid. */
+function setRows(c,rows){
+  const px=rows*ROW;
+  c.style.minHeight=px+'px'; c.style.height='';
+  if(c.getBoundingClientRect().height>px+0.01) c.style.height=px+'px';
 }
 const activeSheet=()=>$('.sheet:not([hidden])');
 
@@ -898,7 +933,7 @@ function contentH(cell,kids){
 const flowKids=cell=>[...cell.children].filter(k=>getComputedStyle(k).position!=='absolute');
 function fitText(cell,el,H){
   const kids=flowKids(cell), box=el.parentElement===cell?null:el.parentElement;
-  const ok=()=>contentH(cell,kids)<=H+0.5 && el.scrollWidth<=el.clientWidth+1 && (!box||box.scrollWidth<=box.clientWidth+1);
+  const ok=()=>contentH(cell,kids)<=H+0.01 && el.scrollWidth<=el.clientWidth+1 && (!box||box.scrollWidth<=box.clientWidth+1);
   const set=v=>{ el.style.fontSize=v+'px'; };
   let lo=FIT_MIN, hi=+el.dataset.max||FIT_MAX;
   set(hi); if(ok()) return hi;
@@ -910,12 +945,12 @@ function fitText(cell,el,H){
 /* A header cell keeps its natural number of rows (or the rows someone
    dragged it to), and the text grows to fill them. Returns the rows used. */
 function fitCell(c,f){
-  f.style.fontSize=''; c.style.minHeight='';
+  f.style.fontSize=''; c.style.minHeight=''; c.style.height='';
   const natural=Math.max(1,Math.ceil((c.getBoundingClientRect().height-0.5)/ROW));
   const rows=+c.dataset.userRows||natural;
   c.style.minHeight=rows*ROW+'px';
   fitText(c,f,rows*ROW);
-  return Math.max(rows,Math.ceil((contentH(c,flowKids(c))-0.5)/ROW));
+  return Math.max(rows,Math.ceil((contentH(c,flowKids(c))-1)/ROW));
 }
 
 let snapT; const reSnap=()=>{clearTimeout(snapT);snapT=setTimeout(()=>snap(activeSheet()),60)};
@@ -936,6 +971,9 @@ function layout(){
   if(page) root.dataset.page=''; else delete root.dataset.page;
   root.style.setProperty('--pagew',pagew+'px');
   root.style.setProperty('--pagex',Math.max(0,(vw-pagew)/2)+'px');
+  // one column plus its spacer, so tables can size their columns to the sheet's
+  const gap=parseFloat(getComputedStyle(root).getPropertyValue('--gap'))||0;
+  root.style.setProperty('--P',(w-gap)/n+'px');
   if(n!==lastN){
     root.style.setProperty('--n',n);
     let L=''; for(let i=0;i<n;i++) L+='<span class="sp"></span><span>'+colLetter(i)+'</span>';
@@ -963,7 +1001,7 @@ window.addEventListener('load',reSnap);
 const LIMIT=2;
 function resetCell(c){
   clearTimeout(c._settle);
-  c.style.gridColumn=''; c.style.width='';
+  c.style.gridColumn=''; c.style.width=''; c.style.height='';
   delete c.dataset.userRows; delete c.dataset.span0; delete c.dataset.rows0;
   c.classList.remove('resized','dragging','settling');
 }
@@ -994,8 +1032,10 @@ document.addEventListener('pointerdown',e=>{
   const paint=()=>{
     raf=0;
     cell.style.gridColumn=startCol+' / span '+cover(W);
-    cell.style.width=W+'px'; cell.style.minHeight=H+'px';
-    if(fit) fitText(cell,fit,H);
+    cell.style.width=W+'px'; cell.style.height='';
+    // headers take the height you drag to; everything else is as tall as its content
+    cell.style.minHeight=fit?H+'px':'';
+    if(fit) fitText(cell,fit,H); else snapRows(cell);
     setFx(cellRef(cell),fx);
   };
   const move=ev=>{
@@ -1010,22 +1050,30 @@ document.addEventListener('pointerdown',e=>{
     document.body.classList.remove('resizing');
     if(raf){ cancelAnimationFrame(raf); paint(); }
     if(!moved){ if(!wasResized) resetCell(cell); return; }
-    const span=clamp(Math.round((W+gap)/P),spanMin,spanMax), rows=clamp(Math.round(H/ROW),rowMin,rowMax);
-    const tw=span*P-gap, th=rows*ROW;
-    let fs;
+    const span=clamp(Math.round((W+gap)/P),spanMin,spanMax);
+    const tw=span*P-gap;
+    let rows=clamp(Math.round(H/ROW),rowMin,rowMax), fs;
+    if(!fit){
+      // a table, text or picture cell: its rows come from its content at the final width
+      const now=cell.getBoundingClientRect().height;
+      cell.style.gridColumn=startCol+' / span '+span; cell.style.width=tw+'px'; snapRows(cell);
+      rows=Math.max(1,Math.ceil((cell.getBoundingClientRect().height-1)/ROW));
+      cell.style.width=W+'px'; snapRows(cell); H=now;
+    }
+    const th=rows*ROW;
     if(fit){
       // work out where the text lands at the final size, then start from where the pointer left it
       const from=fit.style.fontSize;
       cell.style.gridColumn=startCol+' / span '+span; cell.style.width=tw+'px'; cell.style.minHeight=th+'px';
       fs=fitText(cell,fit,th);
       cell.style.width=W+'px'; cell.style.minHeight=H+'px'; fit.style.fontSize=from;
-    }
+    } else cell.style.minHeight=H+'px';
     cell.style.gridColumn=startCol+' / span '+Math.max(span,cover(W));
     void cell.offsetWidth;
     cell.classList.replace('dragging','settling');
     cell.style.width=tw+'px'; cell.style.minHeight=th+'px';
-    if(fit) fit.style.fontSize=fs+'px';
-    cell.dataset.userRows=rows;
+    if(fit){ fit.style.fontSize=fs+'px'; cell.dataset.userRows=rows; }
+    else delete cell.dataset.userRows;
     cell._settle=setTimeout(()=>{
       cell.classList.remove('settling');
       cell.style.gridColumn=startCol+' / span '+span; cell.style.width='';
