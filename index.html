@@ -72,11 +72,15 @@
   --float:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.55);
   color-scheme:dark;
 }
-/* PAGE COLOR: every sheet uses the same green. --acc-l/--acc-d are the
-   text and button color in light/dark mode, --tone is the fill color.
-   Everything tinted is mixed from these. The sheet tabs keep their own
-   colors (search "colored sheet tabs"). */
-:root{--acc-l:#16804f;--acc-d:#5fd39b;--tone:#1f9d63}
+/* SHEET COLORS: each sheet has its own color, like colored sheet tabs in
+   Excel. --acc-l/--acc-d are the text/button color in light/dark mode,
+   --tone is the fill color. Everything tinted is mixed from these. */
+:root{--acc-l:#2f5bea;--acc-d:#86a2ff;--tone:#2f5bea}
+:root[data-sheet="home"]{--acc-l:#6a3fd6;--acc-d:#b49bff;--tone:#7c4dff}
+:root[data-sheet="work"]{--acc-l:#2f5bea;--acc-d:#86a2ff;--tone:#2f5bea}
+:root[data-sheet="photos"]{--acc-l:#8a5d00;--acc-d:#f0c14b;--tone:#e5a91a}
+:root[data-sheet="about"]{--acc-l:#3f7a4c;--acc-d:#9cc9a6;--tone:#6f9f78}
+:root[data-sheet="contact"]{--acc-l:#9b1d3a;--acc-d:#f08aa0;--tone:#a3223f}
 :root{
   --accent:var(--hue);
   --accent-soft:color-mix(in srgb,var(--hue) 12%,var(--sheet));

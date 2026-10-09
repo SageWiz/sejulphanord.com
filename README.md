@@ -59,7 +59,7 @@ Quick facts appear in two places, Home and About. Search `Quick facts` and updat
 Search `Side projects`. Each row is a name, a one-line description (it appears twice: once for desktop, once in `what-m` for phones), and a status chip.
 
 ### Change colors
-The color tokens are at the top of the `<style>` block. Every sheet uses one green (search `PAGE COLOR`): `--acc-l` and `--acc-d` are the text and button color in light and dark mode, and `--tone` is the fill. The sheet tabs keep their own colors (search `colored sheet tabs`). `--canvas` is the tinted background around the page on big screens, and `--gapfill` shades the narrow spacer columns.
+The color tokens are at the top of the `<style>` block. Each sheet has its own color (search `SHEET COLORS`): Home purple, Work blue, Photos sunflower, About sage, Contact burgundy. `--acc-l` and `--acc-d` are the text and button color in light and dark mode, and `--tone` is the fill. `--canvas` is the tinted background around the page on big screens, and `--gapfill` shades the narrow spacer columns.
 
 ### Layout
 The sheet has 8 columns on desktop, 6 on tablets, and 4 on phones. Narrow shaded spacer columns sit between them (`--gap`, 6px), so blocks never touch. Every cell is a whole number of 44px rows, and table columns are sized in whole sheet columns (`--c1` to `--c4`), so tables line up with the sheet's gridlines. Pictures are trimmed a few pixels to fill whole rows. Past `PAGE_MAX` (in the script) the sheet stops growing and sits centered on a gray canvas, like Excel's Page Layout view.
