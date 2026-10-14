@@ -72,19 +72,29 @@
   --float:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.55);
   color-scheme:dark;
 }
-/* PAGE COLOR: one green, used sparingly: buttons, links, the selection,
-   the open tab, and a light fill on each sheet's header cell. Everything
-   else stays neutral. --acc-l/--acc-d are the green in light/dark mode,
-   --tone is the fill. */
-:root{--acc-l:#16804f;--acc-d:#5fd39b;--tone:#1f9d63}
+/* SHEET COLORS: each sheet has its own color, like colored sheet tabs in
+   Excel. --acc-l/--acc-d are the text/button color in light/dark mode,
+   --tone is the fill color. Everything tinted is mixed from these. */
+:root{--acc-l:#2f5bea;--acc-d:#86a2ff;--tone:#2f5bea}
+:root[data-sheet="home"]{--acc-l:#6a3fd6;--acc-d:#b49bff;--tone:#7c4dff}
+:root[data-sheet="work"]{--acc-l:#2f5bea;--acc-d:#86a2ff;--tone:#2f5bea}
+:root[data-sheet="photos"]{--acc-l:#8a5d00;--acc-d:#f0c14b;--tone:#e5a91a}
+:root[data-sheet="about"]{--acc-l:#3f7a4c;--acc-d:#9cc9a6;--tone:#6f9f78}
+:root[data-sheet="contact"]{--acc-l:#9b1d3a;--acc-d:#f08aa0;--tone:#a3223f}
 :root{
   --accent:var(--hue);
-  --accent-soft:color-mix(in srgb,var(--hue) 10%,var(--sheet));
-  --head:color-mix(in srgb,var(--line) 22%,var(--sheet));
-  --gapfill:color-mix(in srgb,var(--line) 25%,var(--chrome));
-  --tint:color-mix(in srgb,var(--tone) 8%,var(--sheet));
-  --canvas:var(--canvas-base);
+  --accent-soft:color-mix(in srgb,var(--hue) 12%,var(--sheet));
+  --head:color-mix(in srgb,var(--tone) 9%,var(--sheet));
+  --gapfill:color-mix(in srgb,var(--tone) 8%,var(--chrome));
+  --tint:color-mix(in srgb,var(--tone) 14%,var(--sheet));
+  --canvas:color-mix(in srgb,var(--tone) 13%,var(--canvas-base));
 }
+/* the texture: a faint scatter of little icons that fits each sheet */
+:root[data-sheet="home"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%203l1.9%205.6L19.5%2010l-5.6%201.9L12%2017.5l-1.9-5.6L4.5%2010l5.6-1.4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M9%2018h6M10%2021h4M12%203a6%206%200%200%200-3.8%2010.6c.6.6.8%201.4.8%202.4h6c0-1%20.2-1.8.8-2.4A6%206%200%200%200%2012%203z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%203l1.9%205.6L19.5%2010l-5.6%201.9L12%2017.5l-1.9-5.6L4.5%2010l5.6-1.4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M9%2018h6M10%2021h4M12%203a6%206%200%200%200-3.8%2010.6c.6.6.8%201.4.8%202.4h6c0-1%20.2-1.8.8-2.4A6%206%200%200%200%2012%203z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%203l1.9%205.6L19.5%2010l-5.6%201.9L12%2017.5l-1.9-5.6L4.5%2010l5.6-1.4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="work"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M12%207.5V21M5%2012H2.5a9.5%209.5%200%200%200%2019%200H19M8%2011h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224%22%2F%3E%3Cpath%20d%3D%22M5.6%205.6l3.6%203.6M14.8%2014.8l3.6%203.6M18.4%205.6l-3.6%203.6M9.2%2014.8l-3.6%203.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M12%207.5V21M5%2012H2.5a9.5%209.5%200%200%200%2019%200H19M8%2011h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224%22%2F%3E%3Cpath%20d%3D%22M5.6%205.6l3.6%203.6M14.8%2014.8l3.6%203.6M18.4%205.6l-3.6%203.6M9.2%2014.8l-3.6%203.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M12%207.5V21M5%2012H2.5a9.5%209.5%200%200%200%2019%200H19M8%2011h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="photos"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208h4l2-3h6l2%203h4v11H3z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%223.8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208V4h4M17%204h4v4M21%2016v4h-4M7%2020H3v-4%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208h4l2-3h6l2%203h4v11H3z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%223.8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208V4h4M17%204h4v4M21%2016v4h-4M7%2020H3v-4%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%208h4l2-3h6l2%203h4v11H3z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%223.8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="about"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M5%2019C5%2010%2010.5%204.5%2020%204.5%2020%2013.5%2014%2019%205%2019zM5%2019l8.5-8.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M5%2019C5%2010%2010.5%204.5%2020%204.5%2020%2013.5%2014%2019%205%2019zM5%2019l8.5-8.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%209h13v5a5%205%200%200%201-5%205H9a5%205%200%200%201-5-5zM17%2010.5h1.5a2.5%202.5%200%200%201%200%205H17M8%203.5v3M12.5%203.5v3%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+:root[data-sheet="contact"]{--texture:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22translate%2814%2018%29%20rotate%28-12%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%208%29%20rotate%2818%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%205h16v11H10l-5%204v-4H4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2862%2066%29%20rotate%288%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28150%2070%29%20rotate%28-20%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2820%20118%29%20rotate%2825%2012%2012%29%22%3E%3Cpath%20d%3D%22M4%205h16v11H10l-5%204v-4H4z%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2892%20126%29%20rotate%28-8%2012%2012%29%22%3E%3Cpath%20d%3D%22M3%206h18v12H3zM3%207l9%206.5L21%207%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28160%20150%29%20rotate%2812%2012%2012%29%22%3E%3Cpath%20d%3D%22M12%208v8M8%2012h8%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20168%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28128%2096%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28176%2020%29%20rotate%280%2012%2012%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
 @media (max-width:1099px){:root{--n:6}}
 @media (max-width:759px){:root{--n:4;--gutter:32px;--gap:4px}}
 
@@ -213,9 +223,14 @@ button,input,select,textarea{font:inherit;color:inherit}
 .muted{color:var(--muted)}
 .small{font-size:14px}
 
-/* header cells: a light green fill, like a filled cell */
-.cell.head{background:var(--tint)}
-.cell.head:not(.sel){outline-color:color-mix(in srgb,var(--tone) 22%,var(--line))}
+/* header cells: a solid light tint of the sheet color, like a filled cell.
+   Add class="textured" to a header cell to put the icon texture on it too. */
+.cell.head{isolation:isolate;background:var(--tint)}
+.cell.head:not(.sel){outline-color:color-mix(in srgb,var(--tone) 35%,var(--line))}
+.cell.head.textured::before,body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--tone);-webkit-mask:var(--texture) 0 0/200px 200px repeat;mask:var(--texture) 0 0/200px 200px repeat;opacity:.16}
+body::before{position:fixed;opacity:.22}
+.cell.head .lede,.cell.head .muted{color:color-mix(in srgb,var(--tone) 25%,var(--ink-2))}
 
 /* one-line cells: a single row when the text fits on one line */
 .cell.line{display:flex;align-items:center;padding:8px 20px}
@@ -468,6 +483,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tab{flex:none;height:48px;padding:0 20px;border:0;border-right:1px solid var(--line);background:transparent;font-size:15px;cursor:pointer;color:var(--ink)}
 .tab:hover{background:var(--sheet)}
 .tab[aria-selected="true"]{background:var(--sheet);color:var(--accent);font-weight:700;box-shadow:inset 0 -3px 0 var(--accent)}
+/* colored sheet tabs: every tab shows its sheet's color, the open one fills with it */
+.tab[data-tab="home"]{--t:#7c4dff}.tab[data-tab="work"]{--t:#2f5bea}.tab[data-tab="photos"]{--t:#e5a91a}.tab[data-tab="about"]{--t:#6f9f78}.tab[data-tab="contact"]{--t:#a3223f}
+.tab{box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--t) 70%,transparent)}
+.tab[aria-selected="true"]{color:var(--ink);background:color-mix(in srgb,var(--t) 16%,var(--sheet));box-shadow:inset 0 -4px 0 var(--t)}
 @media (max-width:759px){.tab{padding:0 14px}.tabs{padding-left:0}}
 /* keep the tab strip's edges in line with the page */
 [data-page] .tab:first-child{border-left:1px solid var(--line)}
@@ -1156,6 +1175,7 @@ function show(id,{focus=false,push=true}={}){
   TABS.forEach(t=>{ const s=document.getElementById(t); s.hidden = t!==id; });
   tabBtns.forEach(b=>{const on=b.dataset.tab===id; b.setAttribute('aria-selected',on); b.tabIndex=on?0:-1; if(on&&focus) b.focus();});
   const sheet=document.getElementById(id);
+  document.documentElement.dataset.sheet=id;
   document.title=sheet.dataset.title;
   if(push && location.hash!=='#'+id) history.pushState(null,'','#'+id);
   window.scrollTo(0,0);
