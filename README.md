@@ -34,6 +34,7 @@ Rows show in the order they're listed, so put your strongest photo first.
 ### Add or edit a work project
 Find `const PROJECTS`. Each project has:
 - `name`, `role`, `year`, `area`: the columns in the table
+- `desc` (optional): a short description, like `'a dining information app'`. It shows in grey after the name in both project tables, and as subtext under the title in the details.
 - `img` and `cap`: the context photo (landscape, saved in `images/work/`) and its caption. Leave `img:''` for no photo.
 - `sections`: pairs of heading and paragraph, as many as you need
 - `tags`: the small line at the bottom
